@@ -1,0 +1,939 @@
+[
+   {
+      "name": "1901 Hall - Ground Floor",
+      "mapName": "1901 Hall - Ground Floor",
+      "dbid": "125",
+      "maploc": "0047",
+      "geoloc": {
+         "lat": "40.346086",
+         "long": "-74.660183"
+      },
+      "building": {
+         "location_id": "0047",
+         "name": "1901-Laughlin Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "125",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=125&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 4"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "1937 Hall - Ground Floor",
+      "mapName": "1937 Hall - Ground Floor",
+      "dbid": "126",
+      "maploc": "0091",
+      "geoloc": {
+         "lat": "40.34589",
+         "long": "-74.656182"
+      },
+      "building": {
+         "location_id": "0091",
+         "name": "1937 Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "126",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=126&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 6"
+            },
+            {
+               "name": "Printers: 2"
+            }
+         ]
+      }
+   },
+   {
+      "name": "1976 Hall - Room 33",
+      "mapName": "1976 Hall - Room 33",
+      "dbid": "132",
+      "maploc": "0703",
+      "geoloc": {
+         "lat": "40.344555",
+         "long": "-74.655525"
+      },
+      "building": {
+         "location_id": "0703",
+         "name": "1976 Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "132",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=132&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Dept: Butler College"
+            },
+            {
+               "name": "Macs: 6"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Bloomberg Hall - Room 315",
+      "mapName": "Bloomberg Hall - Room 315",
+      "dbid": "129",
+      "maploc": "0627",
+      "geoloc": {
+         "lat": "40.343367",
+         "long": "-74.655845"
+      },
+      "building": {
+         "location_id": "0627",
+         "name": "Bloomberg Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "129",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=129&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 3"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Campus Club - 2nd Floor",
+      "mapName": "Campus Club - 2nd Floor",
+      "dbid": "133",
+      "maploc": "0579",
+      "geoloc": {
+         "lat": "40.34758",
+         "long": "-74.654421"
+      },
+      "building": {
+         "location_id": "0579",
+         "name": "Campus Club"
+      },
+      "eventsFeedConfig": {
+         "locationID": "133",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=133&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 2"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Center for Jewish Life - 2nd Floor",
+      "mapName": "Center for Jewish Life - 2nd Floor",
+      "dbid": "134",
+      "description": "Limited hours",
+      "maploc": "0554",
+      "geoloc": {
+         "lat": "40.346671",
+         "long": "-74.653615"
+      },
+      "building": {
+         "location_id": "0554",
+         "name": "Center for Jewish Life"
+      },
+      "eventsFeedConfig": {
+         "locationID": "134",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=134&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Dept: Center for Jewish Life"
+            },
+            {
+               "name": "Macs: 3"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Edwards Hall - Basement",
+      "mapName": "Edwards Hall - Basement",
+      "dbid": "136",
+      "maploc": "0010",
+      "geoloc": {
+         "lat": "40.347153",
+         "long": "-74.65928"
+      },
+      "building": {
+         "location_id": "0010",
+         "name": "Edwards Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "136",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=136&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 5"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Fields Center - Room 308",
+      "mapName": "Fields Center - Room 308",
+      "dbid": "137",
+      "maploc": "0586",
+      "geoloc": {
+         "lat": "40.349158",
+         "long": "-74.651743"
+      },
+      "building": {
+         "location_id": "0586",
+         "name": "Fields Center"
+      },
+      "eventsFeedConfig": {
+         "locationID": "137",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=137&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Dept: Fields Center"
+            },
+            {
+               "name": "Macs: 3"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Firestone Library - Room B-4-K",
+      "mapName": "Firestone Library - Room B-4-K",
+      "dbid": "138",
+      "description": "Limited hours",
+      "maploc": "0069",
+      "geoloc": {
+         "lat": "40.349614",
+         "long": "-74.657349"
+      },
+      "building": {
+         "location_id": "0069",
+         "name": "Firestone Library"
+      },
+      "eventsFeedConfig": {
+         "locationID": "138",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=138&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 8"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Forbes College - Library, Room 32",
+      "mapName": "Forbes College - Library, Room 32",
+      "dbid": "141",
+      "maploc": "0148",
+      "geoloc": {
+         "lat": "40.342146",
+         "long": "-74.661155"
+      },
+      "building": {
+         "location_id": "0148",
+         "name": "Forbes Main"
+      },
+      "eventsFeedConfig": {
+         "locationID": "141",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=141&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 4"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Forbes College - Rooms 21, 22",
+      "mapName": "Forbes College - Rooms 21, 22",
+      "dbid": "140",
+      "maploc": "0148",
+      "geoloc": {
+         "lat": "40.342146",
+         "long": "-74.661155"
+      },
+      "building": {
+         "location_id": "0148",
+         "name": "Forbes Main"
+      },
+      "eventsFeedConfig": {
+         "locationID": "140",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=140&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 12"
+            },
+            {
+               "name": "Printers: 2"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Friend Center - Room 016",
+      "mapName": "Friend Center - Room 016",
+      "dbid": "143",
+      "description": "Limited hours",
+      "maploc": "0616",
+      "geoloc": {
+         "lat": "40.350348",
+         "long": "-74.652684"
+      },
+      "building": {
+         "location_id": "0616",
+         "name": "Friend Center"
+      },
+      "eventsFeedConfig": {
+         "locationID": "143",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=143&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Dept: Engineering & Applied Science"
+            },
+            {
+               "name": "Macs: 10"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Friend Center - Room 017",
+      "mapName": "Friend Center - Room 017",
+      "dbid": "144",
+      "description": "Limited hours",
+      "maploc": "0616",
+      "geoloc": {
+         "lat": "40.350348",
+         "long": "-74.652684"
+      },
+      "building": {
+         "location_id": "0616",
+         "name": "Friend Center"
+      },
+      "eventsFeedConfig": {
+         "locationID": "144",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=144&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Dept: Engineering & Applied Science"
+            },
+            {
+               "name": "Macs: 18"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Frist Campus Center - 100 Level",
+      "mapName": "Frist Campus Center - 100 Level",
+      "dbid": "150",
+      "maploc": "0605",
+      "geoloc": {
+         "lat": "40.346734",
+         "long": "-74.655155"
+      },
+      "building": {
+         "location_id": "0605",
+         "name": "Frist Campus Center"
+      },
+      "eventsFeedConfig": {
+         "locationID": "150",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=150&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Frist Campus Center - 200 Level",
+      "mapName": "Frist Campus Center - 200 Level",
+      "dbid": "147",
+      "description": "Limited hours",
+      "maploc": "0605",
+      "geoloc": {
+         "lat": "40.346734",
+         "long": "-74.655155"
+      },
+      "building": {
+         "location_id": "0605",
+         "name": "Frist Campus Center"
+      },
+      "eventsFeedConfig": {
+         "locationID": "147",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=147&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 8"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Frist Campus Center - 300 Level",
+      "mapName": "Frist Campus Center - 300 Level",
+      "dbid": "148",
+      "description": "Limited hours",
+      "maploc": "0605",
+      "geoloc": {
+         "lat": "40.346734",
+         "long": "-74.655155"
+      },
+      "building": {
+         "location_id": "0605",
+         "name": "Frist Campus Center"
+      },
+      "eventsFeedConfig": {
+         "locationID": "148",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=148&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 8"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Holder Hall - Room B11",
+      "mapName": "Holder Hall - Room B11",
+      "dbid": "151",
+      "maploc": "0028",
+      "geoloc": {
+         "lat": "40.348715",
+         "long": "-74.661645"
+      },
+      "building": {
+         "location_id": "0028",
+         "name": "Holder Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "151",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=151&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 5"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Holder Hall - Room B31",
+      "mapName": "Holder Hall - Room B31",
+      "dbid": "152",
+      "maploc": "0028",
+      "geoloc": {
+         "lat": "40.348715",
+         "long": "-74.661645"
+      },
+      "building": {
+         "location_id": "0028",
+         "name": "Holder Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "152",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=152&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "PCs: 6"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Julian Street Library",
+      "mapName": "Julian Street Library",
+      "dbid": "167",
+      "maploc": "0099",
+      "geoloc": {
+         "lat": "40.344897",
+         "long": "-74.656044"
+      },
+      "building": {
+         "location_id": "0099",
+         "name": "Wilcox Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "167",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=167&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 2"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Lauritzen Hall - Room 409",
+      "mapName": "Lauritzen Hall - Room 409",
+      "dbid": "153",
+      "maploc": "0636",
+      "geoloc": {
+         "lat": "40.343634",
+         "long": "-74.658309"
+      },
+      "building": {
+         "location_id": "0636",
+         "name": "Lauritzen Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "153",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=153&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Lawrence Apartments - Building 1",
+      "mapName": "Lawrence Apartments - Building 1",
+      "dbid": "154",
+      "maploc": "5202",
+      "geoloc": {
+         "lat": "40.333379",
+         "long": "-74.657018"
+      },
+      "building": {
+         "location_id": "5202",
+         "name": "Lawrence Apartments"
+      },
+      "eventsFeedConfig": {
+         "locationID": "154",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=154&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 4"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Lawrence Apartments - Building 14",
+      "mapName": "Lawrence Apartments - Building 14",
+      "dbid": "155",
+      "maploc": "5202",
+      "geoloc": {
+         "lat": "40.333379",
+         "long": "-74.657018"
+      },
+      "building": {
+         "location_id": "5202",
+         "name": "Lawrence Apartments"
+      },
+      "eventsFeedConfig": {
+         "locationID": "155",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=155&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 5"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Little Hall - Basement",
+      "mapName": "Little Hall - Basement",
+      "dbid": "156",
+      "maploc": "0021",
+      "geoloc": {
+         "lat": "40.346553",
+         "long": "-74.659813"
+      },
+      "building": {
+         "location_id": "0021",
+         "name": "Little Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "156",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=156&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Printers: 2"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Madison Hall - Room G17",
+      "mapName": "Madison Hall - Room G17",
+      "dbid": "157",
+      "maploc": "0036",
+      "geoloc": {
+         "lat": "40.34852",
+         "long": "-74.662202"
+      },
+      "building": {
+         "location_id": "0036",
+         "name": "Madison Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "157",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=157&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 2"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "McCosh Hall - Room B59",
+      "mapName": "McCosh Hall - Room B59",
+      "dbid": "158",
+      "maploc": "0024",
+      "geoloc": {
+         "lat": "40.348415",
+         "long": "-74.656286"
+      },
+      "building": {
+         "location_id": "0024",
+         "name": "McCosh Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "158",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=158&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Dept: English"
+            },
+            {
+               "name": "Macs: 4"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "McDonnell Hall - Brush Gallery",
+      "mapName": "McDonnell Hall - Brush Gallery",
+      "dbid": "160",
+      "maploc": "0604",
+      "geoloc": {
+         "lat": "40.345363",
+         "long": "-74.652459"
+      },
+      "building": {
+         "location_id": "0604",
+         "name": "McDonnell Hall"
+      },
+      "eventsFeedConfig": {
+         "locationID": "160",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=160&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Accessible: Wheelchair Accessible"
+            },
+            {
+               "name": "Macs: 4"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "New Graduate College - Entry 33/34",
+      "mapName": "New Graduate College - Entry 33/34",
+      "dbid": "161",
+      "maploc": "0113",
+      "geoloc": {
+         "lat": "40.340968",
+         "long": "-74.666372"
+      },
+      "building": {
+         "location_id": "0113",
+         "name": "New Graduate College"
+      },
+      "eventsFeedConfig": {
+         "locationID": "161",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=161&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 4"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "North Hall - Library",
+      "mapName": "North Hall - Library",
+      "dbid": "166",
+      "maploc": "0670",
+      "geoloc": {
+         "lat": "40.344115",
+         "long": "-74.6581"
+      },
+      "building": {
+         "location_id": "0670",
+         "name": "Wendell Hall C"
+      },
+      "eventsFeedConfig": {
+         "locationID": "166",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=166&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 12"
+            },
+            {
+               "name": "Printers: 1"
+            }
+         ]
+      }
+   },
+   {
+      "name": "Old Graduate College - Room B-9-B",
+      "mapName": "Old Graduate College - Room B-9-B",
+      "dbid": "149",
+      "maploc": "0033",
+      "geoloc": {
+         "lat": "40.340838",
+         "long": "-74.665214"
+      },
+      "building": {
+         "location_id": "0033",
+         "name": "Old Graduate College"
+      },
+      "eventsFeedConfig": {
+         "locationID": "149",
+         "baseURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/events?placeID=149&",
+         "menuURL": "https://api.princeton.edu/mobile-app/1.0.0/dining/menu?"
+      },
+      "amenities": {
+         "amenity": [
+            {
+               "name": "Macs: 3"
+            },
+            {
+               "name": "Printers: 1"
+            },
+            {
+               "name": "Scanners: 1"
+            }
+         ]
+      }
+   }
+]
