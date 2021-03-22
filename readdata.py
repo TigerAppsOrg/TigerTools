@@ -1,6 +1,8 @@
 # ---------------------------------------------------------------------
 # readdata.py
 # Back end: Connects to OIT APIs
+# adapted from https://github.com/vr2amesh/COS333-API-Code-Examples/
+# blob/master/MobileApp/python/req_lib.py
 # ---------------------------------------------------------------------
 
 #!/usr/bin/env python3

@@ -1,4 +1,9 @@
+# ---------------------------------------------------------------------
 # configs.py
+# Contains methods and specifications for accessing MobileApp API
+# adapted from https://github.com/vr2amesh/COS333-API-Code-Examples/
+# blob/master/MobileApp/python/configs.py
+# ---------------------------------------------------------------------
 
 import requests
 import json

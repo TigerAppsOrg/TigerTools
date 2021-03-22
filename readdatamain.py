@@ -1,6 +1,8 @@
 # ---------------------------------------------------------------------
 # readdatamain.py
 # Back end: Reads from OIT APIs
+# adapted from https://github.com/vr2amesh/COS333-API-Code-Examples/blob
+# /master/MobileApp/python/dining_locations.py
 # ---------------------------------------------------------------------
 
 #!/usr/bin/env python3
