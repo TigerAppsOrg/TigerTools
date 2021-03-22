@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------
-# readdata.py
+# reqlib.py
 # Back end: Connects to OIT APIs
 # adapted from https://github.com/vr2amesh/COS333-API-Code-Examples/
 # blob/master/MobileApp/python/req_lib.py
@@ -48,14 +48,14 @@ class ReqLib:
 
 		return text
 
-	def getXMLorTXT(self, endpoint, **kwargs):
-		req = requests.get(self.configs.BASE_URL + endpoint, 
-			params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"], 
-			headers={"Authorization": "Bearer " + self.configs.ACCESS_TOKEN},)
-		# Check to see if the response failed due to invalid
-		# credentials
-		text = self._updateConfigs(req.text, endpoint, **kwargs)
-		return text
+	# def getXMLorTXT(self, endpoint, **kwargs):
+	# 	req = requests.get(self.configs.BASE_URL + endpoint, 
+	# 		params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"], 
+	# 		headers={"Authorization": "Bearer " + self.configs.ACCESS_TOKEN},)
+	# 	# Check to see if the response failed due to invalid
+	# 	# credentials
+	# 	text = self._updateConfigs(req.text, endpoint, **kwargs)
+	# 	return text
 
 	def getJSONfromXML(self, endpoint, **kwargs):
 		req = requests.get(self.configs.BASE_URL + endpoint, 
