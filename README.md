@@ -1,2 +1,2 @@
 # TigerTools
-## This is the repository for the COS 333 TigerTools App
+## This is the repository for the COS 333 TigerTools Application
