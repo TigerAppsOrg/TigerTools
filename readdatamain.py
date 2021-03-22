@@ -27,12 +27,6 @@ Parameter: categoryID
 '''
 if __name__ == "__main__":
 	req_lib = ReqLib()
-	# category 2 refers to all of the dining halls
-	# on campus. A different number will return 
-	# different types of  dining locations. For
-	# example, category 3 returns all of the 
-	# cafes on campus
-	categoryID = 2
-	locations = req_lib.getXMLorTXT(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
-	print(locations)
-
+	categoryID = 2 # tried dhall locations
+	locations = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
+	print(locations) # this was just to test

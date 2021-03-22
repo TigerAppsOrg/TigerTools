@@ -7,6 +7,7 @@
 import requests
 import json
 from configs import Configs
+import xmltodict
 
 
 class ReqLib:
@@ -53,3 +54,15 @@ class ReqLib:
 		# credentials
 		text = self._updateConfigs(req.text, endpoint, **kwargs)
 		return text
+
+	def getJSONfromXML(self, endpoint, **kwargs):
+		req = requests.get(self.configs.BASE_URL + endpoint, 
+			params=kwargs if "kwargs" not in kwargs else kwargs["kwargs"], 
+			headers={"Authorization": "Bearer " + self.configs.ACCESS_TOKEN},)
+		# https://www.geeksforgeeks.org/python-xml-to-json/
+		# https://stackoverflow.com/questions/2148119/how-to-convert-an-xml-string-to-a-dictionary
+		text = self._updateConfigs(req.text, endpoint, **kwargs)
+		data_dict = xmltodict.parse(text)
+		json_data = json.dumps(data_dict)
+		return json_data
+
