@@ -23,3 +23,10 @@ def get_dhall_data():
 	# 	categoryID = int(request.args.get('id'))
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
 	return data
+
+def main():
+	data = app.run(host='0.0.0.0', port=5000, debug=True)
+	return data
+
+if __name__ == "__main__":
+	data = main()
