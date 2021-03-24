@@ -89,7 +89,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           data_array = JSON.parse(json_data)
           for (var i = 0; i < data_array.locations.location.length; i++) {
               var printer = data_array.locations.location[i];
-              addPoint(printer.geoloc.long, printer.geoloc.lat, [3,65,252], {name: printer.name, type:"Printer"});
+              addPoint(printer.geoloc.long, printer.geoloc.lat, [252, 65,3], {name: printer.name, type:"Printer"});
           }
         }
       });
