@@ -82,7 +82,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     $("#printers").click(function(){
       $.ajax({
         type: "POST",
-        url: "http://0.0.0.0:5000/points",
+        url: "https://tigertools.herokuapp.com/points",
         data: JSON.stringify({categoryid: 6}),
         contentType: "application/json",
         success: function(json_data){
@@ -98,7 +98,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     $("#dhalls").click(function(){
       $.ajax({
         type: "POST",
-        url: "http://0.0.0.0:5000/points",
+        url: "https://tigertools.herokuapp.com/points",
         data: JSON.stringify({categoryid: 2}),
         contentType: "application/json",
         success: function(json_data){
@@ -114,7 +114,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     $("#cafes").click(function(){
       $.ajax({
         type: "POST",
-        url: "http://0.0.0.0:5000/points",
+        url: "https://tigertools.herokuapp.com/points",
         data: JSON.stringify({categoryid: 3}),
         contentType: "application/json",
         success: function(json_data){
