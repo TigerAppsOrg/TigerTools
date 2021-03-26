@@ -5,10 +5,6 @@ html, body, #viewDiv {
   width: 100%;
 }
 
-#modalTrigger {
-  display: none;
-}
-
 #openNav {
   position: fixed;
   top: 5%;
@@ -16,36 +12,35 @@ html, body, #viewDiv {
   transform: translate(-50%, -50%); /* this is for centering the button */
 }
 
-.sidenav {
-  height: 100%;
-  width: 0;
+#mySidenav {
+  /*height: 100%;*/
+  width: 333px;
   position: fixed;
   z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #111;
+  top: 10px;
+  left: 10px;
+  background-color: #fff;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  padding: 15px 10px 20px 10px;
+  max-width: 100%;
+  border-style: double;
+  border-radius: 3px;
+  border-color: #333;
 }
 
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
+#menuTitle {
+  margin-left: 20px;
 }
 
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-.sidenav .closebtn {
+#closeNav {
   position: absolute;
-  top: 0;
-  right: 25px;
+  top: 0px;
+  right: 10px;
   font-size: 36px;
   margin-left: 50px;
+}
+
+.sideButton {
+  margin: 5px 3px 5px 3px;
 }

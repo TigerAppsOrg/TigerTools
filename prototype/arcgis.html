@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>ArcGIS Test</title>
+    <title>TigerTools</title>
 
     <!-- Bootstrap 4 and Jquery -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -14,11 +14,14 @@
     <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
     <script src="https://js.arcgis.com/4.18/"></script>
 
-    <!-- My CSS and JS -->
+    <!-- Our CSS and JS -->
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <script src="{{url_for('static', filename='loadmapendtoend.js')}}"> </script>
     <!-- <script src="loadmapendtoend.js"></script> -->
     <!-- style.css -->
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='favicon.ico')}}"/>
     
   </head>
 
@@ -29,19 +32,40 @@
 
     <!-- Button for opening the menu
       https://getbootstrap.com/docs/4.0/components/buttons/ -->
-    <button id="openNav" type="button" class="btn btn-primary btn-lg">Select Tools &#9776;</button>
+    <button id="openNav" type="button" class="btn btn-primary btn-lg" data-toggle="collapse" data-target="#mySidenav" aria-expanded="false">Select Tools &#9776;</button>
+
     <!-- The menu for filtering amenities -->
-    <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" id="closeNav">&times;</a>
-      <a href="javascript:void(0)" id="printers">Printers</a>
-      <a href="javascript:void(0)" id="dhalls">Dining halls</a>
-      <a href="javascript:void(0)" id="clusters">Computer Clusters</a>
-      <a href="javascript:void(0)" id="cafes">Cafés</a>
-      <a href="javascript:void(0)" id="bathrooms">Bathrooms</a>
+    <div id="mySidenav" class="collapse">
+      <!-- Menu title and button for closing menu -->
+      <div class="row">
+        <h4 id="menuTitle">Tool Filtering Menu</h4>
+        <button type="button btn-danger" class="close" id="closeNav" data-toggle="collapse" data-target="#mySidenav" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <hr>
+      <!-- Search bar -->
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <p></p>
+      <!-- Filtering options -->
+      <button type="button" class="btn btn-danger btn-lg sideButton" id="printers">Printers</button>
+      <button type="button" class="btn btn-primary btn-lg sideButton" id="dhalls">Dining</button>
+      <button type="button" class="btn btn-secondary btn-lg sideButton" id="clusters">Computer clusters</button>
+      <button type="button" class="btn btn-success btn-lg sideButton" id="cafes">Cafés</button>
+      <button type="button" class="btn btn-warning btn-lg sideButton" id="bathrooms">Bathrooms</button>
+      <br />
+      <hr />
+      <!-- Reset filters -->
+      <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-danger btn-lg sideButton" id="reset">Reset all options</button>
+      </div>
     </div>
 
     <!-- Invisible button for triggering the modal -->
-    <button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal"></button>
+    <button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal" style="display: none;"></button>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal">

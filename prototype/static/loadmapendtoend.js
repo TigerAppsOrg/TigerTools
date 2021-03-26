@@ -1,10 +1,11 @@
+
 require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], function (esriConfig, Map, MapView, Graphic) {
   esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
-
 
   var map = new Map({
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html
     // arcgis-navigation and arcgis-navigation-night look interesting - could do something with day/nighttime?
+    // osm-standard
     basemap: "arcgis-navigation-night" // Basemap layer service
   });
 
@@ -23,7 +24,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       xmax: -74.647,
       ymax:  40.356
     },
-    minZoom: 15 // Constrain zooming out
+    minZoom: 14 // Constrain zooming out
   };
 
   function addPoint(long, lat, col, attr) {
@@ -48,10 +49,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     view.graphics.add(pointGraphic);
   }
 
-   //Some test points
-  //addPoint(-74.657, 40.346, [226,119,40], { name:"1903", type:"printer" });
-  //addPoint(-74.658, 40.347, [3,65,252], { name:"McCormick", type:"library" });
-  //addPoint(-74.656, 40.345, [252,3,3], { name:"Wilcox", type:"dining" });
+  /*
+  // Some test points
+  addPoint(-74.657, 40.346, [226,119,40], { name:"1903", type:"printer" });
+  addPoint(-74.658, 40.347, [3,65,252], { name:"McCormick", type:"library" });
+  addPoint(-74.656, 40.345, [252,3,3], { name:"Wilcox", type:"dining" });
+  */
 
   // Function for point clicks
   view.on("click", function(event) {
@@ -60,23 +63,23 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         // check if a graphic is returned
         if (response.results.length) {
           const graphic = response.results[0].graphic;
-          console.log("Clicked on graphic");
-          console.log(graphic.attributes); // Attributes of graphic
-          $(".modal-title").text(graphic.attributes["name"] + " " + graphic.attributes["type"]); // Modify the modal
-          $("#modalTrigger").click(); // Open the modal
+          if (!graphic.attributes.layerId) { // Bandaid solution to clicking on map when no graphics
+            // console.log("Clicked on graphic"); // console.log for testing purposes
+            // console.log(graphic.attributes); // Attributes of graphic
+            $(".modal-title").text(graphic.attributes["name"] + " " + graphic.attributes["type"]); // Modify the modal
+            $("#modalTrigger").click(); // Open the modal
+          }
         }
       });
   });
 
   $(document).ready(function(){
-    /*
-    $("#overlay").click(function(){
-      $("#overlay").hide();
-    });*/
 
-    $("#openNav").click(function(){
-      $("#mySidenav").width("25%");
+    // Reset/remove all graphics
+    $("#reset").click(function(){
+      view.graphics.removeAll();
     });
+
     // Printers
     // PRINTER NEEDS TO BE REFINED: CURRENTLY SHOWING SCANNERS AND OTHER STUFF TOO, broken for some reason too
     $("#printers").click(function(){
@@ -94,6 +97,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         }
       });
     });
+
     // Dining Halls
     $("#dhalls").click(function(){
       $.ajax({
@@ -110,6 +114,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         }
       });
     });
+
     // Cafés
     $("#cafes").click(function(){
       $.ajax({
@@ -126,11 +131,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         }
       });
     });
+
     // Bathrooms
     $("#bathrooms").click(function(){
-    });
-    $("#closeNav").click(function(){
-      $("#mySidenav").width("0px");
     });
   });
 
