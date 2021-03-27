@@ -22,10 +22,7 @@
 
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='favicon.ico')}}"/>
-
-    <!-- Font awesome 5 (for icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css ">
-
+    
   </head>
 
   <body>
@@ -58,8 +55,7 @@
       <button type="button" class="btn btn-primary btn-lg sideButton" id="dhalls">Dining</button>
       <button type="button" class="btn btn-secondary btn-lg sideButton" id="clusters">Computer clusters</button>
       <button type="button" class="btn btn-success btn-lg sideButton" id="cafes">Cafés</button>
-      <button type="button" class="btn btn-warning btn-lg sideButton" id="scanners">Scanners</button>
-      <button type="button" class="btn btn-dark btn-lg sideButton" id="vending">Vending Machines</button>
+      <button type="button" class="btn btn-warning btn-lg sideButton" id="bathrooms">Bathrooms</button>
       <br />
       <hr />
       <!-- Reset filters -->
@@ -68,106 +64,28 @@
       </div>
     </div>
 
-    <!-- Invisible button for triggering the main modal -->
+    <!-- Invisible button for triggering the modal -->
     <button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal" style="display: none;"></button>
 
-
-    <!-- Main modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Modal Title</h4>
+            <h4 class="modal-title">Modal Heading</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body">
-            <h5 class="modal-body-desc">Description</h5>
-
-            <!-- Show user feedback -->
-            <ul class="list-group">
-              <h5 class="text-center">View feedback from other users...</h5>
-              <li class="list-group-item d-flex justify-content-between">
-                <p class="mb-0">Sample user feedback 1.</p>
-                <small class="text-muted">1 day ago</small>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <p class="mb-0">Sample user feedback 2.</p>
-                <small class="text-muted">3 days ago</small>
-              </li>
-            </ul>
-
-            <hr>
-            <h5 class="text-center">Provide feedback!</h5>
-            <button class="btn btn-success btn-lg"><i class="fas fa-thumbs-up"></i></button>
-            <button class="btn btn-danger btn-lg"><i class="fas fa-thumbs-down"></i></button>
-            <!-- User input form -->
-            <form>
-              <label for="message-text" class="col-form-label">Enter your own feedback here!</label>
-              <div class="input-group">
-                <textarea class="form-control" id="message-text" placeholder="Leave a comment for other users!"></textarea>
-                <button type="submit" class="btn btn-success">Submit</button>
-              </div>
-            </form>
-            <hr>
-
-            <!-- Work order button -->
-            <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-danger btn-lg btn-block">
-              <i class="fas fa-exclamation-triangle fa-lg" style="color:yellow;"></i>
-              &nbsp;Submit a work order...
-            </button>
+            Information to be added
           </div>
 
           <!-- Modal footer -->
-          <!--
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-        -->
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Work order modal -->
-    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h4 class="modal-title">Work Order - ToolName</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
-
-          <!-- Modal body -->
-          <div class="modal-body">
-
-            <p>Note: Work Orders submitted through TigerTools are solely for Operating services. This includes facility malfunctions such as low ink/paper, broken computer, etc. For more information, click <a href="#">here</a>.</p>
-            <!-- Work order text input form -->
-            <form>
-              <div class="input-group">
-                <textarea class="form-control" id="message-text" placeholder="Please describe the problem..."></textarea>
-              </div>
-            </form>
-
-            <div class="row">
-              <div class="col-sm-1 my-auto">
-                <i class="fas fa-exclamation-triangle fa-2x" style="color:red;"></i>
-              </div>
-              <div class="col-sm-11 my-auto">
-                <p>By clicking the Submit button, you are submitting a work order to Facilities. Please note your NetID will be linked to the work order as per Facilities guidelines.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal footer -->
-          <div class="modal-footer justify-content-between">
-            <button type="submit" class="btn btn-success">Submit</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
 
         </div>
