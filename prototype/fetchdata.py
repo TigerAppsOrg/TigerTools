@@ -25,7 +25,8 @@ def get_dhall_data():
 	return data
 
 def main():
-	data = app.run(host='https://tigertools.herokuapp.com/', port=5000, debug=True)
+	port = int(os.environ.get("PORT", 5000))
+	data = app.run(host='0.0.0.0', port=port, debug=True)
 	return data
 
 if __name__ == "__main__":
