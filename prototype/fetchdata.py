@@ -6,6 +6,7 @@
 from reqlib import ReqLib
 from flask import Flask, request, json, make_response, render_template
 import sys
+import os
 
 app = Flask(__name__, template_folder='.')
 
@@ -22,7 +23,6 @@ def get_dhall_data():
 	# elif request.method == 'GET':
 	# 	categoryID = int(request.args.get('id'))
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
-	print(data)
 	return data
 
 def main():
