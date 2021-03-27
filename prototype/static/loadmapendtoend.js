@@ -130,7 +130,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       });
     });
 
-    // Dining Halls
+    /* Dining Halls
     $("#dhalls").click(function(){
       $.ajax({
         type: "POST",
@@ -146,7 +146,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           }
         }
       });
-    });
+    });*/
 
     // Cafés
     $("#cafes").click(function(){
