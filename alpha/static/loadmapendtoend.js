@@ -191,8 +191,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       });
     });
 
-    // Cafés
-    $("#veding").click(function(){
+    // Vending Machines
+    $("#vending").click(function(){
       $.ajax({
         type: "POST",
         url: "https://tigertools.herokuapp.com/points",
