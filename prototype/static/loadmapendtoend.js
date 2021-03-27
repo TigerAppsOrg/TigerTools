@@ -119,8 +119,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
               var cluster = data_array.locations.location[i];
               var amenities = cluster.amenities.amenity
               for (var j = 0; j < amenities.length; j++) {
+                console.log("reached")
                 if (amenities[j].name.indexOf("Macs") !== -1) {
-                  addPoint(cluster.geoloc.long, cluster.geoloc.lat, [128, 128, 128], {name: cluster.name, type:"Computer Cluster", building: cluster.building.name});
+                  console.log("hi!");
+                  addPoint(cluster.geoloc.long, cluster.geoloc.lat, [128, 128, 128], {name: cluster.name, type:"Printer", building: cluster.building.name});
                 }
               }
           }
