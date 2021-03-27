@@ -105,6 +105,29 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       });
     });
 
+    // Computer Clusters
+    $("#clusters").click(function(){
+      $.ajax({
+        type: "POST",
+        url: "https://tigertools.herokuapp.com/points",
+        data: JSON.stringify({categoryid: 6}),
+        contentType: "application/json",
+        success: function(json_data){
+          data_array = JSON.parse(json_data)
+          console.log(data_array);
+          for (var i = 0; i < data_array.locations.location.length; i++) {
+              var cluster = data_array.locations.location[i];
+              var amenities = cluster.amenities.amenity
+              for (var j = 0; j < amenities.length; j++) {
+                if (amenities[j].name.includes("Macs")) {
+                  addPoint(cluster.geoloc.long, cluster.geoloc.lat, [0, 0, 0], {name: cluster.name, type:"Computer Cluster", building: cluster.building.name});
+                }
+              }
+          }
+        }
+      });
+    });
+
     // Dining Halls
     $("#dhalls").click(function(){
       $.ajax({
