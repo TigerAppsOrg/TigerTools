@@ -191,8 +191,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       });
     });
 
-    // Bathrooms
-    $("#bathrooms").click(function(){
+    // Cafés
+    $("#veding").click(function(){
+      $.ajax({
+        type: "POST",
+        url: "https://tigertools.herokuapp.com/points",
+        data: JSON.stringify({categoryid: 4}),
+        contentType: "application/json",
+        success: function(json_data){
+          data_array = JSON.parse(json_data)
+          console.log(data_array);
+          for (var i = 0; i < data_array.locations.location.length; i++) {
+              var vending_machine = data_array.locations.location[i];
+              addPoint(vending_machine.geoloc.long, vending_machine.geoloc.lat, [0,0,0], {name: vending_machine.name, type:"Vending Machine", building: vending_machine.building.name});
+          }
+        }
+      });
     });
   });
 
