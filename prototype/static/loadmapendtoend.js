@@ -66,7 +66,13 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           if (!graphic.attributes.layerId) { // Bandaid solution to clicking on map when no graphics
             // console.log("Clicked on graphic"); // console.log for testing purposes
             // console.log(graphic.attributes); // Attributes of graphic
-            $(".modal-title").text(graphic.attributes["name"] + " " + graphic.attributes["type"]); // Modify the modal
+
+            let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
+            $(".modal-title").text(titleString); // Modify the modal
+
+            let bodyString = "Details: " + graphic.attributes["building"];
+            $(".modal-body-desc").text(bodyString);
+
             $("#modalTrigger").click(); // Open the modal
           }
         }
@@ -90,9 +96,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
+          console.log(data_array);
           for (var i = 0; i < data_array.locations.location.length; i++) {
               var printer = data_array.locations.location[i];
-              addPoint(printer.geoloc.long, printer.geoloc.lat, [252, 65,3], {name: printer.name, type:"Printer"});
+              addPoint(printer.geoloc.long, printer.geoloc.lat, [252, 65,3], {name: printer.name, type:"Printer", building: printer.building.name});
           }
         }
       });
@@ -107,9 +114,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
+          console.log(data_array);
           for (var i = 0; i < data_array.locations.location.length; i++) {
               var dhall = data_array.locations.location[i];
-              addPoint(dhall.geoloc.long, dhall.geoloc.lat, [3,65,252], {name: dhall.name, type:""});
+              addPoint(dhall.geoloc.long, dhall.geoloc.lat, [3,65,252], {name: dhall.name, type:"Dining hall", building: dhall.building.name});
           }
         }
       });
@@ -124,9 +132,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
+          console.log(data_array);
           for (var i = 0; i < data_array.locations.location.length; i++) {
               var cafe = data_array.locations.location[i];
-              addPoint(cafe.geoloc.long, cafe.geoloc.lat, [3,252,65], {name: cafe.name, type:""});
+              addPoint(cafe.geoloc.long, cafe.geoloc.lat, [3,252,65], {name: cafe.name, type:"Café", building: cafe.building.name});
           }
         }
       });
