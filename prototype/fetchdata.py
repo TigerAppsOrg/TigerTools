@@ -22,6 +22,7 @@ def get_dhall_data():
 	# elif request.method == 'GET':
 	# 	categoryID = int(request.args.get('id'))
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
+	print(data)
 	return data
 
 def main():
