@@ -45,10 +45,18 @@ html, body, #viewDiv {
   margin: 5px 3px 5px 3px;
 }
 
+.modal-dialog {
+    margin: 10vh auto 0px auto;
+}
+
 #myModal2 {
   z-index: 1052;
 }
 
 .modal-backdrop.show:nth-of-type(even) {
   z-index: 1051;
+}
+
+.checkbox {
+  margin-left: 10px;
 }

@@ -64,9 +64,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         if (response.results.length) {
           const graphic = response.results[0].graphic;
           if (!graphic.attributes.layerId) { // Bandaid solution to clicking on map when no graphics
-            // console.log("Clicked on graphic"); // console.log for testing purposes
-            // console.log(graphic.attributes); // Attributes of graphic
-
             let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
             $(".modal-title").text(titleString); // Modify the modal
 
@@ -119,9 +116,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
               var cluster = data_array.locations.location[i];
               var amenities = cluster.amenities.amenity
               for (var j = 0; j < amenities.length; j++) {
-                console.log("reached")
                 if (amenities[j].name.indexOf("Macs") !== -1) {
-                  console.log("hi!");
                   addPoint(cluster.geoloc.long, cluster.geoloc.lat, [128, 128, 128], {name: cluster.name, type:"Computer Cluster", building: cluster.building.name});
                 }
               }

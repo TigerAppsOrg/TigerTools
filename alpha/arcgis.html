@@ -74,7 +74,7 @@
 
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
           <!-- Modal Header -->
@@ -85,40 +85,181 @@
 
           <!-- Modal body -->
           <div class="modal-body">
-            <h5 class="modal-body-desc">Description</h5>
 
-            <!-- Show user feedback -->
-            <ul class="list-group">
-              <h5 class="text-center">View feedback from other users...</h5>
-              <li class="list-group-item d-flex justify-content-between">
-                <p class="mb-0">Sample user feedback 1.</p>
-                <small class="text-muted">1 day ago</small>
-              </li>
-              <li class="list-group-item d-flex justify-content-between">
-                <p class="mb-0">Sample user feedback 2.</p>
-                <small class="text-muted">3 days ago</small>
-              </li>
-            </ul>
-
-            <hr>
-            <h5 class="text-center">Provide feedback!</h5>
-            <button class="btn btn-success btn-lg"><i class="fas fa-thumbs-up"></i></button>
-            <button class="btn btn-danger btn-lg"><i class="fas fa-thumbs-down"></i></button>
-            <!-- User input form -->
-            <form>
-              <label for="message-text" class="col-form-label">Enter your own feedback here!</label>
-              <div class="input-group">
-                <textarea class="form-control" id="message-text" placeholder="Leave a comment for other users!"></textarea>
-                <button type="submit" class="btn btn-success">Submit</button>
+            <!-- Tabs --- https://getbootstrap.com/docs/5.0/components/navs-tabs/-->
+            <nav>
+              <div class="nav nav-tabs mb-2 nav-fill" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Information</button>
+                <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-comment" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Submit Comment</button>
+                <button class="nav-link" id="nav-contact-tab" data-toggle="tab" data-target="#nav-work" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Work Order</button>
               </div>
-            </form>
-            <hr>
+            </nav>
 
-            <!-- Work order button -->
-            <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-danger btn-lg btn-block">
-              <i class="fas fa-exclamation-triangle fa-lg" style="color:yellow;"></i>
-              &nbsp;Submit a work order...
-            </button>
+            <div class="tab-content">
+
+              <!-- INFORMATION/HOME TAB -->
+              <div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-home-tab">
+                <h4 class="text-center">Information</h4>
+                <h5 class="modal-body-desc">Description</h5>
+                <!-- Show user feedback -->
+                <ul class="list-group">
+                  <h5 class="text-center">View feedback from other users...</h5>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <p class="mb-0">Sample user feedback 1.</p>
+                    <small class="text-muted">1 day ago</small>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between">
+                    <p class="mb-0">Sample user feedback 2.</p>
+                    <small class="text-muted">3 days ago</small>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- COMMENT TAB -->
+              <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <h4 class="text-center">Provide feedback!</h4>
+                <div class="text-center" id="feedback-buttons">
+                  <button class="btn btn-success btn-lg align-center"><i class="fas fa-thumbs-up"></i></button>
+                  <button class="btn btn-danger btn-lg align-center"><i class="fas fa-thumbs-down"></i></button>
+                </div>
+                <!-- User input form -->
+                <form>
+                  <label for="message-text" class="col-form-label">Enter your own feedback here!</label>
+                  <div class="input-group">
+                    <textarea class="form-control" id="message-text" placeholder="Leave a comment for other users!"></textarea>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- WORK ORDER TAB -->
+              <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                <h4 class="text-center">Submit a work order...</h4>
+
+                <!-- INPUTS -->
+                <form>
+                <div class="form-row mb-2">
+                <div class="col-sm-6">
+                  <label for="firstname">First name</label>
+                  <input class="form-control" type="text" id="firstname" placeholder="First name" aria-label="First name" required>
+                </div>
+                <div class="col-sm-6">
+                  <label for="lastname">Last name</label>
+                  <input class="form-control" type="text" id="lastname" placeholder="Last name" aria-label="Last name" required>
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="col-sm-6">
+                  <label for="email">Email</label>
+                  <input class="form-control" type="text" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
+                </div>
+                <div class="col-sm-6">
+                  <label for="phone">Phone number</label>
+                  <input class="form-control" type="text" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="col-sm-6">
+                  <label for="alt-first-name">Alt First Name</label>
+                  <input class="form-control" type="text" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
+                </div>
+                <div class="col-sm-6">
+                  <label for="alt-last-name">Alt Last Name</label>
+                  <input class="form-control" type="text" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="col-sm-6">
+                  <label for="alt-email">Alt Email</label>
+                  <input class="form-control" type="text" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
+                </div>
+                <div class="col-sm-6">
+                  <label for="alt-phone">Alt Phone</label>
+                  <input class="form-control" type="text" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="col-sm-4">
+                  <label for="alt-netid">Alt NetID</label>
+                  <input class="form-control" type="text" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
+                </div>
+                <div class="col-sm-8">
+                  <label for="contacted">Would you like to be contacted regarding scheduling?</label>
+                  <input class="form-control" type="text" id="contacted" placeholder="" aria-label="">
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="col-sm-8">
+                <label for="charge-source">Charge Source</label>
+                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines"><u>(Which charge source?)</u></a>
+                <select class="form-control" id="charge-source" required>
+                  <option>Capital</option>
+                  <option>Department Charge</option>
+                  <option>Major Maintenance</option>
+                  <option selected>Operating</option>
+                  <option>Sponsored Research Grant</option>
+                </select>
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="checkbox">
+                <input type="checkbox" value="" id="minors-pets">
+                <label for="minors-pets">Are there unaccompanied minors or unsecured pets?</label>
+                </div>
+                </div>
+
+                <div class="form-row mb-2">
+                <div class="checkbox">
+                <input type="checkbox" value="" id="grad-faculty">
+                <label for="grad-faculty">Is this a request for graduate or faculty/staff housing?</label>
+                </div>
+                </div>
+
+                <label for="campus">Campus</label>
+                <select class="form-control" id="campus" required>
+                  <option>FORRESTAL - Forrestal Campus</option>
+                  <option>GROUNDS - Grounds</option>
+                  <option selected>PRINCETON - Princeton Campus</option>
+                </select>
+
+                <label for="building">Building</label>
+                <select class="form-control" id="building" required>
+                </select>
+
+                <label for="floor">Floor</label>
+                <select class="form-control" id="floor">
+                </select>
+
+                <label for="room">Room</label>
+                <select class="form-control" id="room">
+                </select>
+                
+                <div class="text-center"><label class="form-label">Please provide a detailed description of your new, routine service request:</label></div>
+                <div class="input-group">
+                  <textarea class="form-control" aria-label="text-area"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success float-right">Submit form</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+                </form>
+
+                <!-- Work order button -->
+                <!--
+                <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-danger btn-lg btn-block">
+                  <i class="fas fa-exclamation-triangle fa-lg" style="color:yellow;"></i>
+                  &nbsp;Submit a work order...
+                </button>
+                -->
+              </div>
+            </div>
+
           </div>
 
           <!-- Modal footer -->
@@ -126,8 +267,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
-        -->
-
+          -->
         </div>
       </div>
     </div>
