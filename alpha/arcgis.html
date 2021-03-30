@@ -74,7 +74,7 @@
 
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-lg mb-5">
         <div class="modal-content">
 
           <!-- Modal Header -->
@@ -86,7 +86,7 @@
           <!-- Modal body -->
           <div class="modal-body">
 
-            <!-- Tabs --- https://getbootstrap.com/docs/5.0/components/navs-tabs/-->
+            <!-- Tab buttons -->
             <nav>
               <div class="nav nav-tabs mb-2 nav-fill" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Information</button>
@@ -95,6 +95,7 @@
               </div>
             </nav>
 
+            <!-- CONTENT FOR EACH TAB -->
             <div class="tab-content">
 
               <!-- INFORMATION/HOME TAB -->
@@ -122,7 +123,7 @@
                   <button class="btn btn-success btn-lg align-center"><i class="fas fa-thumbs-up"></i></button>
                   <button class="btn btn-danger btn-lg align-center"><i class="fas fa-thumbs-down"></i></button>
                 </div>
-                <!-- User input form -->
+                <!-- Comment input form -->
                 <form>
                   <label for="message-text" class="col-form-label">Enter your own feedback here!</label>
                   <div class="input-group">
@@ -134,70 +135,69 @@
 
               <!-- WORK ORDER TAB -->
               <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-contact-tab">
-
                 <h4 class="text-center">Submit a work order...</h4>
 
-                <!-- INPUTS -->
+                <!-- INPUT FORM -->
                 <form>
                 <div class="form-row mb-2">
-                <div class="col-sm-6">
-                  <label for="firstname">First name</label>
-                  <input class="form-control" type="text" id="firstname" placeholder="First name" aria-label="First name" required>
-                </div>
-                <div class="col-sm-6">
-                  <label for="lastname">Last name</label>
-                  <input class="form-control" type="text" id="lastname" placeholder="Last name" aria-label="Last name" required>
-                </div>
-                </div>
-
-                <div class="form-row mb-2">
-                <div class="col-sm-6">
-                  <label for="email">Email</label>
-                  <input class="form-control" type="text" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
-                </div>
-                <div class="col-sm-6">
-                  <label for="phone">Phone number</label>
-                  <input class="form-control" type="text" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
-                </div>
+                  <div class="col-sm-6">
+                    <label for="firstname">First name</label>
+                    <input class="form-control" type="text" id="firstname" placeholder="First name" aria-label="First name" required>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="lastname">Last name</label>
+                    <input class="form-control" type="text" id="lastname" placeholder="Last name" aria-label="Last name" required>
+                  </div>
                 </div>
 
                 <div class="form-row mb-2">
-                <div class="col-sm-6">
-                  <label for="alt-first-name">Alt First Name</label>
-                  <input class="form-control" type="text" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
-                </div>
-                <div class="col-sm-6">
-                  <label for="alt-last-name">Alt Last Name</label>
-                  <input class="form-control" type="text" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
-                </div>
-                </div>
-
-                <div class="form-row mb-2">
-                <div class="col-sm-6">
-                  <label for="alt-email">Alt Email</label>
-                  <input class="form-control" type="text" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
-                </div>
-                <div class="col-sm-6">
-                  <label for="alt-phone">Alt Phone</label>
-                  <input class="form-control" type="text" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
-                </div>
+                  <div class="col-sm-6">
+                    <label for="email">Email</label>
+                    <input class="form-control" type="text" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="phone">Phone number</label>
+                    <input class="form-control" type="text" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
+                  </div>
                 </div>
 
                 <div class="form-row mb-2">
-                <div class="col-sm-4">
-                  <label for="alt-netid">Alt NetID</label>
-                  <input class="form-control" type="text" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
+                  <div class="col-sm-6">
+                    <label for="alt-first-name">Alt First Name</label>
+                    <input class="form-control" type="text" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="alt-last-name">Alt Last Name</label>
+                    <input class="form-control" type="text" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
+                  </div>
                 </div>
-                <div class="col-sm-8">
-                  <label for="contacted">Would you like to be contacted regarding scheduling?</label>
-                  <input class="form-control" type="text" id="contacted" placeholder="" aria-label="">
+
+                <div class="form-row mb-2">
+                  <div class="col-sm-6">
+                    <label for="alt-email">Alt Email</label>
+                    <input class="form-control" type="text" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="alt-phone">Alt Phone</label>
+                    <input class="form-control" type="text" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
+                  </div>
                 </div>
+
+                <div class="form-row mb-2">
+                  <div class="col-sm-4">
+                    <label for="alt-netid">Alt NetID</label>
+                    <input class="form-control" type="text" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
+                  </div>
+                  <div class="col-sm-8">
+                    <label for="contacted">Would you like to be contacted regarding scheduling?</label>
+                    <input class="form-control" type="text" id="contacted" placeholder="" aria-label="">
+                  </div>
                 </div>
 
                 <div class="form-row mb-2">
                 <div class="col-sm-8">
                 <label for="charge-source">Charge Source</label>
-                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines"><u>(Which charge source?)</u></a>
+                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank"><u>(Which charge source?)</u></a>
                 <select class="form-control" id="charge-source" required>
                   <option>Capital</option>
                   <option>Department Charge</option>
@@ -250,7 +250,7 @@
                 <button type="reset" class="btn btn-secondary">Reset</button>
                 </form>
 
-                <!-- Work order button -->
+                <!-- Work order button (FOR OPENING DEFUNCT WORK ORDER MODAL) -->
                 <!--
                 <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-danger btn-lg btn-block">
                   <i class="fas fa-exclamation-triangle fa-lg" style="color:yellow;"></i>
@@ -272,7 +272,7 @@
       </div>
     </div>
 
-    <!-- Work order modal -->
+    <!-- Work order modal (USELESS AT THE MOMENT) -->
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
