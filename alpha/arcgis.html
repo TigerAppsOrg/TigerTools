@@ -234,17 +234,21 @@
                    <option>Building A</option>
                 </select>
 
-                <label for="floor">Floor</label>
-                <select class="form-control" name="floor" id="floor">
-                  <option>Floor A</option>
-                </select>
+                <div class="form-row mb-2">
+                  <div class="col-sm-12">
+                    <label for="floor">Floor</label>
+                    <input class="form-control" type="text" name="floor" id="floor" placeholder="Floor name (2 characters max)" aria-label="floor" maxlength="2">
+                  </div>
+                </div>
 
-                <!-- IN SOME CASES COULD ALSO AUTOFILL ROOM -->
-                <label for="room">Room</label>
-                <select class="form-control" name="room" id="room">
-                  <option>Room A</option>
-                </select>
-                
+                <!-- COULD AUTOFILL ROOM IN SOME CASES -->
+                <div class="form-row mb-2">
+                  <div class="col-sm-12">
+                    <label for="room">Room</label>
+                    <input class="form-control" type="text" name="room" id="room" placeholder="Room number" aria-label="room">
+                  </div>
+                </div>
+
                 <div class="text-center">
                   <!-- <label class="form-label">Please provide a detailed description of your service request:</label> -->
                   <label for="description">Please provide a detailed description of your service request:</label>
