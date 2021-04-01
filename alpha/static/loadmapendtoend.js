@@ -78,6 +78,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
 
   $(document).ready(function(){
 
+    // Close the confirmation modal when clicking submit button
+    $("#confirm-btn").click(function(){
+      $("#confirm-close").click();
+    });
+
     // Reset/remove all graphics
     $("#reset").click(function(){
       view.graphics.removeAll();
@@ -142,7 +147,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
                 console.log("reached")
                 if (amenities[j].name.indexOf("Scanners") !== -1) {
                   console.log("hi!");
-                  addPoint(scanner.geoloc.long, scanner.geoloc.lat, [128, 128, 128], {name: scanner.name, type:"Scanner", building: scanner.building.name});
+                  addPoint(scanner.geoloc.long, scanner.geoloc.lat, [255, 193, 7], {name: scanner.name, type:"Scanner", building: scanner.building.name});
                 }
               }
           }

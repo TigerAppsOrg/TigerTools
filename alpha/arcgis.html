@@ -139,7 +139,7 @@
 
                 <!-- INPUT FORM -->
                 <!-- CONSIDER AUTOFILLING NAME AND EMAIL POSSIBLY PHONE -->
-                <form action="wkorder" method="post">
+                <form action="wkorder" method="post" id="workorder-form">
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
                     <label for="firstname">First name</label>
@@ -251,7 +251,7 @@
                   <textarea class="form-control" name="description" aria-label="text-area"></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-success float-right">Submit form</button>
+                <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-success float-right">Submit form</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
                 </form>
 
@@ -277,27 +277,20 @@
       </div>
     </div>
 
-    <!-- Work order modal (USELESS AT THE MOMENT) -->
+    <!-- Confirmation modal -->
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog">
         <div class="modal-content">
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Work Order - ToolName</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4>Confirm work order</h4>
+            <button type="button" class="close" data-dismiss="modal" id="confirm-close">&times;</button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body">
-
             <p>Note: Work Orders submitted through TigerTools are solely for Operating services. This includes facility malfunctions such as low ink/paper, broken computer, etc. For more information, click <a href="#">here</a>.</p>
-            <!-- Work order text input form -->
-            <!-- <form>
-              <div class="input-group">
-                <textarea class="form-control" id="message-text" placeholder="Please describe the problem..."></textarea>
-              </div>
-            </form> -->
 
             <div class="row">
               <div class="col-sm-1 my-auto">
@@ -311,11 +304,7 @@
 
           <!-- Modal footer -->
           <div class="modal-footer justify-content-between">
-            <!-- action="wkorder-final" method="get" -->
-            <form>
-                <input type="submit" value="Submit" />
-            </form>
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success" form="workorder-form" id="confirm-btn">Submit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
 

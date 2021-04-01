@@ -45,6 +45,10 @@ html, body, #viewDiv {
   margin: 5px 3px 5px 3px;
 }
 
+.modal {
+  overflow-y: scroll;
+}
+
 .modal-dialog {
     margin: 10vh auto 0px auto;
 }
