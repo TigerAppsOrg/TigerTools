@@ -199,7 +199,7 @@
                 <div class="col-sm-8">
                 <label for="charge-source">Charge Source</label>
                 <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank"><u>(This form is only for Operating)</u></a>
-                <select class="form-control" name="charge-source" id="charge-source" required disabled>
+                <select class="form-control" id="charge-source" required disabled>
                   <option selected>Operating</option>
                 </select>
                 </div>
@@ -207,14 +207,14 @@
 
                 <div class="form-row mb-2">
                 <div class="checkbox">
-                <input type="checkbox" value="" id="minors-pets">
+                <input type="checkbox" value="" name="minors-pets" id="minors-pets">
                 <label for="minors-pets">Are there unaccompanied minors or unsecured pets?</label>
                 </div>
                 </div>
 
                 <div class="form-row mb-2">
                 <div class="checkbox">
-                <input type="checkbox" value="" id="grad-faculty">
+                <input type="checkbox" value="" name="grad-faculty" id="grad-faculty">
                 <label for="grad-faculty">Is this a request for graduate or faculty/staff housing?</label>
                 </div>
                 </div>
@@ -228,6 +228,7 @@
 
                 <!-- CONSIDER AUTOFILLING BUILDING BASED ON LOCATION AND OFFERING OPTION FOR USER TO EDIT -->
                 <!-- COULD ALSO DO SEARCH SUGGESTIONS AS USER TYPES BUILDING NAME -->
+                <!-- POSSIBLY PUT NOTE FOR USER THAT EITHER FILL ALL THREE FIELDS OR ONLY FILL BUILDING -->
                 <label for="building">Building</label>
                 <select class="form-control" name="building" id="building" required>
                    <option>Building A</option>
@@ -235,11 +236,13 @@
 
                 <label for="floor">Floor</label>
                 <select class="form-control" name="floor" id="floor">
+                  <option>Floor A</option>
                 </select>
 
                 <!-- IN SOME CASES COULD ALSO AUTOFILL ROOM -->
                 <label for="room">Room</label>
                 <select class="form-control" name="room" id="room">
+                  <option>Room A</option>
                 </select>
                 
                 <div class="text-center">
