@@ -138,67 +138,68 @@
                 <h4 class="text-center">Submit a work order...</h4>
 
                 <!-- INPUT FORM -->
-                <form>
+                <!-- CONSIDER AUTOFILLING NAME AND EMAIL POSSIBLY PHONE -->
+                <form action="wkorder" method="post">
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
                     <label for="firstname">First name</label>
-                    <input class="form-control" type="text" id="firstname" placeholder="First name" aria-label="First name" required>
+                    <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First name" aria-label="First name" required>
                   </div>
                   <div class="col-sm-6">
                     <label for="lastname">Last name</label>
-                    <input class="form-control" type="text" id="lastname" placeholder="Last name" aria-label="Last name" required>
+                    <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last name" aria-label="Last name" required>
                   </div>
                 </div>
 
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
                     <label for="email">Email</label>
-                    <input class="form-control" type="text" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
+                    <input class="form-control" type="text" name="email" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
                   </div>
                   <div class="col-sm-6">
                     <label for="phone">Phone number</label>
-                    <input class="form-control" type="text" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
+                    <input class="form-control" type="text" name="phone" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
                   </div>
                 </div>
 
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
                     <label for="alt-first-name">Alt First Name</label>
-                    <input class="form-control" type="text" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
+                    <input class="form-control" type="text" name="alt-firstname" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
                   </div>
                   <div class="col-sm-6">
                     <label for="alt-last-name">Alt Last Name</label>
-                    <input class="form-control" type="text" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
+                    <input class="form-control" type="text" name="alt-lastname" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
                   </div>
                 </div>
 
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
                     <label for="alt-email">Alt Email</label>
-                    <input class="form-control" type="text" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
+                    <input class="form-control" type="text" name="alt-email" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
                   </div>
                   <div class="col-sm-6">
                     <label for="alt-phone">Alt Phone</label>
-                    <input class="form-control" type="text" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
+                    <input class="form-control" type="text" name="alt-phone" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
                   </div>
                 </div>
 
                 <div class="form-row mb-2">
                   <div class="col-sm-4">
                     <label for="alt-netid">Alt NetID</label>
-                    <input class="form-control" type="text" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
+                    <input class="form-control" type="text" name="alt-netid" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
                   </div>
                   <div class="col-sm-8">
                     <label for="contacted">Would you like to be contacted regarding scheduling?</label>
-                    <input class="form-control" type="text" id="contacted" placeholder="" aria-label="">
+                    <input class="form-control" type="text" name="contacted" id="contacted" placeholder="" aria-label="">
                   </div>
                 </div>
 
                 <div class="form-row mb-2">
                 <div class="col-sm-8">
                 <label for="charge-source">Charge Source</label>
-                <!-- <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank"><u>(Which charge source?)</u></a> -->
-                <select class="form-control" id="charge-source" required disabled>
+                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank"><u>(This form is only for Operating)</u></a>
+                <select class="form-control" name="charge-source" id="charge-source" required disabled>
                   <option selected>Operating</option>
                 </select>
                 </div>
@@ -219,27 +220,35 @@
                 </div>
 
                 <label for="campus">Campus</label>
-                <select class="form-control" id="campus" required>
+                <select class="form-control" name="campus" id="campus" required>
                   <option>FORRESTAL - Forrestal Campus</option>
                   <option>GROUNDS - Grounds</option>
                   <option selected>PRINCETON - Princeton Campus</option>
                 </select>
 
+                <!-- CONSIDER AUTOFILLING BUILDING BASED ON LOCATION AND OFFERING OPTION FOR USER TO EDIT -->
+                <!-- COULD ALSO DO SEARCH SUGGESTIONS AS USER TYPES BUILDING NAME -->
                 <label for="building">Building</label>
-                <select class="form-control" id="building" required>
+                <select class="form-control" name="building" id="building" required>
+                   <option>Building A</option>
                 </select>
 
                 <label for="floor">Floor</label>
-                <select class="form-control" id="floor">
+                <select class="form-control" name="floor" id="floor">
                 </select>
 
+                <!-- IN SOME CASES COULD ALSO AUTOFILL ROOM -->
                 <label for="room">Room</label>
-                <select class="form-control" id="room">
+                <select class="form-control" name="room" id="room">
                 </select>
                 
-                <div class="text-center"><label class="form-label">Please provide a detailed description of your new, routine service request:</label></div>
+                <div class="text-center">
+                  <!-- <label class="form-label">Please provide a detailed description of your service request:</label> -->
+                  <label for="description">Please provide a detailed description of your service request:</label>
+                  <!-- <input class="form-control" type="text" name="description" id="description" placeholder="Please describe the problem..." aria-label="Description" required> -->
+                </div>
                 <div class="input-group">
-                  <textarea class="form-control" aria-label="text-area"></textarea>
+                  <textarea class="form-control" name="description" aria-label="text-area"></textarea>
                 </div>
 
                 <button type="submit" class="btn btn-success float-right">Submit form</button>
@@ -284,11 +293,11 @@
 
             <p>Note: Work Orders submitted through TigerTools are solely for Operating services. This includes facility malfunctions such as low ink/paper, broken computer, etc. For more information, click <a href="#">here</a>.</p>
             <!-- Work order text input form -->
-            <form>
+            <!-- <form>
               <div class="input-group">
                 <textarea class="form-control" id="message-text" placeholder="Please describe the problem..."></textarea>
               </div>
-            </form>
+            </form> -->
 
             <div class="row">
               <div class="col-sm-1 my-auto">
@@ -302,6 +311,10 @@
 
           <!-- Modal footer -->
           <div class="modal-footer justify-content-between">
+            <!-- action="wkorder-final" method="get" -->
+            <form>
+                <input type="submit" value="Submit" />
+            </form>
             <button type="submit" class="btn btn-success">Submit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           </div>
