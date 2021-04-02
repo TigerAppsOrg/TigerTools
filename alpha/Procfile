@@ -1,1 +1,1 @@
-web: gunicorn fetchdata:app
+web: gunicorn runlocal:app
