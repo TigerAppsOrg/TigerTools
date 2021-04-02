@@ -10,6 +10,7 @@ from urllib.parse import quote
 from re import sub, match
 from flask import request, session, redirect, abort
 from sys import stderr
+import ssl
 
 #-----------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ class CASClient:
         val_url = self.cas_url + "validate" + \
             '?service=' + quote(self.stripTicket()) + \
             '&ticket=' + quote(ticket)
+        ssl._create_default_https_context = ssl._create_unverified_context
         r = urlopen(val_url).readlines()   # returns 2 lines
         if len(r) != 2:
             return None     
