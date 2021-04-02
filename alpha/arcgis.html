@@ -189,18 +189,23 @@
                     <label for="alt-netid">Alt NetID</label>
                     <input class="form-control" type="text" name="alt-netid" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
                   </div>
-                  <div class="col-sm-8">
+                  <label for="contacted">Would you like to be contacted regarding scheduling?</label>
+                <select class="form-control" name="contacted" id="contacted" required>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+                  <!-- <div class="col-sm-8">
                     <label for="contacted">Would you like to be contacted regarding scheduling?</label>
                     <input class="form-control" type="text" name="contacted" id="contacted" placeholder="" aria-label="">
-                  </div>
+                  </div> -->
                 </div>
 
                 <div class="form-row mb-2">
                 <div class="col-sm-8">
                 <label for="charge-source">Charge Source</label>
-                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank"><u>(This form is only for Operating)</u></a>
-                <select class="form-control" id="charge-source" required disabled>
-                  <option selected>Operating</option>
+                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank" rel="noopener noreferrer"><u>(This form is only for Operating)</u></a>
+                <select class="form-control" name="charge-source" id="charge-source" required>
+                  <option>Operating</option>
                 </select>
                 </div>
                 </div>
@@ -237,7 +242,7 @@
                 <div class="form-row mb-2">
                   <div class="col-sm-12">
                     <label for="floor">Floor</label>
-                    <input class="form-control" type="text" name="floor" id="floor" placeholder="Floor name (2 characters max)" aria-label="floor" maxlength="2">
+                    <input class="form-control" type="text" name="floor" id="floor" placeholder="Floor (2 characters max) - if select Floor, MUST also select Room" aria-label="floor" maxlength="2">
                   </div>
                 </div>
 
@@ -297,7 +302,8 @@
 
           <!-- Modal body -->
           <div class="modal-body">
-            <p>Note: Work Orders submitted through TigerTools are solely for Operating services. This includes facility malfunctions such as low ink/paper, broken computer, etc. For more information, click <a href="#">here</a>.</p>
+            <!-- https://www.freecodecamp.org/news/how-to-use-html-to-open-link-in-new-tab/ -->
+            <p>Note: Work Orders submitted through TigerTools are solely for Operating services. This includes facility malfunctions such as clogged filling station, electrical/heating malfunctions etc. This does NOT include low ink/paper for printers (refer instead to Instructional Services). For more information, click <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank" rel="noopener noreferrer">here</a>.</p>
 
             <div class="row">
               <div class="col-sm-1 my-auto">
