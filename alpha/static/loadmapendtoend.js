@@ -80,7 +80,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
 
     // Validate required fields in work order form when user clicks submit
     $("#open-confirmation").click(function(event){
-      var form = $("#workorder-form")
+      var form = $("#workorder-form");
       if (form[0].checkValidity() === false) {
         event.preventDefault();
         event.stopPropagation();
