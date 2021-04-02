@@ -30,7 +30,7 @@ class CsvTextBuilder(object):
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def display_home():
-	netid = CASClient().authenticate()
+	#netid = CASClient().authenticate()
 
 	html = render_template('arcgis.html')
 	return make_response(html)
@@ -38,7 +38,7 @@ def display_home():
 # ---------------------------------------------------------------------
 @app.route('/points', methods=['POST'])
 def get_data():
-	netid = CASClient().authenticate()
+	#netid = CASClient().authenticate()
 
 	req_lib = ReqLib()
 	# if request.method == 'POST':
@@ -51,7 +51,7 @@ def get_data():
 # ---------------------------------------------------------------------
 @app.route('/wkorder', methods=['POST'])
 def format_wkorder():
-	netid = CASClient().authenticate()
+	#netid = CASClient().authenticate()
 
 	# https://levelup.gitconnected.com/building-csv-strings-in-python-32934aed5a9e
 	csvfile = CsvTextBuilder()
