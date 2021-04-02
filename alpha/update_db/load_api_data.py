@@ -8,17 +8,22 @@
 import os
 import psycopg2
 from reqlib import ReqLib
+import json
 # import psutil
 # import subprocess
 
 def printers(dbcursor):
 	# make table
 	dbcursor.execute('DROP TABLE IF EXISTS printers')
-	dbcursor.execute('CREATE TABLE printers (name VARCHAR(100), dbid integer, maploc integer, long decimal, PRIMARY KEY (building))')
+	dbcursor.execute('CREATE TABLE printers (name VARCHAR(100), dbid integer, maploc integer, lat, decimal, long decimal, PRIMARY KEY (building))')
+
+	req_lib = ReqLib()
+	categoryID = 6
+	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
 	
-	csv_file_name = '/Users/indup/Documents/TigerTools-test/alpha/athletic_data.csv'
-	sql = "COPY athletics FROM STDIN CSV HEADER"
-	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
+	printers = json.loads(data)
+	printers = printers.get('locations').get('location')
+	# for i in range(printers.length):
 
 	# checking if it worked
 	# dbcursor.execute('SELECT * FROM athletics;')
