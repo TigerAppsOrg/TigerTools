@@ -43,13 +43,13 @@ def load_water(dbcursor):
 		row = dbcursor.fetchone()
 
 def main():
+	# NEED TO FIGURE OUT HOW TO RUN BASH SCRIPT TO EXPORT VAR FROM PYTHON SCRIPT
 	# DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test) psutil.Process.name()
 	# https://www.kite.com/python/answers/how-to-execute-a-bash-script-in-python
 	# https://stackoverflow.com/questions/16618071/can-i-export-a-variable-to-the-environment-from-a-bash-script-without-sourcing-i for .
 	# return_code = subprocess.call(['sh', './get-db-url.sh'])
 	# os.system("export DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test)")
-	# DATABASE_URL = os.environ['DATABASE_URL']
-	DATABASE_URL = os.environ.get('DATABASE_URL', None)
+	DATABASE_URL = os.environ['DATABASE_URL']
 
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
