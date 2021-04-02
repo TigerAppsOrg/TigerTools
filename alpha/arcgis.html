@@ -90,8 +90,8 @@
             <nav>
               <div class="nav nav-tabs mb-2 nav-fill" id="nav-tab" role="tablist">
                 <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-info" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Information</button>
-                <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-comment" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Submit Comment</button>
-                <button class="nav-link" id="nav-contact-tab" data-toggle="tab" data-target="#nav-work" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Work Order</button>
+                <button class="nav-link" id="nav-comment-tab" data-toggle="tab" data-target="#nav-comment" type="button" role="tab" aria-controls="nav-comment" aria-selected="false">Submit Comment</button>
+                <button class="nav-link" id="nav-workorder-tab" data-toggle="tab" data-target="#nav-work" type="button" role="tab" aria-controls="nav-workorder" aria-selected="false">Work Order</button>
               </div>
             </nav>
 
@@ -117,7 +117,7 @@
               </div>
 
               <!-- COMMENT TAB -->
-              <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-profile-tab">
+              <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
                 <h4 class="text-center">Provide feedback!</h4>
                 <div class="text-center" id="feedback-buttons">
                   <button class="btn btn-success btn-lg align-center"><i class="fas fa-thumbs-up"></i></button>
@@ -134,20 +134,27 @@
               </div>
 
               <!-- WORK ORDER TAB -->
-              <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-contact-tab">
+              <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-workorder-tab">
                 <h4 class="text-center">Submit a work order...</h4>
 
                 <!-- INPUT FORM -->
                 <!-- CONSIDER AUTOFILLING NAME AND EMAIL POSSIBLY PHONE -->
-                <form action="wkorder" method="post" id="workorder-form">
+                <form action="wkorder" method="post" id="workorder-form" novalidate>
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
                     <label for="firstname">First name</label>
                     <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First name" aria-label="First name" required>
+                    <div class="invalid-feedback">
+                      Please enter your first name.
+                    </div>
                   </div>
+
                   <div class="col-sm-6">
                     <label for="lastname">Last name</label>
                     <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last name" aria-label="Last name" required>
+                    <div class="invalid-feedback">
+                      Please enter your last name.
+                    </div>
                   </div>
                 </div>
 
@@ -155,10 +162,17 @@
                   <div class="col-sm-6">
                     <label for="email">Email</label>
                     <input class="form-control" type="text" name="email" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
+                    <div class="invalid-feedback">
+                      Please enter your email.
+                    </div>
                   </div>
+
                   <div class="col-sm-6">
                     <label for="phone">Phone number</label>
                     <input class="form-control" type="text" name="phone" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
+                    <div class="invalid-feedback">
+                      Please enter your phone number.
+                    </div>
                   </div>
                 </div>
 
@@ -189,15 +203,10 @@
                     <label for="alt-netid">Alt NetID</label>
                     <input class="form-control" type="text" name="alt-netid" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
                   </div>
-                  <label for="contacted">Would you like to be contacted regarding scheduling?</label>
-                <select class="form-control" name="contacted" id="contacted" required>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
-                  <!-- <div class="col-sm-8">
+                  <div class="col-sm-8">
                     <label for="contacted">Would you like to be contacted regarding scheduling?</label>
-                    <input class="form-control" type="text" name="contacted" id="contacted" placeholder="" aria-label="">
-                  </div> -->
+                    <input class="form-control" type="text" name="contacted" id="contacted" placeholder="(100 characters max)" aria-label="" maxlength="100">
+                  </div>
                 </div>
 
                 <div class="form-row mb-2">
@@ -247,7 +256,7 @@
                   <textarea class="form-control" name="description" aria-label="text-area"></textarea>
                 </div>
 
-                <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-success float-right">Submit form</button>
+                <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-success float-right" id="open-confirmation">Submit form</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
                 </form>
 

@@ -78,6 +78,17 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
 
   $(document).ready(function(){
 
+    // Validate required fields in work order form when user clicks submit
+    $("#open-confirmation").click(function(event){
+      var form = $("#workorder-form")
+      if (form[0].checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          
+          form.addClass('was-validated');
+    });
+
     // Close the confirmation modal when clicking submit button
     $("#confirm-btn").click(function(){
       $("#confirm-close").click();
