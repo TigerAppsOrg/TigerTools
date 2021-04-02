@@ -82,11 +82,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     $("#open-confirmation").click(function(event){
       var form = $("#workorder-form")
       if (form[0].checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-          }
+        event.preventDefault();
+        event.stopPropagation();
+      }
           
-          form.addClass('was-validated');
+      form.addClass('was-validated');
     });
 
     // Close the confirmation modal when clicking submit button

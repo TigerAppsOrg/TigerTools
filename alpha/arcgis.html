@@ -135,14 +135,16 @@
 
               <!-- WORK ORDER TAB -->
               <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-workorder-tab">
-                <h4 class="text-center">Submit a work order...</h4>
+                <h4 class="text-center">Submit a work order</h4>
+                <p class="text-danger">* = Required</p>
 
                 <!-- INPUT FORM -->
                 <!-- CONSIDER AUTOFILLING NAME AND EMAIL POSSIBLY PHONE -->
                 <form action="wkorder" method="post" id="workorder-form" novalidate>
+                <div class="form-group required">
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
-                    <label for="firstname">First name</label>
+                    <label class="control-label" for="firstname">First name</label>
                     <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First name" aria-label="First name" required>
                     <div class="invalid-feedback">
                       Please enter your first name.
@@ -150,7 +152,7 @@
                   </div>
 
                   <div class="col-sm-6">
-                    <label for="lastname">Last name</label>
+                    <label class="control-label" for="lastname">Last name</label>
                     <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last name" aria-label="Last name" required>
                     <div class="invalid-feedback">
                       Please enter your last name.
@@ -160,7 +162,7 @@
 
                 <div class="form-row mb-2">
                   <div class="col-sm-6">
-                    <label for="email">Email</label>
+                    <label class="control-label" for="email">Email</label>
                     <input class="form-control" type="text" name="email" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
                     <div class="invalid-feedback">
                       Please enter your email.
@@ -168,12 +170,13 @@
                   </div>
 
                   <div class="col-sm-6">
-                    <label for="phone">Phone number</label>
+                    <label class="control-label" for="phone">Phone number</label>
                     <input class="form-control" type="text" name="phone" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
                     <div class="invalid-feedback">
                       Please enter your phone number.
                     </div>
                   </div>
+                </div>
                 </div>
 
                 <div class="form-row mb-2">
@@ -257,7 +260,7 @@
                 </div>
 
                 <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-success float-right" id="open-confirmation">Submit form</button>
-                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="reset" class="btn btn-secondary" id="reset-workorder">Reset</button>
                 </form>
 
                 <!-- Work order button (FOR OPENING DEFUNCT WORK ORDER MODAL) -->

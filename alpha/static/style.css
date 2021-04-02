@@ -64,3 +64,8 @@ html, body, #viewDiv {
 .checkbox {
   margin-left: 10px;
 }
+
+.form-group.required .control-label:after { 
+   content:"*";
+   color:red;
+}
