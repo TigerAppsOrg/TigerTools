@@ -123,23 +123,39 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
 
   $(document).ready(function(){
 
+    // Validate required fields in work order form when user clicks submit
+    $("#open-confirmation").click(function(event){
+      var form = $("#workorder-form");
+      if (form[0].checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      form.addClass('was-validated');
+    });
+
+    // Close the confirmation modal when clicking submit button
+    $("#confirm-btn").click(function(){
+      $("#confirm-close").click();
+    });
+
     // submit comment
     $("#submitcomment").click(function(){
       var comment = $.trim($("#message-text").val());
       //var comment = $("#comment").val();
       //console.log(comment);
       if(comment != ""){
-                // Show alert dialog if value is not blank
-                //alert("Please enter a comment");
-                $.ajax({
-                  type: "POST",
-                  url: "/comment",
-                  data: JSON.stringify({amenityName: currentAmenityName, textComment: comment}),
-                  contentType: "application/json",
-                  success: function(comment){
-                    $("#message-text").val("");
-                  }
-                });
+        // Show alert dialog if value is not blank
+        //alert("Please enter a comment");
+        $.ajax({
+          type: "POST",
+          url: "/comment",
+          data: JSON.stringify({amenityName: currentAmenityName, textComment: comment}),
+          contentType: "application/json",
+          success: function(comment){
+            $("#message-text").val("");
+          }
+        });
       } else {
         alert("Please enter a comment")
       }
