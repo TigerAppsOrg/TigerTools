@@ -5,9 +5,13 @@
 
 # DO WE NEED TO IMPLEMENT CONCURRENT PROCESSES?
 
-from reqlib import ReqLib
-from flask import Flask, request, json, make_response, render_template, redirect
 from CASClient import CASClient
+from reqlib import ReqLib
+from flask import Flask, request, make_response, render_template, redirect
+from flask import json, jsonify
+from time import gmtime, strftime
+import json
+import psycopg2
 import sys
 import os
 import csv
@@ -56,7 +60,7 @@ def format_wkorder():
 	# https://levelup.gitconnected.com/building-csv-strings-in-python-32934aed5a9e
 	csvfile = CsvTextBuilder()
 	data = [['First Name','Last Name','E-mail','Phone','Alt First Name','Alt Last Name','Alt Email','Alt Phone','Alt NetID', \
-	'Contact for Scheduling','Charge Source','Campus','Building','Floor','Room','Description'], \
+	'Contact for Scheduling','Charge Source','Campus','Building','Floor','Room','Asset','Description'], \
 	[request.form.get('firstname'), request.form.get('lastname'), request.form.get('email'), request.form.get('phone'),
 		request.form.get('alt-firstname'), request.form.get('alt-lastname'), request.form.get('alt-email'), \
 		request.form.get('alt-phone'), request.form.get('alt-netid'), request.form.get('contacted'), \
@@ -73,5 +77,43 @@ def format_wkorder():
 	# 	request.form.get('alt-netid'), request.form.get('contacted'), 'Operating', request.form.get('minors-pets'), request.form.get('grad-faculty'), request.form.get('campus'), 
 	# 	request.form.get('building'), request.form.get('floor'),request.form.get('room'),request.form.get('description'))
 	html = render_template('arcgis.html')
+	return make_response(html)
+
+# ---------------------------------------------------------------------
+@app.route('/comment', methods=['POST'])
+def store_comment():
+	netid = CASClient().authenticate()
+
+	DATABASE_URL = os.environ['DATABASE_URL']
+	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+	dbcursor = dbconnection.cursor()
+	amenity_name = request.get_json().get('amenityName')
+	comment_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+	comment = request.get_json().get('textComment')
+	dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, COMMENT text, TIME text);')
+	query = 'INSERT INTO comments (amenity_name, comment, time) VALUES (%s, %s, %s);'
+	data = (amenity_name, comment, comment_time)
+	dbcursor.execute(query, data)
+	dbconnection.commit()
+	dbcursor.close()
+	dbconnection.close()
+	html = render_template('arcgis.html')
+	return make_response(html)
+
+# ---------------------------------------------------------------------
+@app.route('/displaycomments', methods=['POST'])
+def show_comments():
+	netid = CASClient().authenticate()
+	
+	amenityName = request.get_json().get('amenityName')
+	DATABASE_URL = os.environ['DATABASE_URL']
+	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+	dbcursor = dbconnection.cursor()
+	query = "SELECT * FROM comments WHERE AMENITY_NAME = %s;"
+	dbcursor.execute(query, (amenityName,))
+	comments = dbcursor.fetchall()
+	dbcursor.close()
+	dbconnection.close()
+	html = render_template('displaycomments.html', data=comments)
 	return make_response(html)
 
