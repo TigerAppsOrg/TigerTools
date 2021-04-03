@@ -87,7 +87,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
             currentAmenityName = graphic.attributes["type"] + " - " + graphic.attributes["name"];
             $.ajax({
               type: "POST",
-              url: "https://tigertools-test.herokuapp.com/displaycomments",
+              url: "/displaycomments",
               data: JSON.stringify({amenityName: titleString}),
               contentType: "application/json",
               success: function(response){
@@ -133,7 +133,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
                 //alert("Please enter a comment");
                 $.ajax({
                   type: "POST",
-                  url: "https://tigertools-test.herokuapp.com/comment",
+                  url: "/comment",
                   data: JSON.stringify({amenityName: currentAmenityName, textComment: comment}),
                   contentType: "application/json",
                   success: function(comment){
@@ -167,7 +167,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       if (printerClicks % 2 == 0) {
       $.ajax({
         type: "POST",
-        url: "https://tigertools-test.herokuapp.com/points",
+        url: "/points",
         //url: "http://0.0.0.0:5000/points",
         data: JSON.stringify({categoryid: 6}),
         contentType: "application/json",
@@ -199,7 +199,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       if (clusterClicks % 2 == 0) {
       $.ajax({
         type: "POST",
-        url: "https://tigertools-test.herokuapp.com/points",
+        url: "/points",
         //url: "http://0.0.0.0:5000/points",
         data: JSON.stringify({categoryid: 6}),
         contentType: "application/json",
@@ -231,7 +231,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       if (scannerClicks % 2 == 0) {
       $.ajax({
         type: "POST",
-        url: "https://tigertools-test.herokuapp.com/points",
+        url: "/points",
         //url: "http://0.0.0.0:5000/points",
         data: JSON.stringify({categoryid: 6}),
         contentType: "application/json",
@@ -263,7 +263,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       if (diningClicks % 2 == 0) {
       $.ajax({
         type: "POST",
-        url: "https://tigertools-test.herokuapp.com/points",
+        url: "/points",
         //url: "http://0.0.0.0:5000/points",
         data: JSON.stringify({categoryid: 2}),
         contentType: "application/json",
@@ -288,7 +288,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       if (cafeClicks % 2 == 0) {
       $.ajax({
         type: "POST",
-        url: "https://tigertools-test.herokuapp.com/points",
+        url: "/points",
         //url: "http://0.0.0.0:5000/points",
         data: JSON.stringify({categoryid: 3}),
         contentType: "application/json",
@@ -313,7 +313,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       if (vendingClicks % 2 == 0) {
       $.ajax({
         type: "POST",
-        url: "https://tigertools-test.herokuapp.com/points",
+        url: "/points",
         //url: "http://0.0.0.0:5000/points",
         data: JSON.stringify({categoryid: 4}),
         contentType: "application/json",
