@@ -7,6 +7,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
   var clusterClicks = 0;
   var scannerClicks = 0;
   var vendingClicks = 0;
+  // var waterClicks = 0;
+  var athleticsClicks = 0;
 
   let currentAmenityName = "";
   var map = new Map({
@@ -169,6 +171,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       clusterClicks++;
       scannerClicks++;
       vendingClicks++;
+      // waterClicks++;
+      athleticsClicks++;
       view.graphics.removeAll();
     });
 
@@ -178,28 +182,21 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     //$(this).addClass('active');
     //});
 
-    // Fixed Printers
+    // Printers
     $("#printers").click(function(){
       if (printerClicks % 2 == 0) {
       $.ajax({
         type: "POST",
         url: "/points",
         //url: "http://0.0.0.0:5000/points",
-        data: JSON.stringify({categoryid: 6}),
+        data: JSON.stringify({amenity_type: "printers"}),
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
           console.log(data_array);
-          for (var i = 0; i < data_array.locations.location.length; i++) {
-              var printer = data_array.locations.location[i];
-              var amenities = printer.amenities.amenity
-              for (var j = 0; j < amenities.length; j++) {
-                //console.log("reached")
-                if (amenities[j].name.indexOf("Printers") !== -1) {
-                  //console.log("hi!");
-                  addPoint(printer.geoloc.long, printer.geoloc.lat, [252, 65, 3], {name: printer.name, type:"Printer", building: printer.building.name});
-                }
-              }
+          for (var i = 0; i < data_array.length; i++) {
+              var printer = data_array[i];
+              addPoint(printer.long, printer.lat, [252, 65, 3], {name: printer.name, type:"Printer", building: printer.buildingname});
           }
         }
       });
@@ -217,21 +214,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         type: "POST",
         url: "/points",
         //url: "http://0.0.0.0:5000/points",
-        data: JSON.stringify({categoryid: 6}),
+        data: JSON.stringify({amenity_type: "macs"}),
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
           console.log(data_array);
-          for (var i = 0; i < data_array.locations.location.length; i++) {
-              var cluster = data_array.locations.location[i];
-              var amenities = cluster.amenities.amenity
-              for (var j = 0; j < amenities.length; j++) {
-                //console.log("reached")
-                if (amenities[j].name.indexOf("Macs") !== -1) {
-                  //console.log("hi!");
-                  addPoint(cluster.geoloc.long, cluster.geoloc.lat, [128, 128, 128], {name: cluster.name, type:"Computer Cluster", building: cluster.building.name});
-                }
-              }
+          for (var i = 0; i < data_array.length; i++) {
+              var cluster = data_array[i];
+              addPoint(cluster.long, cluster.lat, [230, 230, 250], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
           }
         }
       });
@@ -249,21 +239,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         type: "POST",
         url: "/points",
         //url: "http://0.0.0.0:5000/points",
-        data: JSON.stringify({categoryid: 6}),
+        data: JSON.stringify({amenity_type: "scanners"}),
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
           console.log(data_array);
-          for (var i = 0; i < data_array.locations.location.length; i++) {
-              var scanner = data_array.locations.location[i];
-              var amenities = scanner.amenities.amenity
-              for (var j = 0; j < amenities.length; j++) {
-                //console.log("reached")
-                if (amenities[j].name.indexOf("Scanners") !== -1) {
-                  //console.log("hi!");
-                  addPoint(scanner.geoloc.long, scanner.geoloc.lat, [238, 210, 2], {name: scanner.name, type:"Scanner", building: scanner.building.name});
-                }
-              }
+          for (var i = 0; i < data_array.length; i++) {
+              var scanner = data_array[i];
+              addPoint(scanner.long, scanner.lat, [238, 210, 2], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
           }
         }
       });
@@ -281,14 +264,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         type: "POST",
         url: "/points",
         //url: "http://0.0.0.0:5000/points",
-        data: JSON.stringify({categoryid: 2}),
+        data: JSON.stringify({amenity_type: "dining"}),
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
           console.log(data_array);
-          for (var i = 0; i < data_array.locations.location.length; i++) {
-              var dhall = data_array.locations.location[i];
-              addPoint(dhall.geoloc.long, dhall.geoloc.lat, [3,65,252], {name: dhall.name, type:"Dining hall", building: dhall.building.name});
+          for (var i = 0; i < data_array.length; i++) {
+              var dhall = data_array[i];
+              addPoint(dhall.long, dhall.lat, [3,65,252], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
           }
         }
       });
@@ -306,14 +289,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         type: "POST",
         url: "/points",
         //url: "http://0.0.0.0:5000/points",
-        data: JSON.stringify({categoryid: 3}),
+        data: JSON.stringify({amenity_type: "cafes"}),
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
           console.log(data_array);
-          for (var i = 0; i < data_array.locations.location.length; i++) {
-              var cafe = data_array.locations.location[i];
-              addPoint(cafe.geoloc.long, cafe.geoloc.lat, [3,252,65], {name: cafe.name, type:"Café", building: cafe.building.name});
+          for (var i = 0; i < data_array.length; i++) {
+              var cafe = data_array[i];
+              addPoint(cafe.long, cafe.lat, [3,252,65], {name: cafe.name, type:"Café", building: cafe.buildingname});
           }
         }
       });
@@ -331,14 +314,15 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         type: "POST",
         url: "/points",
         //url: "http://0.0.0.0:5000/points",
-        data: JSON.stringify({categoryid: 4}),
+        data: JSON.stringify({amenity_type: "vendingmachines"}),
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
           console.log(data_array);
-          for (var i = 0; i < data_array.locations.location.length; i++) {
-              var vending_machine = data_array.locations.location[i];
-              addPoint(vending_machine.geoloc.long, vending_machine.geoloc.lat, [0,0,0], {name: vending_machine.name, type:"Vending Machine", building: vending_machine.building.name});
+          for (var i = 0; i < data_array.length; i++) {
+              var vending_machine = data_array[i];
+              addPoint(vending_machine.long, vending_machine.lat, [255,165,0], {name: vending_machine.name,
+                type:"Vending Machine", building: vending_machine.buildingname});
           }
         }
       });
@@ -348,6 +332,57 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       removeGraphic("Vending Machine")
     }
     });
+
+    // Athletic Facilities
+    $("#athletics").click(function(){
+      if (athleticsClicks % 2 == 0) {
+      $.ajax({
+        type: "POST",
+        url: "/points",
+        //url: "http://0.0.0.0:5000/points",
+        data: JSON.stringify({amenity_type: "athletics"}),
+        contentType: "application/json",
+        success: function(json_data){
+          data_array = JSON.parse(json_data)
+          console.log(data_array);
+          for (var i = 0; i < data_array.length; i++) {
+              var athletic_facility = data_array[i];
+              addPoint(athletic_facility.long, athletic_facility.lat, [255,165,0],
+               {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
+          }
+        }
+      });
+      athleticsClicks++;
+    } else {
+      athleticsClicks++;
+      removeGraphic("Athletics")
+    }
+    });
+
+    // Bottle Filling Stations NEED LAT LONG DATA FOR BUILDINGS
+    // $("#water").click(function(){
+    //   if (waterClicks % 2 == 0) {
+    //   $.ajax({
+    //     type: "POST",
+    //     url: "/points",
+    //     //url: "http://0.0.0.0:5000/points",
+    //     data: JSON.stringify({amenity_type: "water"}),
+    //     contentType: "application/json",
+    //     success: function(json_data){
+    //       data_array = JSON.parse(json_data)
+    //       console.log(data_array);
+    //       for (var i = 0; i < data_array.length; i++) {
+    //           var water_station = data_array[i];
+    //           addPoint(water_station.long, water_station.lat, [0,0,0], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
+    //       }
+    //     }
+    //   });
+    //   waterClicks++;
+    // } else {
+    //   waterClicks++;
+    //   removeGraphic("Water Filling")
+    // }
+    // });
   });
 
 });

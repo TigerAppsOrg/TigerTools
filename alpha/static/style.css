@@ -41,6 +41,42 @@ html, body, #viewDiv {
   margin-left: 50px;
 }
 
+#clusters {
+  background-color: mediumpurple;
+}
+#clusters:hover {
+  background-color: mediumslateblue;
+}
+
+#athletics {
+  background-color: orange;
+}
+#athletics:hover {
+  background-color: darkorange;
+}
+
+#water {
+  background-color: mediumturquoise;
+}
+#water:hover {
+  background-color: lightseagreen;
+}
+
+#vending {
+  background-color: lightsteelblue;
+}
+#vending:hover {
+  background-color: lightslategray;
+}
+
+
+/*#vending {
+  background-color: firebrick;
+}
+#vending:hover {
+  background-color: darkred;
+}*/
+
 .sideButton {
   margin: 5px 3px 5px 3px;
 }

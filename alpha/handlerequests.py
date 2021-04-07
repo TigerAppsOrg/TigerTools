@@ -42,17 +42,107 @@ def display_home():
 	return make_response(html)
 
 # ---------------------------------------------------------------------
+def _tuples_to_json(keys, tuples_lists):
+	# https://anthonydebarros.com/2020/09/06/generate-json-from-sql-using-python/
+	# https://stackoverflow.com/questions/14831830/convert-a-list-of-tuples-to-a-list-of-lists
+	lists = [list(t) for t in tuples_lists]
+	record_dict = []
+	if lists is not None:
+		for record in lists:
+			one_record = dict(zip(keys, record))
+			record_dict.append(one_record)
+	return json.dumps(record_dict)
+
+# ---------------------------------------------------------------------
 @app.route('/points', methods=['POST'])
 def get_data():
 	netid = CASClient().authenticate()
+	try:
+		# get info
+		amenity_type = request.get_json().get('amenity_type')
+		# connect to database
+		DATABASE_URL = os.environ['DATABASE_URL']
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		# printers
+		if amenity_type == "printers" or amenity_type == "scanners" or amenity_type == "macs":
+			# get column names
+			# https://stackoverflow.com/questions/10252247/how-do-i-get-a-list-of-column-names-from-a-psycopg2-cursor
+			stmt = 'SELECT * FROM id6 LIMIT 0;'
+			dbcursor.execute(stmt)
+			cols = [desc[0] for desc in dbcursor.description]
 
-	req_lib = ReqLib()
-	# if request.method == 'POST':
-	categoryID = request.get_json().get('categoryid')
-	# elif request.method == 'GET':
-	# 	categoryID = int(request.args.get('id'))
-	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
-	return data
+		if amenity_type == "printers":
+			# get records
+			stmt = 'SELECT * FROM id6 WHERE printers!=%s;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "scanners":
+			stmt = 'SELECT * FROM id6 WHERE scanners!=%s;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "macs":
+			stmt = 'SELECT * FROM id6 WHERE macs!=%s;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "dining":
+			# get columns names
+			stmt = 'SELECT * FROM dining LIMIT 0;'
+			dbcursor.execute(stmt)
+			cols = [desc[0] for desc in dbcursor.description]
+			# get records
+			stmt = 'SELECT * FROM dining;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "cafes":
+			# get columns names
+			stmt = 'SELECT * FROM cafes LIMIT 0;'
+			dbcursor.execute(stmt)
+			cols = [desc[0] for desc in dbcursor.description]
+			# get records
+			stmt = 'SELECT * FROM cafes;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "vendingmachines":
+			# get column names
+			stmt = 'SELECT * FROM vendingmachines LIMIT 0;'
+			dbcursor.execute(stmt)
+			cols = [desc[0] for desc in dbcursor.description]
+			# get records
+			stmt = 'SELECT * FROM vendingmachines;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "athletics":
+			# get column names
+			stmt = 'SELECT * FROM athletics LIMIT 0;'
+			dbcursor.execute(stmt)
+			cols = [desc[0] for desc in dbcursor.description]
+			# get records
+			stmt = 'SELECT * FROM athletics;'
+			dbcursor.execute(stmt,["None"])
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		dbcursor.close()
+		dbconnection.close()
+		if data_json == '':
+			raise Exception('No data available for this amenity:', amenity_type)
+		return data_json
+	except Exception as e:
+		print(str(e), file=sys.stderr)
+		return ''
 
 # ---------------------------------------------------------------------
 @app.route('/wkorder', methods=['POST'])
