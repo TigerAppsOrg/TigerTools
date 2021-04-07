@@ -36,7 +36,7 @@ def display_home():
 	netid = CASClient().authenticate()
 
 	# update database
-	update()
+	# update()
 
 	html = render_template('arcgis.html')
 	return make_response(html)
