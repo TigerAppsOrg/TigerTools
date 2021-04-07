@@ -26,7 +26,7 @@ def dining_halls():
 	dbcursor.execute('DROP TABLE IF EXISTS dining')
 	dbcursor.execute('CREATE TABLE dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
-		payment VARCHAR(500), capacity VARCHAR(6), PRIMARY KEY (dbid))')
+		payment VARCHAR(500), capacity VARCHAR(6))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -95,7 +95,8 @@ def cafes():
 	dbcursor.execute('DROP TABLE IF EXISTS cafes')
 	dbcursor.execute('CREATE TABLE cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
-		payment VARCHAR(500), PRIMARY KEY (dbid))')
+		payment VARCHAR(500))')
+	# , PRIMARY KEY (dbid)
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -166,7 +167,7 @@ def vending_machines():
 	dbcursor.execute('DROP TABLE IF EXISTS vendingmachines')
 	dbcursor.execute('CREATE TABLE vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), what VARCHAR(500), \
-		payment VARCHAR(500), PRIMARY KEY (dbid))')
+		payment VARCHAR(500))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -235,7 +236,7 @@ def categoryid6():
 	dbcursor.execute('DROP TABLE IF EXISTS id6')
 	dbcursor.execute('CREATE TABLE id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), accessible VARCHAR(30), description VARCHAR(80), \
-		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), PRIMARY KEY (dbid))')
+		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
