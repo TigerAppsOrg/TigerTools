@@ -17,15 +17,15 @@ import json
 
 # ---------------------------------------------------------------------
 def dining_halls():
-	DATABASE_URL = os.environ.get('DATABASE_URL', None)
+	DATABASE_URL = os.environ['DATABASE_URL']
 
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
 
 	categoryID = 2
 	# make table
-	dbcursor.execute('DROP TABLE IF EXISTS dininghalls')
-	dbcursor.execute('CREATE TABLE dininghalls (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+	dbcursor.execute('DROP TABLE IF EXISTS dining')
+	dbcursor.execute('CREATE TABLE dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
 		payment VARCHAR(300), capacity VARCHAR(6), PRIMARY KEY (dbid))')
 
@@ -62,7 +62,7 @@ def dining_halls():
 			if a.count('Capacity') != 0:
 				capacity = a[1]
 		stmt = 'INSERT INTO \
-			dininghalls (name, dbid, buildingname, locationcode, lat, long, rescollege, who, payment, capacity) \
+			dining (name, dbid, buildingname, locationcode, lat, long, rescollege, who, payment, capacity) \
 			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
 		info = (row.get('name'),row.get('dbid'),row.get('building').get('name'),row.get('building').get('location_id'), \
 				row.get('geoloc').get('lat'),row.get('geoloc').get('long'),rescollege,who,payment,capacity)
@@ -87,7 +87,7 @@ def dining_halls():
 
 # ---------------------------------------------------------------------
 def cafes():
-	DATABASE_URL = os.environ.get('DATABASE_URL', None)
+	DATABASE_URL = os.environ['DATABASE_URL']
 
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
@@ -96,7 +96,7 @@ def cafes():
 	# make table
 	dbcursor.execute('DROP TABLE IF EXISTS cafes')
 	dbcursor.execute('CREATE TABLE cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
-		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(400), who VARCHAR(120), \
+		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
 		payment VARCHAR(300), PRIMARY KEY (dbid))')
 
 	req_lib = ReqLib()
@@ -134,7 +134,7 @@ def cafes():
 			who = 'None'
 		stmt = 'INSERT INTO \
 			cafes (name, dbid, buildingname, locationcode, lat, long, description, who, payment) \
-			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'
 		info = (row.get('name'),row.get('dbid'),row.get('building').get('name'),row.get('building').get('location_id'), \
 				row.get('geoloc').get('lat'),row.get('geoloc').get('long'),descrip,who,payment)
 		dbcursor.execute(stmt, info)
@@ -159,7 +159,7 @@ def cafes():
 
 # ---------------------------------------------------------------------
 def categoryid6():
-	DATABASE_URL = os.environ.get('DATABASE_URL', None)
+	DATABASE_URL = os.environ['DATABASE_URL']
 
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
