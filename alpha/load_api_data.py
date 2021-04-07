@@ -18,7 +18,6 @@ import json
 # ---------------------------------------------------------------------
 def dining_halls():
 	DATABASE_URL = os.environ['DATABASE_URL']
-
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
 
@@ -88,7 +87,6 @@ def dining_halls():
 # ---------------------------------------------------------------------
 def cafes():
 	DATABASE_URL = os.environ['DATABASE_URL']
-
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
 
@@ -160,7 +158,6 @@ def cafes():
 # ---------------------------------------------------------------------
 def categoryid6():
 	DATABASE_URL = os.environ['DATABASE_URL']
-
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
 
@@ -232,6 +229,11 @@ def categoryid6():
 	dbcursor.close()
 	dbconnection.close()
 
+def places_open():
+	req_lib = ReqLib()
+	data = req_lib.getJSON(req_lib.configs.PLACES_OPEN,)
+	print(data)
+
 def update():
 	# DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test) psutil.Process.name()
 	# https://www.kite.com/python/answers/how-to-execute-a-bash-script-in-python
@@ -242,9 +244,11 @@ def update():
 	categoryid6()
 	dining_halls()
 	cafes()
+	places_open()
+
 
 # def main():
-# 	cafes()
+# 	places_open()
 
 # if __name__ == '__main__':
 # 	main()
