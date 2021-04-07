@@ -13,12 +13,12 @@ import psycopg2
 def load_athletics(dbcursor):
 	# make athletics table
 	dbcursor.execute('DROP TABLE IF EXISTS athletics')
-	dbcursor.execute('CREATE TABLE athletics (building VARCHAR(60), sports VARCHAR(60), lat decimal, long decimal, PRIMARY KEY (building))')
+	dbcursor.execute('CREATE TABLE athletics (buildingname VARCHAR(80), sports VARCHAR(60), lat VARCHAR(15), long VARCHAR(15), PRIMARY KEY (buildingname))')
 	# read csv into athletics table
 	# dbcursor.execute("copy athletics(facility, sports, lat, long) FROM '/Users/indup/Documents/TigerTools-test/alpha/athletic_data.csv' DELIMITER ',' CSV HEADER;")
 	# https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python
 	csv_file_name = '/Users/indup/Documents/TigerTools/alpha/update_db/athletic_data.csv'
-	sql = "COPY athletics FROM STDIN CSV HEADER"
+	sql = "COPY athletics FROM STDIN DELIMITER ',' CSV HEADER"
 	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 
 	# checking if it worked
@@ -30,7 +30,7 @@ def load_athletics(dbcursor):
 
 def load_water(dbcursor):
 	dbcursor.execute('DROP TABLE IF EXISTS water')
-	dbcursor.execute('CREATE TABLE water (asset integer, description VARCHAR(110), buildingcode VARCHAR(20), building VARCHAR(60),PRIMARY KEY (asset))')
+	dbcursor.execute('CREATE TABLE water (asset VARCHAR(6), description VARCHAR(110), buildingcode VARCHAR(20), building VARCHAR(80),PRIMARY KEY (asset))')
 	# https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python
 	csv_file_name = '/Users/indup/Documents/TigerTools/alpha/update_db/water_data.csv'
 	sql = "COPY water FROM STDIN CSV HEADER"
