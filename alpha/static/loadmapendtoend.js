@@ -84,8 +84,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
             let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
             $(".modal-title").text(titleString); // Modify the modal
 
-            let bodyString = "Details: " + graphic.attributes["building"];
-            $(".modal-body-desc").text(bodyString);
+            //let bodyString = "Details: " + graphic.attributes["building"];
+            //$(".modal-body-desc").text(bodyString);
 
             currentAmenityName = graphic.attributes["type"] + " - " + graphic.attributes["name"];
             $.ajax({
