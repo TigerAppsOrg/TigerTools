@@ -55,13 +55,13 @@
       <p></p>
       <!-- Filtering options -->
       <button type="button" class="btn btn-danger btn-lg sideButton" id="printers">Printers</button>
-      <button type="button" class="btn btn-primary btn-lg sideButton" id="dhalls">Dining</button>
-      <button type="button" class="btn btn-secondary btn-lg sideButton" id="clusters">Computer clusters</button>
+      <button type="button" class="btn btn-primary btn-lg sideButton" id="dhalls">Dining Halls</button>
+      <button type="button" class="btn btn-warning btn-lg sideButton" id="clusters">Computer clusters</button>
       <button type="button" class="btn btn-success btn-lg sideButton" id="cafes">Cafés</button>
-      <button type="button" class="btn btn-warning btn-lg sideButton" id="scanners">Scanners</button>
-      <button type="button" class="btn btn-dark btn-lg sideButton" id="vending">Vending Machines</button>
-      <button type="button" class="btn btn-dark btn-lg sideButton" id="water">Water Filling</button>
-      <button type="button" class="btn btn-dark btn-lg sideButton" id="athletics">Athletics</button>
+      <button type="button" class="btn btn-secondary btn-lg sideButton" id="scanners">Scanners</button>
+      <button type="button" class="btn btn-secondary btn-lg sideButton" id="vending">Vending Machines</button>
+      <button type="button" class="btn btn-secondary btn-lg sideButton" id="water">Water Filling</button>
+      <button type="button" class="btn btn-secondary btn-lg sideButton" id="athletics">Athletics</button>
       <br />
       <hr />
       <!-- Reset filters -->
@@ -102,6 +102,7 @@
 
               <!-- INFORMATION/HOME TAB -->
               <div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-home-tab">
+                <h5 class="text-center">Loading...</h5>
                 <!--<h4 class="text-center">Information</h4>
                 <h5 class="modal-body-desc">Description</h5>
                 <ul class="list-group">
@@ -125,12 +126,15 @@
                   <button class="btn btn-danger btn-lg align-center"><i class="fas fa-thumbs-down"></i></button>
                 </div>
                 <!-- Comment input form -->
-                <form>
+                <form id="submit-form" novalidate>
                   <label for="message-text" class="col-form-label">Enter your own feedback here!</label>
-                  <div class="input-group">
-                    <textarea class="form-control" id="message-text" placeholder="Leave a comment for other users!"></textarea>
-                    <button type="button" class="btn btn-success" id="submitcomment">Submit</button>
+                  <div class="input-group"novalidate>
+                    <textarea class="form-control" id="message-text" placeholder="Leave a comment for other users!" required></textarea>
+                    <div class="invalid-feedback">
+                      Please enter a comment.
+                    </div>
                   </div>
+                  <button type="button" class="btn btn-success float-right" id="submitcomment">Submit</button>
                 </form>
               </div>
 

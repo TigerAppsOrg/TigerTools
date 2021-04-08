@@ -46,7 +46,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       type: "simple-marker",
       color: col,
       outline: {
-        color: [255, 255, 255], // White
+        color: [255, 255, 255], // White outine
         width: 1
       }
     };
@@ -58,6 +58,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     view.graphics.add(pointGraphic);
   }
 
+  // Remove all points of a certain type
   function removeGraphic(amenityType) {
     if (view.graphics.length) {
       for (i = 0; i < view.graphics.length; i++) {
@@ -125,6 +126,23 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
 
   $(document).ready(function(){
 
+    // When modal is closed, reset its content
+    $("#myModal").on("hidden.bs.modal", function () {
+        // Reset work order form
+        var form = $("#workorder-form");
+        form[0].reset();
+        form.removeClass("was-validated");
+
+        // Reset info content and set info tab as active
+        $("#nav-info").html('<h5 class="text-center">Loading...</h5>');
+        $("#nav-home-tab").click();
+
+        // Reset submit form
+        var form = $("#submit-form");
+        form[0].reset();
+        form.removeClass("was-validated");
+    });
+
     // Validate required fields in work order form when user clicks submit
     $("#open-confirmation").click(function(event){
       var form = $("#workorder-form");
@@ -133,7 +151,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
         event.stopPropagation();
       }
 
-      form.addClass('was-validated');
+      form.addClass("was-validated");
     });
 
     // Close the confirmation modal when clicking submit button
@@ -141,14 +159,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
       $("#confirm-close").click();
     });
 
-    // submit comment
+    // Submit comment
     $("#submitcomment").click(function(){
       var comment = $.trim($("#message-text").val());
-      //var comment = $("#comment").val();
-      //console.log(comment);
+      // If value is not blank, submit comment and reset form
       if(comment != ""){
-        // Show alert dialog if value is not blank
-        //alert("Please enter a comment");
+        $("#submit-form").removeClass("was-validated");
         $.ajax({
           type: "POST",
           url: "/comment",
@@ -158,8 +174,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
             $("#message-text").val("");
           }
         });
+      // If value is blank, alert user to enter something
       } else {
-        alert("Please enter a comment")
+        $("#submit-form").addClass("was-validated");
       }
     });
 
@@ -221,7 +238,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var cluster = data_array[i];
-              addPoint(cluster.long, cluster.lat, [230, 230, 250], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
+              addPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
           }
         }
       });
@@ -246,7 +263,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var scanner = data_array[i];
-              addPoint(scanner.long, scanner.lat, [238, 210, 2], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
+              addPoint(scanner.long, scanner.lat, [133, 92, 214], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
           }
         }
       });
@@ -296,7 +313,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var cafe = data_array[i];
-              addPoint(cafe.long, cafe.lat, [3,252,65], {name: cafe.name, type:"Café", building: cafe.buildingname});
+              addPoint(cafe.long, cafe.lat, [40, 167, 69], {name: cafe.name, type:"Café", building: cafe.buildingname});
           }
         }
       });
@@ -321,7 +338,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var vending_machine = data_array[i];
-              addPoint(vending_machine.long, vending_machine.lat, [255,165,0], {name: vending_machine.name,
+              addPoint(vending_machine.long, vending_machine.lat, [108, 117, 125], {name: vending_machine.name,
                 type:"Vending Machine", building: vending_machine.buildingname});
           }
         }
@@ -347,7 +364,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var athletic_facility = data_array[i];
-              addPoint(athletic_facility.long, athletic_facility.lat, [255,165,0],
+              addPoint(athletic_facility.long * (-1), athletic_facility.lat, [255, 163, 26],
                {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
           }
         }
@@ -373,7 +390,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
     //       console.log(data_array);
     //       for (var i = 0; i < data_array.length; i++) {
     //           var water_station = data_array[i];
-    //           addPoint(water_station.long, water_station.lat, [0,0,0], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
+    //           addPoint(water_station.long, water_station.lat, [72, 129, 234], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
     //       }
     //     }
     //   });
