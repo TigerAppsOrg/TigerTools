@@ -42,13 +42,6 @@ html, body, #viewDiv {
   margin-left: 50px;
 }
 
-/*#clusters {
-  background-color: #ffbb33;
-}
-#clusters:hover {
-  background-color: #ffb31a;
-}*/
-
 #scanners {
   background-color: #855cd6;
 }
@@ -79,7 +72,13 @@ html, body, #viewDiv {
 }
 
 .modal-dialog {
-    margin: 10vh auto 0px auto;
+    margin: 5vh auto 0px auto;
+}
+
+
+#info-box {
+  background-color: #f7fbff;
+  border-color: #b3d6ff
 }
 
 #myModal2 {
@@ -95,6 +94,6 @@ html, body, #viewDiv {
 }
 
 .form-group.required .control-label:after { 
-   content:"*";
-   color:red;
+  content:"*";
+  color:red;
 }
