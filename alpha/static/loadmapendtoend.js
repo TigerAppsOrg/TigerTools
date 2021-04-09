@@ -125,6 +125,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
   });
 
   $(document).ready(function(){
+    $("#nav-workorder-tab").on('click', function(){
+      $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
+    });
+    $("#nav-comment-tab").on('click', function(){
+      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+    });
+    $("#nav-home-tab").on('click', function(){
+      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+    });
+
 
     // When modal is closed, reset its content
     $("#myModal").on("hidden.bs.modal", function () {

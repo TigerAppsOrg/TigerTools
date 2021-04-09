@@ -72,13 +72,17 @@ html, body, #viewDiv {
 }
 
 .modal-dialog {
-    margin: 5vh auto 0px auto;
+    margin-top: 3vh;
 }
-
 
 #info-box {
   background-color: #f7fbff;
   border-color: #b3d6ff
+}
+
+.list-group {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 #myModal2 {

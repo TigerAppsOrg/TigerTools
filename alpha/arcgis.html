@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
     <!-- ArcGIS CSS and JS -->
     <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css">
@@ -76,7 +77,7 @@
 
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog modal-lg mb-5">
+      <div class="modal-dialog modal-lg mb-5" id="myModalDialog">
         <div class="modal-content">
 
           <!-- Modal Header -->
@@ -140,128 +141,152 @@
 
               <!-- WORK ORDER TAB -->
               <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-workorder-tab">
-                <h4 class="text-center">Submit a work order</h4>
-                <p class="text-danger">* = Required</p>
+                <h4 class="text-center">Submit a work order</h4><hr>
 
                 <!-- INPUT FORM -->
                 <!-- CONSIDER AUTOFILLING NAME AND EMAIL POSSIBLY PHONE -->
                 <form action="wkorder" method="post" id="workorder-form" novalidate>
-                <div class="form-group required">
-                <div class="form-row mb-2">
-                  <div class="col-sm-6">
-                    <label class="control-label" for="firstname">First name</label>
-                    <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First name" aria-label="First name" required>
-                    <div class="invalid-feedback">
-                      Please enter your first name.
+                <div class="form-group row required">
+
+                <!-- PERSONAL -->
+                <div class="col-sm-4 border-right no-gutters">
+                  <h4 class="text-center">Personal</h4>
+                  <p class="text-danger">* = Required</p>
+                  <div class="form-row mb-2">
+                    <div class="col-sm-6">
+                      <label class="control-label" for="firstname">First name</label>
+                      <input class="form-control" type="text" name="firstname" id="firstname" placeholder="First name" aria-label="First name" required>
+                      <div class="invalid-feedback">
+                        Please enter your first name.
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="control-label" for="lastname">Last name</label>
+                      <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last name" aria-label="Last name" required>
+                      <div class="invalid-feedback">
+                        Please enter your last name.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row mb-2">
+                    <div class="col-sm-6">
+                      <label class="control-label" for="email">Email</label>
+                      <input class="form-control" type="text" name="email" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
+                      <div class="invalid-feedback">
+                        Please enter your email.
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <label class="control-label" for="phone">Phone number</label>
+                      <input class="form-control" type="text" name="phone" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
+                      <div class="invalid-feedback">
+                        Please enter your phone number.
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-row mb-2">
+                    <div class="col-sm-6">
+                      <label for="alt-first-name">Alt First Name</label>
+                      <input class="form-control" type="text" name="alt-firstname" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="alt-last-name">Alt Last Name</label>
+                      <input class="form-control" type="text" name="alt-lastname" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
+                    </div>
+                  </div>
+                  <div class="form-row mb-2">
+                    <div class="col-sm-6">
+                      <label for="alt-email">Alt Email</label>
+                      <input class="form-control" type="text" name="alt-email" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="alt-phone">Alt Phone</label>
+                      <input class="form-control" type="text" name="alt-phone" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
+                    </div>
+                  </div>
+                  <div class="form-row mb-2">
+                    <div class="col-sm-4">
+                      <label for="alt-netid">Alt NetID</label>
+                      <input class="form-control" type="text" name="alt-netid" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
+                    </div>
+                    <hr>
+                    <div class="col-sm-8">
+                      <label for="contacted">Would you like to be contacted regarding scheduling?</label>
+                      <input class="form-control" type="text" name="contacted" id="contacted" placeholder="(100 characters max)" aria-label="" maxlength="100">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- REQUEST -->
+                <div class="col-sm-4 border-right no-gutters">
+                  <h4 class="text-center">Request</h4>
+                  <div class="form-row mb-2">
+                    <label for="charge-source">Charge Source</label>
+                    <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank" rel="noopener noreferrer"><small><u> (This form is only for Operating)</u></small></a>
+                    <select class="form-control" name="charge-source" id="charge-source" required>
+                      <option>Operating</option>
+                    </select>
+                  </div>
+
+                  <div class="text-center">
+                    <!-- <label class="form-label">Please provide a detailed description of your service request:</label> -->
+                    <label class="control-label" for="description">Please provide a detailed description of your service request:</label>
+                    <!-- <input class="form-control" type="text" name="description" id="description" placeholder="Please describe the problem..." aria-label="Description" required> -->
+                  </div>
+                  <div class="input-group">
+                    <textarea class="form-control" name="description" aria-label="text-area" required></textarea>
+                  </div>
+                  <div class="invalid-feedback">
+                    Please enter a description.
+                  </div>
+                </div>
+
+                <!-- LOCATION -->
+                <div class="col-sm-4 no-gutters">
+                  <h4 class="text-center">Location</h4>
+                  <label for="campus">Campus</label>
+                  <select class="form-control mb-2" name="campus" id="campus" required>
+                    <option selected>PRINCETON - Princeton Campus</option>
+                  </select>
+                  <!-- CONSIDER AUTOFILLING BUILDING BASED ON LOCATION AND OFFERING OPTION FOR USER TO EDIT -->
+                  <!-- COULD ALSO DO SEARCH SUGGESTIONS AS USER TYPES BUILDING NAME -->
+                  <!-- POSSIBLY PUT NOTE FOR USER THAT EITHER FILL ALL THREE FIELDS OR ONLY FILL BUILDING -->
+                  <label for="building">Building</label>
+                  <select class="form-control mb-2" name="building" id="building" required>
+                     <option>Building A</option>
+                  </select>
+
+                  <label for="building">Building Code</label>
+                  <select class="form-control mb-2" name="buildingcode" id="buildingcode">
+                     <option>ABC123</option>
+                  </select>
+
+                  <label for="locationcode">Location Code</label>
+                  <select class="form-control mb-2" name="locationcode" id="locationcode">
+                     <option>609</option>
+                  </select>
+
+                  <div class="form-row mb-2">
+                    <div class="col-sm-12">
+                      <label for="floor">Floor - if select Floor, must also select Room</label>
+                      <input class="form-control" type="text" name="floor" id="floor" placeholder="(2 characters max)" aria-label="floor" maxlength="2">
+                    </div>
+                  </div>
+                  <!-- COULD AUTOFILL ROOM IN SOME CASES -->
+                  <div class="form-row mb-2">
+                    <div class="col-sm-12">
+                      <label for="room">Room</label>
+                      <input class="form-control" type="text" name="room" id="room" placeholder="Room number" aria-label="room">
                     </div>
                   </div>
 
-                  <div class="col-sm-6">
-                    <label class="control-label" for="lastname">Last name</label>
-                    <input class="form-control" type="text" name="lastname" id="lastname" placeholder="Last name" aria-label="Last name" required>
-                    <div class="invalid-feedback">
-                      Please enter your last name.
-                    </div>
-                  </div>
+                  <label for="asset">Asset Number</label>
+                  <select class="form-control mb-2" name="asset" id="asset">
+                     <option>999</option>
+                  </select>
                 </div>
 
-                <div class="form-row mb-2">
-                  <div class="col-sm-6">
-                    <label class="control-label" for="email">Email</label>
-                    <input class="form-control" type="text" name="email" id="email" placeholder="netid@princeton.edu" aria-label="email" required>
-                    <div class="invalid-feedback">
-                      Please enter your email.
-                    </div>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="control-label" for="phone">Phone number</label>
-                    <input class="form-control" type="text" name="phone" id="phone" placeholder="(555) 555-5555" aria-label="Phone number" required>
-                    <div class="invalid-feedback">
-                      Please enter your phone number.
-                    </div>
-                  </div>
-                </div>
-                </div>
-
-                <div class="form-row mb-2">
-                  <div class="col-sm-6">
-                    <label for="alt-first-name">Alt First Name</label>
-                    <input class="form-control" type="text" name="alt-firstname" id="alt-first-name" placeholder="Alt First Name" aria-label="Alt First Name">
-                  </div>
-                  <div class="col-sm-6">
-                    <label for="alt-last-name">Alt Last Name</label>
-                    <input class="form-control" type="text" name="alt-lastname" id="alt-last-name" placeholder="Alt Last Name" aria-label="Alt Last Name">
-                  </div>
-                </div>
-
-                <div class="form-row mb-2">
-                  <div class="col-sm-6">
-                    <label for="alt-email">Alt Email</label>
-                    <input class="form-control" type="text" name="alt-email" id="alt-email" placeholder="Alt Email" aria-label="Alt Email">
-                  </div>
-                  <div class="col-sm-6">
-                    <label for="alt-phone">Alt Phone</label>
-                    <input class="form-control" type="text" name="alt-phone" id="alt-phone" placeholder="Alt Phone" aria-label="Alt Phone">
-                  </div>
-                </div>
-
-                <div class="form-row mb-2">
-                  <div class="col-sm-4">
-                    <label for="alt-netid">Alt NetID</label>
-                    <input class="form-control" type="text" name="alt-netid" id="alt-netid" placeholder="Alt NetID" aria-label="Alt NetID">
-                  </div>
-                  <div class="col-sm-8">
-                    <label for="contacted">Would you like to be contacted regarding scheduling?</label>
-                    <input class="form-control" type="text" name="contacted" id="contacted" placeholder="(100 characters max)" aria-label="" maxlength="100">
-                  </div>
-                </div>
-
-                <div class="form-row mb-2">
-                <div class="col-sm-8">
-                <label for="charge-source">Charge Source</label>
-                <a href="https://facilities.princeton.edu/services/guides/work-order-charge-source-guidelines" target="_blank" rel="noopener noreferrer"><u>(This form is only for Operating)</u></a>
-                <select class="form-control" name="charge-source" id="charge-source" required>
-                  <option>Operating</option>
-                </select>
-                </div>
-                </div>
-
-                <label for="campus">Campus</label>
-                <select class="form-control" name="campus" id="campus" required>
-                  <option selected>PRINCETON - Princeton Campus</option>
-                </select>
-
-                <!-- CONSIDER AUTOFILLING BUILDING BASED ON LOCATION AND OFFERING OPTION FOR USER TO EDIT -->
-                <!-- COULD ALSO DO SEARCH SUGGESTIONS AS USER TYPES BUILDING NAME -->
-                <!-- POSSIBLY PUT NOTE FOR USER THAT EITHER FILL ALL THREE FIELDS OR ONLY FILL BUILDING -->
-                <label for="building">Building</label>
-                <select class="form-control" name="building" id="building" required>
-                   <option>Building A</option>
-                </select>
-
-                <div class="form-row mb-2">
-                  <div class="col-sm-12">
-                    <label for="floor">Floor</label>
-                    <input class="form-control" type="text" name="floor" id="floor" placeholder="Floor (2 characters max) - if select Floor, MUST also select Room" aria-label="floor" maxlength="2">
-                  </div>
-                </div>
-
-                <!-- COULD AUTOFILL ROOM IN SOME CASES -->
-                <div class="form-row mb-2">
-                  <div class="col-sm-12">
-                    <label for="room">Room</label>
-                    <input class="form-control" type="text" name="room" id="room" placeholder="Room number" aria-label="room">
-                  </div>
-                </div>
-
-                <div class="text-center">
-                  <!-- <label class="form-label">Please provide a detailed description of your service request:</label> -->
-                  <label for="description">Please provide a detailed description of your service request:</label>
-                  <!-- <input class="form-control" type="text" name="description" id="description" placeholder="Please describe the problem..." aria-label="Description" required> -->
-                </div>
-                <div class="input-group">
-                  <textarea class="form-control" name="description" aria-label="text-area"></textarea>
                 </div>
 
                 <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-success float-right" id="open-confirmation">Submit form</button>
@@ -274,7 +299,7 @@
                   <i class="fas fa-exclamation-triangle fa-lg" style="color:yellow;"></i>
                   &nbsp;Submit a work order...
                 </button>
-                -->
+              -->
               </div>
             </div>
 
