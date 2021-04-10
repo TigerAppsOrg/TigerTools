@@ -1,4 +1,4 @@
-require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], function (esriConfig, Map, MapView, Graphic) {
+require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track"], function (esriConfig, Map, MapView, Graphic, Track) {
   esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
 
   var cafeClicks = 0;
@@ -62,13 +62,36 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic"], functi
   function removeGraphic(amenityType) {
     if (view.graphics.length) {
       for (i = 0; i < view.graphics.length; i++) {
-         if (view.graphics.getItemAt(i).attributes.type == amenityType) {
-             view.graphics.remove(view.graphics.getItemAt(i));
-             i--;
-         }
-       }
+        if (view.graphics.getItemAt(i).attributes.type == amenityType) {
+          view.graphics.remove(view.graphics.getItemAt(i));
+          i--;
+        }
+      }
     }
   }
+
+  // Create tracking widget
+  var track = new Track({
+    view: view,
+    /*graphic: new Graphic({
+      symbol: {
+        type: "simple-marker",
+        size: "12px",
+        color: "green",
+        outline: {
+          color: "#efefef",
+          width: "1.5px"
+        }
+      }
+    }),*/
+    useHeadingEnabled: false // Prevent map view from rotating
+  });
+  view.ui.add(track, "top-left");
+
+  // Start tracking once view becomes ready
+  view.when(function() {
+    track.start();
+  });
 
   // Function for point clicks
   view.on("click", function(event) {
