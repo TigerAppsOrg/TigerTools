@@ -397,7 +397,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       athleticsClicks++;
     } else {
       athleticsClicks++;
-      removeGraphic("Athletics")
+      removeGraphic("Athletic Facility")
     }
     });
 
