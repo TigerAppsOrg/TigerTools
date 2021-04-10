@@ -85,6 +85,10 @@ html, body, #viewDiv {
   overflow-y: auto;
 }
 
+#required-text {
+  position: absolute;
+}
+
 #myModal2 {
   z-index: 1052;
 }
