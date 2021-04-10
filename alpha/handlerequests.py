@@ -13,7 +13,7 @@ import psycopg2
 import sys
 import os
 import csv
-from load_api_data import update
+from load_api_data import update, places_open
 
 app = Flask(__name__, template_folder='.')
 
@@ -57,6 +57,7 @@ def _tuples_to_json(keys, tuples_lists):
 @app.route('/points', methods=['POST'])
 def get_data():
 	netid = CASClient().authenticate()
+	places_open()
 	try:
 		# get info
 		amenity_type = request.get_json().get('amenity_type')

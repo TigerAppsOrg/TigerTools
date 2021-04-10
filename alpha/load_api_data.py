@@ -26,7 +26,7 @@ def dining_halls():
 	dbcursor.execute('DROP TABLE IF EXISTS dining')
 	dbcursor.execute('CREATE TABLE dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
-		payment VARCHAR(500), capacity VARCHAR(6))')
+		payment VARCHAR(500), capacity VARCHAR(6), open VARCHAR(4))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -95,7 +95,7 @@ def cafes():
 	dbcursor.execute('DROP TABLE IF EXISTS cafes')
 	dbcursor.execute('CREATE TABLE cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
-		payment VARCHAR(500))')
+		payment VARCHAR(500), open VARCHAR(4))')
 	# , PRIMARY KEY (dbid)
 
 	req_lib = ReqLib()
@@ -299,16 +299,40 @@ def categoryid6():
 	dbcursor.close()
 	dbconnection.close()
 
+# ---------------------------------------------------------------------
 def places_open():
+	DATABASE_URL = os.environ['DATABASE_URL']
+	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+	dbcursor = dbconnection.cursor()
+
 	req_lib = ReqLib()
 	data = req_lib.getJSON(req_lib.configs.PLACES_OPEN,)
-	print(data)
 
+	dbcursor.execute('DROP TABLE IF EXISTS isitopen;')
+	dbcursor.execute('CREATE TABLE isitopen (name VARCHAR (100), dbid VARCHAR(4), open VARCHAR(4));')
+
+	for i in range(len(data)):
+		row = data[i]
+		stmt = 'INSERT INTO isitopen (name, dbid, open) VALUES (%s, %s, %s);'
+		info = (row.get('name'),row.get('id'),row.get('open'))
+		dbcursor.execute(stmt, info)
+		dbconnection.commit()
+
+	# update status of dining and cafes
+	# SELECT isitopen.open FROM isitopen WHERE dbid=isitopen.dbid
+	dbcursor.execute('UPDATE dining SET open=isitopen.open FROM isitopen WHERE dining.dbid=isitopen.dbid;')
+	dbcursor.execute('UPDATE cafes SET open=isitopen.open FROM isitopen WHERE cafes.dbid=isitopen.dbid;')
+
+	dbconnection.commit()
+	dbcursor.close()
+	dbconnection.close()
+
+# ---------------------------------------------------------------------
 def update():
-	categoryid6()
+	# categoryid6()
 	dining_halls()
 	cafes()
-	vending_machines()
+	# vending_machines()
 	places_open()
 
 # def main():
