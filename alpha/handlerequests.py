@@ -38,7 +38,7 @@ def display_home():
 	# update database
 	update()
 
-	html = render_template('arcgis.html')
+	html = render_template('arcgis.html',netid=netid)
 	return make_response(html)
 
 # ---------------------------------------------------------------------
