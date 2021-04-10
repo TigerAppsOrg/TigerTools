@@ -121,26 +121,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               }
             });
 
-            /*$.ajax({
-              type: "POST",
-              url: "http://0.0.0.0:5000/getcomments",
-              data: JSON.stringify({AmenityName: $(".modal-body-desc").text()}),
-              contentType: "application/json",
-              success: function(comments){
-                $.ajax({
-                  type: "POST",
-                  url: "http://0.0.0.0:5000/displaycomments",
-                  data: comments,
-                  contentType: "application/json",
-                  success: function(response){
-                    //console.log(comments.list_of_data[0][1]);
-                    $("#nav-info").html(response);
-                  }
-                });
-                console.log(comments.list_of_data[0][1]);
-              }
-            });*/
-
             $("#modalTrigger").click(); // Open the modal
           }
         }
@@ -156,6 +136,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     });
     $("#nav-home-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+    });
+    $("#nav-home-tab").on('click', function(){
+      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+      $.ajax({
+        type: "POST",
+        url: "/displaycomments",
+        data: JSON.stringify({amenityName: currentAmenityName}),
+        contentType: "application/json",
+        success: function(response){
+          $("#nav-info").html(response);
+        }
+      });
     });
 
 
