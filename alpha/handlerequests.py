@@ -151,24 +151,26 @@ def format_wkorder():
 
 	# https://levelup.gitconnected.com/building-csv-strings-in-python-32934aed5a9e
 	csvfile = CsvTextBuilder()
-	data = [[request.form.get('firstname'), request.form.get('lastname'), request.form.get('email'), request.form.get('phone'),
-		request.form.get('alt-firstname'), request.form.get('alt-lastname'), request.form.get('alt-email'), \
-		request.form.get('alt-phone'), request.form.get('alt-netid'), request.form.get('contacted'), \
-		request.form.get('charge-source'), request.form.get('campus'), request.form.get('building'),request.form.get('floor'),\
-		request.form.get('room'),request.form.get('description')]]
+	data = [[request.form.get('netid'),request.form.get('firstname'),request.form.get('lastname'),request.form.get('email'),request.form.get('phone'),
+		request.form.get('alt-netid'),request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
+		request.form.get('alt-phone'),request.form.get('contacted'), \
+		 request.form.get('campus'),request.form.get('charge-source'),request.form.get('building'),request.form.get('buildingcode'), \
+		 request.form.get('locationcode'),request.form.get('asset'), \
+		 request.form.get('description') + ' --- MORE LOCATION INFO: Floor: '+request.form.get('floor')+'; Room: '+ \
+		request.form.get('room')]]
 	writer = csv.writer(csvfile)
 	writer.writerows(data)
 	csv_string = csvfile.csv_string
 	# testing
-	print('First Name','Last Name','E-mail','Phone','Alt First Name','Alt Last Name','Alt Email','Alt Phone','Alt NetID', \
-	'Contact for Scheduling','Charge Source','Campus','Building','Floor','Room','Asset','Description')
+	print('Amenity (this field is only really useful if filling station)','NetID','First Name','Last Name','E-mail','Phone','Alt NetID','Alt First Name','Alt Last Name','Alt Email','Alt Phone', \
+	'Contact for Scheduling','Charge Source','Campus','Building','Building Code','Location Code','Asset','Description (with more location info appended if given by user)')
 	print(''.join(csv_string))
 	# testing
 	# print(request.form.get('firstname'), request.form.get('lastname'), request.form.get('email'), request.form.get('phone'),
 	# 	request.form.get('alt-firstname'), request.form.get('alt-lastname'), request.form.get('alt-email'), request.form.get('alt-phone'), 
 	# 	request.form.get('alt-netid'), request.form.get('contacted'), 'Operating', request.form.get('minors-pets'), request.form.get('grad-faculty'), request.form.get('campus'), 
 	# 	request.form.get('building'), request.form.get('floor'),request.form.get('room'),request.form.get('description'))
-	html = render_template('arcgis.html')
+	html = render_template('arcgis.html', netid=netid)
 	return make_response(html)
 
 # ---------------------------------------------------------------------
