@@ -208,45 +208,45 @@ def store_comment():
 def show_comments():
 	netid = CASClient().authenticate()
 	try:
-        	amenityName = request.get_json().get('amenityName')
-        	DATABASE_URL = os.environ['DATABASE_URL']
-        	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
-        	dbcursor = dbconnection.cursor()
-        	query = "SELECT * FROM comments WHERE AMENITY_NAME = %s;"
-        	dbcursor.execute(query, (amenityName,))
-        	comments = dbcursor.fetchall()
-        	dbcursor.close()
-        	dbconnection.close()
-        	current_time = datetime.datetime.now()
-        	delta = datetime.timedelta(days = 7)
-        	a = current_time - delta
-        	comments_modified = []
-        	time_range = DateTimeRange(a, current_time)
-        	for comment in comments:
-            		if (comment[2] in time_range):
-                		comments_modified.append([comment[0], comment[1], arrow.get(comment[2]).humanize()])
-        	comments_modified.reverse()
-
-        #if (amenityName.split(" - ")[0] == "Dining hall"):
-        #    diningName = amenityName.split(" - ")[1]
-        #    DATABASE_URL = os.environ['DATABASE_URL']
-        #    dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
-        #    dbcursor = dbconnection.cursor()
-        #    query = "SELECT capacity, payment FROM dining WHERE name = %s;"
-        #    dbcursor.execute(query, (diningName,))
-        #    results = dbcursor.fetchall()
-        #    dbcursor.close()
-        #    dbconnection.close()
-        #    print(results)
-        #    html = render_template('displaycomments.html', data=comments_modified,
-        #    capacity = results[0][0], open = True, payment = results[0][1], wasSuccessful = True)
-        #    return make_response(html)
-
-        #html = render_template('displaycomments.html', data=comments_modified, capacity = "NA", open = False, wasSuccessful = True)
+		amenityName = request.get_json().get('amenityName')
+		DATABASE_URL = os.environ['DATABASE_URL']
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		query = "SELECT * FROM comments WHERE AMENITY_NAME = %s;"
+		dbcursor.execute(query, (amenityName,))
+		comments = dbcursor.fetchall()
+		dbcursor.close()
+		dbconnection.close()
+		current_time = datetime.datetime.now()
+		delta = datetime.timedelta(days = 7)
+		a = current_time - delta
+		comments_modified = []
+		time_range = DateTimeRange(a, current_time)
+		for comment in comments:
+			if (comment[2] in time_range):
+				comments_modified.append([comment[0], comment[1], arrow.get(comment[2]).humanize()])
+		comments_modified.reverse()
+		
+	#if (amenityName.split(" - ")[0] == "Dining hall"):
+	#    diningName = amenityName.split(" - ")[1]
+	#    DATABASE_URL = os.environ['DATABASE_URL']
+	#    dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+	#    dbcursor = dbconnection.cursor()
+	#    query = "SELECT capacity, payment FROM dining WHERE name = %s;"
+	#    dbcursor.execute(query, (diningName,))
+	#    results = dbcursor.fetchall()
+	#    dbcursor.close()
+	#    dbconnection.close()
+	#    print(results)
+	#    html = render_template('displaycomments.html', data=comments_modified,
+	#    capacity = results[0][0], open = True, payment = results[0][1], wasSuccessful = True)
+	#    return make_response(html)
+	
+	#html = render_template('displaycomments.html', data=comments_modified, capacity = "NA", open = False, wasSuccessful = True)
 		html = render_template('displaycomments.html', data=comments_modified, wasSuccessful = True)
-        	return make_response(html)
-
+		return make_response(html)
+	
 	except Exception as e:
-        	print(str(e), file=sys.stderr)
-        	html = render_template('displaycomments.html', data=[], wasSuccessful = False)
-        	return make_response(html)
+		print(str(e), file=sys.stderr)
+		html = render_template('displaycomments.html', data=[], wasSuccessful = False)
+		return make_response(html)
