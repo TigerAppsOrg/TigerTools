@@ -16,7 +16,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // arcgis-navigation and arcgis-navigation-night look interesting - could do something with day/nighttime?
     // osm-standard
     basemap: "arcgis-navigation", // Basemap layer service
-    sliderPosition: "top-right"
   });
 
   var view = new MapView({
