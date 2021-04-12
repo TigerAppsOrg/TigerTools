@@ -7,9 +7,9 @@ html, body, #viewDiv {
 
 #openNav {
   position: fixed;
-  top: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* this is for centering the button */
+  top: 10px;
+  left: 10px;
+  /*transform: translate(-50%, -50%);*/ /* this is for centering the button */
 }
 
 #mySidenav {
@@ -41,7 +41,7 @@ html, body, #viewDiv {
   font-size: 36px;
   margin-left: 50px;
 }
-
+/*
 #scanners {
   background-color: #855cd6;
 }
@@ -61,7 +61,7 @@ html, body, #viewDiv {
 }
 #athletics:hover {
   background-color: #ff9900;
-}
+}*/
 
 .sideButton {
   margin: 5px 3px 5px 3px;

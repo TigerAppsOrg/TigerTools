@@ -15,7 +15,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html
     // arcgis-navigation and arcgis-navigation-night look interesting - could do something with day/nighttime?
     // osm-standard
-    basemap: "arcgis-navigation" // Basemap layer service
+    basemap: "arcgis-navigation", // Basemap layer service
+    sliderPosition: "top-right"
   });
 
   var view = new MapView({
@@ -90,6 +91,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
   // Start tracking once view becomes ready
   view.when(function() {
+    view.ui.move([ "zoom", track ], "top-right");
     track.start();
   });
 
@@ -136,9 +138,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     });
     $("#nav-home-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
-    });
-    $("#nav-home-tab").on('click', function(){
-      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
       $.ajax({
         type: "POST",
         url: "/displaycomments",
@@ -159,8 +158,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         form.removeClass("was-validated");
 
         // Reset info content and set info tab as active
+        $("#nav-home-tab").tab("show");
+        $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
         $("#nav-info").html('<h5 class="text-center">Loading...</h5>');
-        $("#nav-home-tab").click();
 
         // Reset submit form
         var form = $("#submit-form");
@@ -215,6 +215,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       vendingClicks++;
       // waterClicks++;
       athleticsClicks++;
+      $("#printers").switchClass("btn-danger", "btn-outline-danger");
+      $("#clusters").switchClass("btn-warning", "btn-outline-warning");
+      $("#scanners").switchClass("btn-danger", "btn-outline-danger");
+      $("#dhalls").switchClass("btn-primary", "btn-outline-primary");
+      $("#cafes").switchClass("btn-success", "btn-outline-success");
+      $("#vending").switchClass("btn-secondary", "btn-outline-secondary");
+      $("#athletics").switchClass("btn-dark", "btn-outline-dark");
+      // $("#water").switchClass("btn-info", "btn-outline-info");
       view.graphics.removeAll();
     });
 
@@ -227,6 +235,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // Printers
     $("#printers").click(function(){
       if (printerClicks % 2 == 0) {
+      $("#printers-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -240,18 +249,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               var printer = data_array[i];
               addPoint(printer.long, printer.lat, [252, 65, 3], {name: printer.name, type:"Printer", building: printer.buildingname});
           }
+          $("#printers").switchClass("btn-outline-danger", "btn-danger");
+          $("#printers-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          printerClicks++;
         }
       });
-      printerClicks++;
     } else {
+      removeGraphic("Printer");
+      $("#printers").switchClass("btn-danger", "btn-outline-danger");
       printerClicks++;
-      removeGraphic("Printer")
     }
     });
 
     // Computer Clusters
     $("#clusters").click(function(){
       if (clusterClicks % 2 == 0) {
+      $("#clusters-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -265,18 +278,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               var cluster = data_array[i];
               addPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
           }
+          $("#clusters").switchClass("btn-outline-warning", "btn-warning");
+          $("#clusters-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          clusterClicks++;
         }
       });
-      clusterClicks++;
     } else {
+      removeGraphic("Computer Cluster");
+      $("#clusters").switchClass("btn-warning", "btn-outline-warning");
       clusterClicks++;
-      removeGraphic("Computer Cluster")
     }
     });
 
     // Scanners
     $("#scanners").click(function(){
       if (scannerClicks % 2 == 0) {
+      $("#scaners-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -290,18 +307,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               var scanner = data_array[i];
               addPoint(scanner.long, scanner.lat, [133, 92, 214], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
           }
+          $("#scanners").switchClass("btn-outline-danger", "btn-danger");
+          $("#scanners-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          scannerClicks++;
         }
       });
-      scannerClicks++;
     } else {
+      removeGraphic("Scanner");
+      $("#scanners").switchClass("btn-danger", "btn-outline-danger");
       scannerClicks++;
-      removeGraphic("Scanner")
     }
     });
 
     // Dining Halls
     $("#dhalls").click(function(){
       if (diningClicks % 2 == 0) {
+      $("#dhalls-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -315,18 +336,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               var dhall = data_array[i];
               addPoint(dhall.long, dhall.lat, [3,65,252], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
           }
+          $("#dhalls").switchClass("btn-outline-primary", "btn-primary");
+          $("#dhalls-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          diningClicks++;
         }
       });
-      diningClicks++;
     } else {
+      removeGraphic("Dining hall");
+      $("#dhalls").switchClass("btn-primary", "btn-outline-primary");
       diningClicks++;
-      removeGraphic("Dining hall")
     }
     });
 
     // Cafés
     $("#cafes").click(function(){
       if (cafeClicks % 2 == 0) {
+      $("#cafes-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -340,18 +365,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               var cafe = data_array[i];
               addPoint(cafe.long, cafe.lat, [40, 167, 69], {name: cafe.name, type:"Café", building: cafe.buildingname});
           }
+          $("#cafes").switchClass("btn-outline-success", "btn-success");
+          $("#cafes-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          cafeClicks++;
         }
       });
-      cafeClicks++;
     } else {
+      removeGraphic("Café");
+      $("#cafes").switchClass("btn-success", "btn-outline-success");
       cafeClicks++;
-      removeGraphic("Café")
     }
     });
 
     // Vending Machines
     $("#vending").click(function(){
       if (vendingClicks % 2 == 0) {
+      $("#vending-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -366,18 +395,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               addPoint(vending_machine.long, vending_machine.lat, [108, 117, 125], {name: vending_machine.name,
                 type:"Vending Machine", building: vending_machine.buildingname});
           }
+          $("#vending").switchClass("btn-outline-secondary", "btn-secondary");
+          $("#vending-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          vendingClicks++;
         }
       });
-      vendingClicks++;
     } else {
+      removeGraphic("Vending Machine");
+      $("#vending").switchClass("btn-secondary", "btn-outline-secondary");
       vendingClicks++;
-      removeGraphic("Vending Machine")
     }
     });
 
     // Athletic Facilities
     $("#athletics").click(function(){
       if (athleticsClicks % 2 == 0) {
+      $("#athletics-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -392,18 +425,22 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               addPoint(athletic_facility.long * (-1), athletic_facility.lat, [255, 163, 26],
                {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
           }
+          $("#athletics").switchClass("btn-outline-dark", "btn-dark");
+          $("#athletics-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          athleticsClicks++;
         }
       });
-      athleticsClicks++;
     } else {
+      removeGraphic("Athletic Facility");
+      $("#athletics").switchClass("btn-dark", "btn-outline-dark");
       athleticsClicks++;
-      removeGraphic("Athletic Facility")
     }
     });
 
     // Bottle Filling Stations NEED LAT LONG DATA FOR BUILDINGS
     // $("#water").click(function(){
     //   if (waterClicks % 2 == 0) {
+    //   $("#water-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
     //   $.ajax({
     //     type: "POST",
     //     url: "/points",
@@ -417,12 +454,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     //           var water_station = data_array[i];
     //           addPoint(water_station.long, water_station.lat, [72, 129, 234], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
     //       }
+    //       $("#water").switchClass("btn-outline-info", "btn-info");
+    //       $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+    //       waterClicks++;
     //     }
     //   });
-    //   waterClicks++;
+    //   
     // } else {
+    //   removeGraphic("Water Filling");
+    //   $("#water").switchClass("btn-info", "btn-outline-info");
     //   waterClicks++;
-    //   removeGraphic("Water Filling")
     // }
     // });
   });

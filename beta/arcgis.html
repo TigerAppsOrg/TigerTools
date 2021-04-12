@@ -55,14 +55,64 @@
       </form>
       <p></p>
       <!-- Filtering options -->
-      <button type="button" class="btn btn-danger btn-lg sideButton" id="printers">Printers</button>
-      <button type="button" class="btn btn-primary btn-lg sideButton" id="dhalls">Dining Halls</button>
-      <button type="button" class="btn btn-warning btn-lg sideButton" id="clusters">Computer clusters</button>
-      <button type="button" class="btn btn-success btn-lg sideButton" id="cafes">Cafés</button>
-      <button type="button" class="btn btn-secondary btn-lg sideButton" id="scanners">Scanners</button>
-      <button type="button" class="btn btn-secondary btn-lg sideButton" id="vending">Vending Machines</button>
-      <button type="button" class="btn btn-secondary btn-lg sideButton" id="water">Water Filling</button>
-      <button type="button" class="btn btn-secondary btn-lg sideButton" id="athletics">Athletics</button>
+      <button type="button" class="btn btn-outline-danger btn-lg sideButton" id="printers">Printers</button>
+      <button type="button" class="btn btn-outline-primary btn-lg sideButton" id="dhalls">Dining Halls</button>
+      <button type="button" class="btn btn-outline-warning btn-lg sideButton" id="clusters">Computer clusters</button>
+      <button type="button" class="btn btn-outline-success btn-lg sideButton" id="cafes">Cafés</button>
+      <button type="button" class="btn btn-outline-danger btn-lg sideButton" id="scanners">Scanners</button>
+      <button type="button" class="btn btn-outline-secondary btn-lg sideButton" id="vending">Vending Machines</button>
+      <button type="button" class="btn btn-outline-info btn-lg sideButton" id="water">Water Filling</button>
+      <button type="button" class="btn btn-outline-dark btn-lg sideButton" id="athletics">Athletics</button>
+
+      <div class="p-1 d-none" id="printers-load">
+        Loading printers...&nbsp;&nbsp;
+        <div class="spinner-border text-danger" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading printers...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="dhalls-load">
+        Loading dining halls...&nbsp;&nbsp;
+        <div class="spinner-border text-primary" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading dining halls...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="clusters-load">
+        Loading computer clusters...&nbsp;&nbsp;
+        <div class="spinner-border text-warning" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading computer clusters...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="cafes-load">
+        Loading cafés...&nbsp;&nbsp;
+        <div class="spinner-border text-success" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading cafés...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="scanners-load">
+        Loading scanners...&nbsp;&nbsp;
+        <div class="spinner-border text-danger" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading scanners...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="vending-load">
+        Loading vending machines...&nbsp;&nbsp;
+        <div class="spinner-border text-secondary" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading vending machines...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="water-load">
+        Loading water filling stations...&nbsp;&nbsp;
+        <div class="spinner-border text-info" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading water filling stations...</span>
+        </div>
+      </div>
+      <div class="p-1 d-none" id="athletics-load">
+        Loading athletics...&nbsp;&nbsp;
+        <div class="spinner-border text-dark" style="width: 25px; height: 25px;" role="status">
+          <span class="sr-only">Loading athletics...</span>
+        </div>
+      </div>
+
       <br />
       <hr />
       <!-- Reset filters -->
