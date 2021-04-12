@@ -246,7 +246,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var printer = data_array[i];
-              addPoint(printer.long, printer.lat, [252, 65, 3], {name: printer.name, type:"Printer", building: printer.buildingname});
+              addPoint(printer.long, printer.lat, [220, 53, 69], {name: printer.name, type:"Printer", building: printer.buildingname});
           }
           $("#printers").switchClass("btn-outline-danger", "btn-danger");
           $("#printers-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
@@ -292,7 +292,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // Scanners
     $("#scanners").click(function(){
       if (scannerClicks % 2 == 0) {
-      $("#scaners-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#scanners-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -304,7 +304,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var scanner = data_array[i];
-              addPoint(scanner.long, scanner.lat, [133, 92, 214], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
+              addPoint(scanner.long, scanner.lat, [128, 0, 0], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
           }
           $("#scanners").switchClass("btn-outline-danger", "btn-danger");
           $("#scanners-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
@@ -333,7 +333,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var dhall = data_array[i];
-              addPoint(dhall.long, dhall.lat, [3,65,252], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
+              addPoint(dhall.long, dhall.lat, [0, 123, 255], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
           }
           $("#dhalls").switchClass("btn-outline-primary", "btn-primary");
           $("#dhalls-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
@@ -421,7 +421,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
               var athletic_facility = data_array[i];
-              addPoint(athletic_facility.long * (-1), athletic_facility.lat, [255, 163, 26],
+              addPoint(athletic_facility.long * (-1), athletic_facility.lat, [34, 38, 42],
                {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
           }
           $("#athletics").switchClass("btn-outline-dark", "btn-dark");
@@ -451,7 +451,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     //       console.log(data_array);
     //       for (var i = 0; i < data_array.length; i++) {
     //           var water_station = data_array[i];
-    //           addPoint(water_station.long, water_station.lat, [72, 129, 234], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
+    //           addPoint(water_station.long, water_station.lat, [23, 162, 184], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
     //       }
     //       $("#water").switchClass("btn-outline-info", "btn-info");
     //       $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
