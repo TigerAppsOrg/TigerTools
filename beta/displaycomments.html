@@ -1,0 +1,22 @@
+<div class="tab-pane fade show active" id="nav-info" role="tabpanel" aria-labelledby="nav-home-tab">
+  <h4 class="text-center">Information</h4>
+
+  <!-- Show user feedback -->
+  <ul class="list-group">
+    <h5 class="text-center">View feedback from other users...</h5>
+    {% if wasSuccessful==False %}
+    <h6 class="text-center">Unable to load comments. Please try again later.</h6>
+    {% else %}
+    {% if data|length == 0 %}
+    <h6 class="text-center">No comments yet!</h6>
+    {% else %}
+    {% for row in data %}
+    <li class="list-group-item d-flex justify-content-between">
+      <p class="mb-0">{{ row[1] }}</p>
+      <small class="text-muted">{{ row[2] }}</small>
+    </li>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
+  </ul>
+</div>
