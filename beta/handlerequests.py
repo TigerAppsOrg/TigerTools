@@ -102,7 +102,7 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			# get records
 			stmt = 'SELECT * FROM dining;'
-			dbcursor.execute(stmt,["None"])
+			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
 
@@ -113,7 +113,7 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			# get records
 			stmt = 'SELECT * FROM cafes;'
-			dbcursor.execute(stmt,["None"])
+			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
 
@@ -124,7 +124,7 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			# get records
 			stmt = 'SELECT * FROM vendingmachines;'
-			dbcursor.execute(stmt,["None"])
+			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
 
@@ -135,7 +135,21 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			# get records
 			stmt = 'SELECT * FROM athletics;'
-			dbcursor.execute(stmt,["None"])
+			dbcursor.execute(stmt)
+			data = dbcursor.fetchall()
+			data_json = _tuples_to_json(cols, data)
+
+		elif amenity_type == "water":
+			# get column names
+			stmt = 'SELECT * FROM water LIMIT 0;'
+			dbcursor.execute(stmt)
+			cols = [desc[0] for desc in dbcursor.description]
+			cols.append('lat')
+			cols.append('long')
+			# get records
+			stmt = 'SELECT water.*, buildings.lat, buildings.long FROM water INNER JOIN \
+				buildings ON water.buildingcode LIKE buildings.locationcode;'
+			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
 

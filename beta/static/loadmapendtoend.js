@@ -7,7 +7,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   var clusterClicks = 0;
   var scannerClicks = 0;
   var vendingClicks = 0;
-  // var waterClicks = 0;
+  var waterClicks = 0;
   var athleticsClicks = 0;
 
   let currentAmenityName = "";
@@ -336,7 +336,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       clusterClicks++;
       scannerClicks++;
       vendingClicks++;
-      // waterClicks++;
+      waterClicks++;
       athleticsClicks++;
       $("#printers").switchClass("btn-danger", "btn-outline-danger");
       $("#clusters").switchClass("btn-warning", "btn-outline-warning");
@@ -345,7 +345,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       $("#cafes").switchClass("btn-success", "btn-outline-success");
       $("#vending").switchClass("btn-secondary", "btn-outline-secondary");
       $("#athletics").switchClass("btn-dark", "btn-outline-dark");
-      // $("#water").switchClass("btn-info", "btn-outline-info");
+      $("#water").switchClass("btn-info", "btn-outline-info");
 
       //view.graphics.removeAll();
       removeGraphic("Printer");
@@ -618,41 +618,41 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     });
 
     // Bottle Filling Stations NEED LAT LONG DATA FOR BUILDINGS
-    // $("#water").click(function(){
-    //   if (waterClicks % 2 == 0) {
-    //   $("#water-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
-    //   $.ajax({
-    //     type: "POST",
-    //     url: "/points",
-    //     //url: "http://0.0.0.0:5000/points",
-    //     data: JSON.stringify({amenity_type: "water"}),
-    //     contentType: "application/json",
-    //     success: function(json_data){
-    //       data_array = JSON.parse(json_data)
-    //       console.log(data_array);
-    //       for (var i = 0; i < data_array.length; i++) {
-    //         var water_station = data_array[i];
-    //         addPoint(water_station.long, water_station.lat, [23, 162, 184], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
-    //
-    //         // Create new cluster if doesnt exist already
-    //         checkPointCluster(point);
-    //       }
-    //
-    //       // Re-render points and clusters
-    //       renderAll();
-    //
-    //       $("#water").switchClass("btn-outline-info", "btn-info");
-    //       $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
-    //       waterClicks++;
-    //     }
-    //   });
-    //   
-    // } else {
-    //   removeGraphic("Water Filling");
-    //   $("#water").switchClass("btn-info", "btn-outline-info");
-    //   waterClicks++;
-    // }
-    // });
+    $("#water").click(function(){
+      if (waterClicks % 2 == 0) {
+      $("#water-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $.ajax({
+        type: "POST",
+        url: "/points",
+        //url: "http://0.0.0.0:5000/points",
+        data: JSON.stringify({amenity_type: "water"}),
+        contentType: "application/json",
+        success: function(json_data){
+          data_array = JSON.parse(json_data)
+          console.log(data_array);
+          for (var i = 0; i < data_array.length; i++) {
+            var water_station = data_array[i];
+            addPoint(water_station.long, water_station.lat, [23, 162, 184], {name: water_station.name, type:"Bottle-Filling Station", building: water_station.building});
+    
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
+          }
+    
+          // Re-render points and clusters
+          renderAll();
+    
+          $("#water").switchClass("btn-outline-info", "btn-info");
+          $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          waterClicks++;
+        }
+      });
+      
+    } else {
+      removeGraphic("Bottle-Filling Station");
+      $("#water").switchClass("btn-info", "btn-outline-info");
+      waterClicks++;
+    }
+    });
   });
 
 });
