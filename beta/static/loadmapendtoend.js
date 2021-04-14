@@ -66,8 +66,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       type: "simple-marker",
       color: col,
       outline: {
-        color: [255, 255, 255], // White outine
-        width: 1
+        color: [0,0,0], // Black outine
+        width: 0.7
       }
     };
     const pointGraphic = new Graphic({
