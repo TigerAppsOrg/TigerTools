@@ -355,6 +355,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       removeGraphic("Café");
       removeGraphic("Vending Machine");
       removeGraphic("Athletic Facility");
+      removeGraphic("Bottle-Filling Station");
     });
 
 
