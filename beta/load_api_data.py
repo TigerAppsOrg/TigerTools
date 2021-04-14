@@ -245,7 +245,7 @@ def categoryid6():
 	dbcursor.execute('DROP TABLE IF EXISTS id6')
 	dbcursor.execute('CREATE TABLE id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), accessible VARCHAR(30), description VARCHAR(80), \
-		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4))')
+		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), locationmore VARCHAR(30))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -259,11 +259,26 @@ def categoryid6():
 		macs = 'None'
 		scanners = 'None'
 		descrip = 'None'
+		room = 'None'
+		floor = 'None'
+		locationmore = 'None'
 		row = data_dict[i]
 		# print("name is", row.get('name'))
 		descrip = row.get('description')
 		if(row.get('description') is None):
 			descrip = 'None'
+		# extract more location info
+		name_info = row.get('name')
+		name_info = name_info.split(' - ')
+		if len(name_info) > 1:
+			locationmore = name_info[1]
+			more_loc = locationmore.split(' ')
+			if more_loc.count('Room') != 0:
+				room = more_loc[more_loc.index('Room')+1]
+			if more_loc.count('Floor') != 0:
+				floor = more_loc[more_loc.index('Floor')-1]
+			if more_loc.count('Level') != 0:
+				floor = more_loc[more_loc.index('Level')-1]
 		# amenities_list = row.get('amenities').get('amenity')
 		amenities_list = row.get('amenities').get('amenity')
 		if(amenities_list is None):
@@ -285,10 +300,10 @@ def categoryid6():
 			if a.count('Scanners') != 0:
 				scanners = a[1]
 		stmt = 'INSERT INTO \
-			id6 (name, dbid, buildingname, locationcode, lat, long, accessible, description, printers, macs, scanners) \
-			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
+			id6 (name, dbid, buildingname, locationcode, lat, long, accessible, description, printers, macs, scanners, room, floor, locationmore) \
+			VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);'
 		info = (row.get('name'),row.get('dbid'),row.get('building').get('name'),row.get('building').get('location_id'), \
-				row.get('geoloc').get('lat'),row.get('geoloc').get('long'),accessible,descrip,printers,macs,scanners)
+				row.get('geoloc').get('lat'),row.get('geoloc').get('long'),accessible,descrip,printers,macs,scanners,room,floor,locationmore)
 		dbcursor.execute(stmt, info)
 		dbconnection.commit()
 	dbconnection.commit()
