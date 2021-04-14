@@ -10,6 +10,7 @@ import psycopg2
 # import psutil
 # import subprocess
 
+# ----------------------------------------------------------
 def load_athletics(dbcursor):
 	# make athletics table
 	dbcursor.execute('DROP TABLE IF EXISTS athletics')
@@ -17,7 +18,7 @@ def load_athletics(dbcursor):
 	# read csv into athletics table
 	# dbcursor.execute("copy athletics(facility, sports, lat, long) FROM '/Users/indup/Documents/TigerTools-test/alpha/athletic_data.csv' DELIMITER ',' CSV HEADER;")
 	# https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python
-	csv_file_name = '/Users/indup/Documents/TigerTools/alpha/update_db/athletic_data.csv'
+	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/athletic_data.csv'
 	sql = "COPY athletics FROM STDIN DELIMITER ',' CSV HEADER"
 	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 
@@ -28,20 +29,36 @@ def load_athletics(dbcursor):
 	# 	print(row)
 	# 	row = dbcursor.fetchone()
 
+# ----------------------------------------------------------
 def load_water(dbcursor):
 	dbcursor.execute('DROP TABLE IF EXISTS water')
-	dbcursor.execute('CREATE TABLE water (asset VARCHAR(6), description VARCHAR(110), buildingcode VARCHAR(20), building VARCHAR(80),PRIMARY KEY (asset))')
+	dbcursor.execute('CREATE TABLE water (asset VARCHAR(6), description VARCHAR(110), buildingcode VARCHAR(20), building VARCHAR(80), floor VARCHAR(80), directions VARCHAR(80),PRIMARY KEY (asset))')
 	# https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python
-	csv_file_name = '/Users/indup/Documents/TigerTools/alpha/update_db/water_data.csv'
+	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/water_data2.csv'
 	sql = "COPY water FROM STDIN CSV HEADER"
 	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 	# checking if it worked
-	dbcursor.execute('SELECT * FROM water;')
-	row = dbcursor.fetchone()
-	for i in range(5):
-		print(row)
-		row = dbcursor.fetchone()
+	# dbcursor.execute('SELECT * FROM water;')
+	# row = dbcursor.fetchone()
+	# for i in range(5):
+	# 	print(row)
+	# 	row = dbcursor.fetchone()
 
+# ----------------------------------------------------------
+def load_buildings(dbcursor):
+	dbcursor.execute('DROP TABLE IF EXISTS buildings')
+	dbcursor.execute('CREATE TABLE buildings (locationcode VARCHAR(6), name VARCHAR(110), lat VARCHAR(20), long VARCHAR(20))')
+	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/buildings.csv'
+	sql = "COPY buildings FROM STDIN CSV HEADER"
+	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
+	# checking if it worked
+	# dbcursor.execute('SELECT * FROM buildings;')
+	# row = dbcursor.fetchone()
+	# for i in range(5):
+	# 	print(row)
+	# 	row = dbcursor.fetchone()
+
+# ----------------------------------------------------------
 def main():
 	# DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test) psutil.Process.name()
 	# https://www.kite.com/python/answers/how-to-execute-a-bash-script-in-python
@@ -57,9 +74,12 @@ def main():
 	dbconnection.commit()
 	load_water(dbcursor)
 	dbconnection.commit()
+	load_buildings(dbcursor)
+	dbconnection.commit()
 
 	dbcursor.close()
 	dbconnection.close()
 
+# ----------------------------------------------------------
 if __name__ == '__main__':
 	main()
