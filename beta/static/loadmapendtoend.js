@@ -11,6 +11,24 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   var athleticsClicks = 0;
 
   let currentAmenityName = "";
+
+  // Track all clusters
+  var clusters = [];
+
+  // Cluster symbol
+  const expandSymbol = {
+    type: "text",
+    color: "#8600e6",
+    text: "\ue63d",
+    xoffset: 0,
+    yoffset: -10,
+    font: {
+      size: 16,
+      family: "CalciteWebCoreIcons"
+    }
+  };
+
+  // Set up map
   var map = new Map({
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html
     // arcgis-navigation and arcgis-navigation-night look interesting - could do something with day/nighttime?
@@ -18,6 +36,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     basemap: "arcgis-navigation", // Basemap layer service
   });
 
+  // Set up MapView on which to render graphics
   var view = new MapView({
     map: map,
     center: [-74.657, 40.346], // Longitude, latitude of PU
@@ -36,7 +55,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     minZoom: 14 // Constrain zooming out
   };
 
-  function addPoint(long, lat, col, attr) {
+  // Create a normal point
+  function createPoint(long, lat, col, attr) {
     const point = { //Create a point
       type: "point",
       longitude: long,
@@ -55,17 +75,115 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       symbol: simpleMarkerSymbol,
       attributes: attr
     });
-    view.graphics.add(pointGraphic);
+    return pointGraphic;
   }
+
+  // Create a cluster point
+  function checkPointCluster(point) {
+    let isCluster = false;
+    for (let j = 0; j < clusters.length; j++) {
+      if (clusters[j].geometry.longitude == point.geometry.longitude && clusters[j].geometry.latitude == point.geometry.latitude) {
+        isCluster = true;
+        clusters[j].attributes.pts.push(point);
+        break;
+      }
+    }
+    if (!isCluster) {
+      clust = createCluster(point.geometry.longitude, point.geometry.latitude, {pts: [point], isOpen: false, temp: []});
+      clusters.push(clust);
+    }
+  }
+
+  function createCluster(long, lat, attr) {
+    const point = { //Create a point
+      type: "point",
+      longitude: long,
+      latitude: lat
+    };
+    const pointGraphic = new Graphic({
+      geometry: point,
+      symbol: expandSymbol,
+      attributes: attr
+    });
+    return pointGraphic;
+  }
+
+
 
   // Remove all points of a certain type
   function removeGraphic(amenityType) {
-    if (view.graphics.length) {
+    /*if (view.graphics.length) {
       for (i = 0; i < view.graphics.length; i++) {
         if (view.graphics.getItemAt(i).attributes.type == amenityType) {
           view.graphics.remove(view.graphics.getItemAt(i));
           i--;
         }
+      }
+    }*/
+    for (let j = 0; j < clusters.length; j++) {
+      pts = clusters[j].attributes.pts;
+      for (let k = 0; k < pts.length; k++) {
+        if (pts[k].attributes.type == amenityType) {
+          pts.splice(k, 1);
+          k--;
+        }
+      }
+    }
+    renderAll();
+  }
+
+  // Re-render all clusters/points
+  function renderAll() {
+    view.graphics.removeAll();
+
+    for (let i = 0; i < clusters.length; i++) {
+      let pts = clusters[i].attributes.pts;
+      let numPts = pts.length;
+
+      if (numPts > 1)
+      {
+        view.graphics.add(clusters[i]); // Add cluster itself to map if it contains >1 point
+        if (clusters[i].attributes.isOpen) // If cluster was previously open, render its points
+        {
+          clusters[i].attributes.temp = [];
+          for (let j = 0; j < numPts; j++) {
+            sinDist = 0.00025 * Math.sin(2.0*Math.PI * j / numPts);
+            cosDist = 0.00025 * Math.cos(2.0*Math.PI * j / numPts);
+            point = createPoint(pts[j].geometry.longitude + sinDist, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
+            view.graphics.add(point);
+            clusters[i].attributes.temp.push(point);
+          }
+        }
+      }
+      else if (numPts == 1) { // Cluster has only one point; render it
+        view.graphics.add(clusters[i].attributes.pts[0]);
+        clusters[i].attributes.isOpen = false;
+      }
+      else // Cluster is empty
+        clusters[i].attributes.isOpen = false;
+    }
+  }
+
+  // Toggle showing points contained in cluster
+  function toggleCluster(cluster) {
+    let pts = cluster.attributes.pts;
+    let numPts = pts.length;
+
+    if (cluster.attributes.isOpen == true) {
+      cluster.attributes.isOpen = false;
+      for (let j = 0; j < cluster.attributes.temp.length; j++) {
+        view.graphics.remove(cluster.attributes.temp[j]);
+      }
+      cluster.attributes.temp = [];
+    }
+    else {
+      cluster.attributes.isOpen = true;
+      for (let j = 0; j < numPts; j++) {
+        sinDist = 0.00025 * Math.sin(2.0*Math.PI * j / numPts);
+        cosDist = 0.00025 * Math.cos(2.0*Math.PI * j / numPts);
+        point = createPoint(pts[j].geometry.longitude + sinDist, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
+        view.graphics.add(point);
+        cluster.attributes.temp.push(point);
       }
     }
   }
@@ -102,8 +220,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         if (response.results.length) {
           const graphic = response.results[0].graphic;
           if (!graphic.attributes.layerId) { // Bandaid solution to clicking on map when no graphics
-            // console.log("Clicked on graphic"); // console.log for testing purposes
-            // console.log(graphic.attributes); // Attributes of graphic
+
+            if (graphic.attributes.pts) {
+              toggleCluster(graphic);
+            }
+
+            else {
 
             let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
             $(".modal-title").text(titleString); // Modify the modal
@@ -123,6 +245,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             });
 
             $("#modalTrigger").click(); // Open the modal
+
+            }
           }
         }
       });
@@ -222,7 +346,15 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       $("#vending").switchClass("btn-secondary", "btn-outline-secondary");
       $("#athletics").switchClass("btn-dark", "btn-outline-dark");
       // $("#water").switchClass("btn-info", "btn-outline-info");
-      view.graphics.removeAll();
+
+      //view.graphics.removeAll();
+      removeGraphic("Printer");
+      removeGraphic("Computer Cluster");
+      removeGraphic("Scanner");
+      removeGraphic("Dining hall");
+      removeGraphic("Café");
+      removeGraphic("Vending Machine");
+      removeGraphic("Athletic Facility");
     });
 
 
@@ -245,9 +377,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var printer = data_array[i];
-              addPoint(printer.long, printer.lat, [220, 53, 69], {name: printer.name, type:"Printer", building: printer.buildingname});
+            var printer = data_array[i];
+            point = createPoint(printer.long, printer.lat, [220, 53, 69], {name: printer.name, type:"Printer", building: printer.buildingname});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#printers").switchClass("btn-outline-danger", "btn-danger");
           $("#printers-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           printerClicks++;
@@ -274,9 +413,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var cluster = data_array[i];
-              addPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
+            var cluster = data_array[i];
+            point = createPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#clusters").switchClass("btn-outline-warning", "btn-warning");
           $("#clusters-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           clusterClicks++;
@@ -303,9 +449,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var scanner = data_array[i];
-              addPoint(scanner.long, scanner.lat, [128, 0, 0], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
+            var scanner = data_array[i];
+            point = createPoint(scanner.long, scanner.lat, [128, 0, 0], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#scanners").switchClass("btn-outline-danger", "btn-danger");
           $("#scanners-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           scannerClicks++;
@@ -332,9 +485,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var dhall = data_array[i];
-              addPoint(dhall.long, dhall.lat, [0, 123, 255], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
+            var dhall = data_array[i];
+            point = createPoint(dhall.long, dhall.lat, [0, 123, 255], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#dhalls").switchClass("btn-outline-primary", "btn-primary");
           $("#dhalls-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           diningClicks++;
@@ -361,9 +521,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var cafe = data_array[i];
-              addPoint(cafe.long, cafe.lat, [40, 167, 69], {name: cafe.name, type:"Café", building: cafe.buildingname});
+            var cafe = data_array[i];
+            point = createPoint(cafe.long, cafe.lat, [40, 167, 69], {name: cafe.name, type:"Café", building: cafe.buildingname});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#cafes").switchClass("btn-outline-success", "btn-success");
           $("#cafes-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           cafeClicks++;
@@ -390,10 +557,17 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var vending_machine = data_array[i];
-              addPoint(vending_machine.long, vending_machine.lat, [108, 117, 125], {name: vending_machine.name,
-                type:"Vending Machine", building: vending_machine.buildingname});
+            var vending_machine = data_array[i];
+            point = createPoint(vending_machine.long, vending_machine.lat, [108, 117, 125], {name: vending_machine.name,
+              type:"Vending Machine", building: vending_machine.buildingname});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#vending").switchClass("btn-outline-secondary", "btn-secondary");
           $("#vending-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           vendingClicks++;
@@ -420,10 +594,17 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           data_array = JSON.parse(json_data)
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
-              var athletic_facility = data_array[i];
-              addPoint(athletic_facility.long * (-1), athletic_facility.lat, [34, 38, 42],
-               {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
+            var athletic_facility = data_array[i];
+            point = createPoint(athletic_facility.long * (-1), athletic_facility.lat, [34, 38, 42],
+              {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
+
+            // Create new cluster if doesnt exist already
+            checkPointCluster(point);
           }
+
+          // Re-render points and clusters
+          renderAll();
+
           $("#athletics").switchClass("btn-outline-dark", "btn-dark");
           $("#athletics-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           athleticsClicks++;
@@ -450,9 +631,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     //       data_array = JSON.parse(json_data)
     //       console.log(data_array);
     //       for (var i = 0; i < data_array.length; i++) {
-    //           var water_station = data_array[i];
-    //           addPoint(water_station.long, water_station.lat, [23, 162, 184], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
+    //         var water_station = data_array[i];
+    //         addPoint(water_station.long, water_station.lat, [23, 162, 184], {name: water_station.name, type:"Vending Machine", building: water_station.buildingname});
+    //
+    //         // Create new cluster if doesnt exist already
+    //         checkPointCluster(point);
     //       }
+    //
+    //       // Re-render points and clusters
+    //       renderAll();
+    //
     //       $("#water").switchClass("btn-outline-info", "btn-info");
     //       $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
     //       waterClicks++;
