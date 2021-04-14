@@ -182,8 +182,17 @@ def vending_machines():
 		row = data_dict[i]
 		# print("name is", row.get('name'))
 		descrip = row.get('description')
-		if(row.get('description') is None):
+		if(descrip is None):
 			descrip = 'None'
+		# more directions if there
+		name_info = row.get('name')
+		name_info = name_info.split(' - ')
+		if len(name_info) > 1:
+			directions = name_info[1]
+			if descrip == 'None':
+				descrip = directions
+			else:
+				descrip += ', ' + directions
 		# amenities_list = row.get('amenities').get('amenity')
 		amenities_list = row.get('amenities').get('amenity')
 		if(amenities_list is None):
