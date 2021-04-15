@@ -226,26 +226,35 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             }
 
             else {
+              // Set title
+              let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
+              $(".modal-title").text(titleString);
 
-            let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
-            $(".modal-title").text(titleString); // Modify the modal
+              // Get information
+              $.ajax({
+                type: "POST",
+                url: "/info",
+                data: JSON.stringify(graphic.attributes),
+                contentType: "application/json",
+                success: function(response){
+                  $("#info-div").html(response);
+                }
+              });
 
-            //let bodyString = "Details: " + graphic.attributes["building"];
-            //$(".modal-body-desc").text(bodyString);
+              currentAmenityName = graphic.attributes["type"] + " - " + graphic.attributes["name"];
 
-            currentAmenityName = graphic.attributes["type"] + " - " + graphic.attributes["name"];
-            $.ajax({
-              type: "POST",
-              url: "/displaycomments",
-              data: JSON.stringify({amenityName: titleString}),
-              contentType: "application/json",
-              success: function(response){
-                $("#nav-info").html(response);
-              }
-            });
+              // Get comments
+              $.ajax({
+                type: "POST",
+                url: "/displaycomments",
+                data: JSON.stringify({amenityName: titleString}),
+                contentType: "application/json",
+                success: function(response){
+                  $("#comment-div").html(response);
+                }
+              });
 
-            $("#modalTrigger").click(); // Open the modal
-
+              $("#modalTrigger").click(); // Open the modal
             }
           }
         }
@@ -269,7 +278,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         data: JSON.stringify({amenityName: currentAmenityName}),
         contentType: "application/json",
         success: function(response){
-          $("#nav-info").html(response);
+          $("#comment-div").html(response);
         }
       });
     });
@@ -298,7 +307,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         // Reset info content and set info tab as active
         $("#nav-home-tab").tab("show");
         $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
-        $("#nav-info").html('<h5 class="text-center">Loading...</h5>');
+        $("#nav-info").html('<div id="info-div"></div><div id="comment-div"><h5 class="text-center">Loading...</h5></div>');
 
         // Reset submit form
         var form = $("#submit-form");
@@ -415,7 +424,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var printer = data_array[i];
-            point = createPoint(printer.long, printer.lat, [220, 53, 69], {name: printer.name, type:"Printer", building: printer.buildingname});
+            point = createPoint(printer.long, printer.lat, [220, 53, 69],
+              {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.computers, scanners: printer.scanners});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -451,7 +461,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var cluster = data_array[i];
-            point = createPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
+            point = createPoint(cluster.long, cluster.lat, [255, 193, 7],
+              {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.computers, scanners: cluster.scanners});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -487,7 +498,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var scanner = data_array[i];
-            point = createPoint(scanner.long, scanner.lat, [128, 0, 0], {name: scanner.name, type:"Scanner", building: scanner.buildingname});
+            point = createPoint(scanner.long, scanner.lat, [128, 0, 0],
+              {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.computers, scanners: scanner.scanners});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -523,7 +535,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var dhall = data_array[i];
-            point = createPoint(dhall.long, dhall.lat, [0, 123, 255], {name: dhall.name, type:"Dining hall", building: dhall.buildingname});
+            point = createPoint(dhall.long, dhall.lat, [0, 123, 255],
+              {name: dhall.name, type:"Dining hall", who: dhall.who, payment: dhall.payment, open: dhall.open, capacity: dhall.capacity});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -559,7 +572,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var cafe = data_array[i];
-            point = createPoint(cafe.long, cafe.lat, [40, 167, 69], {name: cafe.name, type:"Café", building: cafe.buildingname});
+            point = createPoint(cafe.long, cafe.lat, [40, 167, 69],
+              {name: cafe.name, type:"Café", description: cafe.description, who: cafe.who, payment: cafe.payment, open: cafe.open});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -595,8 +609,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var vending_machine = data_array[i];
-            point = createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0], {name: vending_machine.name,
-              type:"Vending Machine", building: vending_machine.buildingname});
+            point = createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0],
+              {name: vending_machine.name, type:"Vending Machine", directions: vending_machine.description, what: vending_machine.what, payment: vending_machine.payment});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -633,7 +647,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var athletic_facility = data_array[i];
             point = createPoint(athletic_facility.long * (-1), athletic_facility.lat, [136, 77, 255],
-              {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
+              {name: athletic_facility.buildingname, type:"Athletic Facility", sports: athletic_facility.sports});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -669,7 +683,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var water_station = data_array[i];
-            point = createPoint(water_station.long, water_station.lat, [23, 162, 184], {name: water_station.building + ", Floor " + water_station.floor, type:"Bottle-Filling Station", building: water_station.building});
+            point = createPoint(water_station.long, water_station.lat, [23, 162, 184],
+              {name: water_station.building + ", Floor " + water_station.floor, type:"Bottle-Filling Station"});
     
             // Create new cluster if doesnt exist already
             checkPointCluster(point);

@@ -1,23 +1,33 @@
-<!-- Cafes -->
+<!-- Dining halls -->
 <div class="alert" id="info-box">
-  <div class="container">
+  <h4 class="text-center">Information</h4>
+  <hr>
 
+  <div class="container">
     <div class="row">
-      <!-- Open/closed indicator -->
-      <div class="col-sm-6">
-        <h5><i class="fas fa-circle fa-fw" style="color:#00ff00;"></i> Open</h5>
-        <h5><i class="fas fa-circle fa-fw" style="color:#ff0000;"></i> Closed</h5>
-      </div>
-      <!-- Open to: -->
-      <div class="col-sm-6">
-        <h5>Open to: students</h5>
-      </div>
+      <!-- Description -->
+      <h5><i class="fas fa-quote-left fa-fw"></i> Description: {{description}}</h5>
     </div>
 
     <div class="row">
-      <!-- Description -->
-      <h5><i class="fas fa-quote-left fa-fw"></i> Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h5>
+      {% if who != "None" %}
+        <h5><i class="fas fa-user-check"></i> Open to: {{who}}</h5>
+      {% endif %}
+    </div>
+
+    <div class="row">
+      <h5><i class="fas fa-dollar-sign fa-fw" style="color:green;"></i> Payment: {{payment}}</h5>
+    </div>
+
+    <div class="row">
+      <!-- Open/closed indicator -->
+      {% if open == "no" %}
+        <h5><i class="fas fa-circle fa-fw" style="color:#ff0000;"></i> Closed</h5>
+      {% else %}
+        <h5><i class="fas fa-circle fa-fw" style="color:#00ff00;"></i> Open</h5>
+      {% endif %}
     </div>
 
   </div>
 </div>
+  

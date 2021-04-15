@@ -190,6 +190,57 @@ def get_data():
 		return ''
 
 # ---------------------------------------------------------------------
+@app.route('/info', methods=['POST'])
+def get_info():
+	netid = CASClient().authenticate()
+	try:
+		amenity_type = request.get_json().get('type')
+
+		if amenity_type == "Printer" or amenity_type == "Computer Cluster" or amenity_type == "Scanner":
+			html = render_template('info_templates/printers.html',
+				description=request.get_json().get("description"),
+				accessible=request.get_json().get("accessible"),
+				printers=request.get_json().get("printers"),
+				scanners=request.get_json().get("scanners"),
+				computers=request.get_json().get("computers"))
+			return make_response(html)
+
+		elif amenity_type == "Dining hall":
+			html = render_template('info_templates/dhalls.html',
+				who=request.get_json().get("who"),
+				payment=request.get_json().get("payment"),
+				open=request.get_json().get("open"),
+				capacity=request.get_json().get("capacity"))
+			return make_response(html)
+
+		elif amenity_type == "Café":
+			html = render_template('info_templates/cafes.html',
+				description=request.get_json().get("description"),
+				who=request.get_json().get("who"),
+				payment=request.get_json().get("payment"),
+				open=request.get_json().get("open"))
+			return make_response(html)
+
+		elif amenity_type == "Vending Machine":
+			html = render_template('info_templates/vending.html',
+				directions=request.get_json().get("description"),
+				what=request.get_json().get("what"),
+				payment=request.get_json().get("payment"))
+			return make_response(html)
+
+		elif amenity_type == "Athletic Facility":
+			html = render_template('info_templates/athletics.html',
+				sports=request.get_json().get("sports"))
+			return make_response(html)
+
+		elif amenity_type == "Bottle-Filling Station":
+			pass
+
+	except Exception as e:
+		print(str(e), file=sys.stderr)
+		return ''
+
+# ---------------------------------------------------------------------
 @app.route('/wkorder', methods=['POST'])
 def format_wkorder():
 	netid = CASClient().authenticate()
