@@ -56,6 +56,29 @@ class CASClient:
         
     #-------------------------------------------------------------------
 
+    def redirectLanding(self):
+        
+        # If the user's username is in the session, then the user was
+        # authenticated previously.  So return the user's username.
+        if 'username' in session:
+            return 0
+           
+        # If the request contains a login ticket, then try to
+        # validate it.
+        ticket = request.args.get('ticket')
+        if ticket is not None:
+            username = self.validate(ticket)
+            if username is not None:             
+                # The user is authenticated, so store the user's
+                # username in the session.               
+                session['username'] = username        
+                return 0
+      
+        # The request does not contain a valid login ticket
+        return 1
+
+    #-------------------------------------------------------------------
+
     # Authenticate the remote user, and return the user's username.
     # Do not return unless the user is successfully authenticated.
    	

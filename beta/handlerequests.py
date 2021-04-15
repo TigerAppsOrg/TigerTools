@@ -5,7 +5,7 @@
 
 from CASClient import CASClient
 from reqlib import ReqLib
-from flask import Flask, request, make_response, render_template, redirect
+from flask import Flask, request, make_response, render_template, redirect, url_for
 from flask import json, jsonify
 from time import gmtime, strftime
 import datetime
@@ -51,8 +51,17 @@ def display_map():
 	return make_response(html)
 '''
 # ---------------------------------------------------------------------
-@app.route('/', methods=['GET'])
-@app.route('/index', methods=['GET'])
+@app.route('/')
+@app.route('/index')
+def landing():
+	if CASClient().redirectLanding() == 0:
+		return redirect(url_for('display_map'))
+	else:
+		html = render_template('index.html')
+		return make_response(html)
+
+# ---------------------------------------------------------------------
+@app.route('/map', methods=['GET'])
 def display_map():
 	netid = CASClient().authenticate()
 
