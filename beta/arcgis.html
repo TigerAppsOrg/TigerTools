@@ -173,8 +173,8 @@
               <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
                 <h4 class="text-center">Provide feedback!</h4>
                 <div class="text-center" id="feedback-buttons">
-                  <button class="btn btn-success btn-lg align-center"><i class="fas fa-thumbs-up"></i></button>
-                  <button class="btn btn-danger btn-lg align-center"><i class="fas fa-thumbs-down"></i></button>
+                  <button type = "button" class="btn btn-success btn-lg align-center" id="likebutton" ><i class="fas fa-thumbs-up"></i>0</button>
+                  <button type = "button" class="btn btn-danger btn-lg align-center" id="dislikebutton"><i class="fas fa-thumbs-down"></i>0</button>
                 </div>
                 <!-- Comment input form -->
                 <form id="submit-form" novalidate>
@@ -312,17 +312,17 @@
                   <!-- POSSIBLY PUT NOTE FOR USER THAT EITHER FILL ALL THREE FIELDS OR ONLY FILL BUILDING -->
                   <label for="building">Building</label>
                   <select class="form-control mb-2" name="building" id="building" required>
-                     <option>1976 Hall</option>
+                     <option></option>
                   </select>
 
                   <!--<label for="buildingcode">Building Code</label>-->
                   <select class="form-control mb-2 d-none" name="buildingcode" id="buildingcode">
-                     <option>0703_01_H50</option>
+                     <option></option>
                   </select>
 
                   <!--<label for="locationcode">Location Code</label>-->
                   <select class="form-control mb-2 d-none" name="locationcode" id="locationcode">
-                     <option>0703</option>
+                     <option></option>
                   </select>
 
                   <div class="form-row mb-2">
@@ -341,7 +341,7 @@
 
                   <!--<label for="asset">Asset Number</label>-->
                   <select class="form-control mb-2 d-none" name="asset" id="asset">
-                     <option>24806</option>
+                     <option></option>
                   </select>
                 </div>
 
