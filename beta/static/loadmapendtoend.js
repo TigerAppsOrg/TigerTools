@@ -259,6 +259,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     $("#nav-comment-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
     });
+    
+    // display comments if home tab is clicked
     $("#nav-home-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
       $.ajax({
@@ -272,6 +274,19 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       });
     });
 
+    // display likes/dislikes for amenity when comments tab is clicked
+    $("#nav-comment-tab").on('click', function(){
+      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+			$.ajax({
+				type: "POST",
+				url: "/displayvotes",
+				data: JSON.stringify({amenityName: currentAmenityName}),
+				contentType: "application/json",
+				success: function(response){
+					$("#feedback-buttons").html(response);
+				}
+			});
+    });
 
     // When modal is closed, reset its content
     $("#myModal").on("hidden.bs.modal", function () {
@@ -328,16 +343,37 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       }
     });
 
+    // place upvote
+    $("#likebutton").click(function(){
+       $.ajax({
+          type: "POST",
+          url: "/vote",
+          data: JSON.stringify({amenityName: currentAmenityName, voteType: "upvote"}),
+          contentType: "application/json",
+          success: function(){
+						$.ajax({
+							type: "POST",
+							url: "/displayvotes",
+							data: JSON.stringify({amenityName: currentAmenityName}),
+							contentType: "application/json",
+							success: function(response){
+								$("#feedback-buttons").html(response);
+							}
+						});
+          }
+        });
+    });
+    
     // Reset/remove all graphics
     $("#reset").click(function(){
-      cafeClicks++;
-      printerClicks++;
-      diningClicks++;
-      clusterClicks++;
-      scannerClicks++;
-      vendingClicks++;
-      waterClicks++;
-      athleticsClicks++;
+      cafeClicks=0;
+      printerClicks=0;
+      diningClicks=0;
+      clusterClicks=0;
+      scannerClicks=0;
+      vendingClicks=0;
+      waterClicks=0;
+      athleticsClicks=0;
       $("#printers").switchClass("btn-danger", "btn-outline-danger");
       $("#clusters").switchClass("btn-warning", "btn-outline-warning");
       $("#scanners").switchClass("btn-danger", "btn-outline-danger");
