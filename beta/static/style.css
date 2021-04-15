@@ -1,8 +1,20 @@
-html, body, #viewDiv {
+html, body, header, #viewDiv {
   padding: 0;
   margin: 0;
   height: 100%;
   width: 100%;
+}
+
+#landing {
+    height: 100%;
+}
+
+#landing {
+    background: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg")no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 #openNav {
