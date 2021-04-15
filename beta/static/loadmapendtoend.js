@@ -265,8 +265,28 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     $("#nav-workorder-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
     });
+	  
+    // display likes/dislikes for amenity when comments tab is clicked
     $("#nav-comment-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+			$.ajax({
+				type: "POST",
+				url: "/displayupvotes",
+				data: JSON.stringify({amenityName: currentAmenityName}),
+				contentType: "application/json",
+				success: function(response){
+					$.ajax({
+						type: "POST",
+						url: "/displaydownvotes",
+						data: JSON.stringify({amenityName: currentAmenityName}),
+						contentType: "application/json",
+						success: function(response){
+							$("#numofdislikes").html(response);
+						}
+					});
+					$("#numoflikes").html(response);
+				}
+			});
     });
     
     // display comments if home tab is clicked
@@ -281,20 +301,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#comment-div").html(response);
         }
       });
-    });
-
-    // display likes/dislikes for amenity when comments tab is clicked
-    $("#nav-comment-tab").on('click', function(){
-      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
-			$.ajax({
-				type: "POST",
-				url: "/displayvotes",
-				data: JSON.stringify({amenityName: currentAmenityName}),
-				contentType: "application/json",
-				success: function(response){
-					$("#feedback-buttons").html(response);
-				}
-			});
     });
 
     // When modal is closed, reset its content
@@ -352,21 +358,62 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       }
     });
 
-    // place upvote
+			// place upvote
     $("#likebutton").click(function(){
+			//currentVoteType = "like"
        $.ajax({
           type: "POST",
-          url: "/vote",
-          data: JSON.stringify({amenityName: currentAmenityName, voteType: "upvote"}),
+          url: "/placeupvote",
+          data: JSON.stringify({amenityName: currentAmenityName}),
           contentType: "application/json",
           success: function(){
 						$.ajax({
 							type: "POST",
-							url: "/displayvotes",
+							url: "/displayupvotes",
 							data: JSON.stringify({amenityName: currentAmenityName}),
 							contentType: "application/json",
 							success: function(response){
-								$("#feedback-buttons").html(response);
+								$("#numoflikes").html(response);
+							}
+						});
+						$.ajax({
+							type: "POST",
+							url: "/displaydownvotes",
+							data: JSON.stringify({amenityName: currentAmenityName}),
+							contentType: "application/json",
+							success: function(response){
+								$("#numofdislikes").html(response);
+							}
+						});
+          }
+        });
+    });
+
+		// place downvote
+    $("#dislikebutton").click(function(){
+			//currentVoteType = "dislike"
+       $.ajax({
+          type: "POST",
+          url: "/placedownvote",
+          data: JSON.stringify({amenityName: currentAmenityName}),
+          contentType: "application/json",
+          success: function(){
+						$.ajax({
+							type: "POST",
+							url: "/displaydownvotes",
+							data: JSON.stringify({amenityName: currentAmenityName}),
+							contentType: "application/json",
+							success: function(response){
+								$("#numofdislikes").html(response);
+							}
+						});
+						$.ajax({
+							type: "POST",
+							url: "/displayupvotes",
+							data: JSON.stringify({amenityName: currentAmenityName}),
+							contentType: "application/json",
+							success: function(response){
+								$("#numoflikes").html(response);
 							}
 						});
           }
