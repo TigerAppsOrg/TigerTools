@@ -102,6 +102,7 @@ def get_data():
 			stmt = 'SELECT * FROM id6 WHERE macs<>%s;'
 			dbcursor.execute(stmt,("None",))
 			data = dbcursor.fetchall()
+			print(data)
 			data_json = _tuples_to_json(cols, data)
 
 		elif amenity_type == "dining":
