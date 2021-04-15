@@ -1,8 +1,0 @@
-<div class="text-center" id="feedback-buttons">
-{% if wasSuccessful==False %}
-<h5> Unable to fetch upvotes! </h5>
-{% else %}
-	<button type = "button" class="btn btn-success btn-lg align-center" id="likebutton"><i class="fas fa-thumbs-up"></i> {{ num_of_likes }} </button>
-	<button type = "button" class="btn btn-danger btn-lg align-center" id="dislikebutton"><i class="fas fa-thumbs-down"></i> {{ num_of_dislikes }} </button>
-{% endif %}
-</div>
