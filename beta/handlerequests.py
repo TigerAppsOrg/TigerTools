@@ -319,23 +319,7 @@ def show_comments():
 			if (comment[2] in time_range):
 				comments_modified.append([comment[0], comment[1], arrow.get(comment[2]).humanize()])
 		comments_modified.reverse()
-		
-	#if (amenityName.split(" - ")[0] == "Dining hall"):
-	#    diningName = amenityName.split(" - ")[1]
-	#    DATABASE_URL = os.environ['DATABASE_URL']
-	#    dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
-	#    dbcursor = dbconnection.cursor()
-	#    query = "SELECT capacity, payment FROM dining WHERE name = %s;"
-	#    dbcursor.execute(query, (diningName,))
-	#    results = dbcursor.fetchall()
-	#    dbcursor.close()
-	#    dbconnection.close()
-	#    print(results)
-	#    html = render_template('displaycomments.html', data=comments_modified,
-	#    capacity = results[0][0], open = True, payment = results[0][1], wasSuccessful = True)
-	#    return make_response(html)
-	
-	#html = render_template('displaycomments.html', data=comments_modified, capacity = "NA", open = False, wasSuccessful = True)
+
 		html = render_template('displaycomments.html', data=comments_modified, wasSuccessful = True)
 		return make_response(html)
 	
@@ -345,50 +329,88 @@ def show_comments():
 		return make_response(html)
 	
 # ---------------------------------------------------------------------
-@app.route('/displayvotes', methods=['POST'])
-def show_votes():
+@app.route('/displayupvotes', methods=['POST'])
+def show_upvotes():
 	netid = CASClient().authenticate()
 	try:
 		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (AMENITY_NAME text, NETID text, UPVOTES INT, DOWNVOTES INT);')
-		query1 = "SELECT SUM(UPVOTES) FROM votes WHERE AMENITY_NAME = %s;"
-		dbcursor.execute(query1, (amenityName,))
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbconnection.commit()
+		query = "SELECT SUM(upvotes) FROM votes WHERE AMENITY_NAME = %s;"
+		dbcursor.execute(query, (amenityName,))
 		upvotes = dbcursor.fetchall()[0][0]
-		query2 = "SELECT SUM(DOWNVOTES) FROM votes WHERE AMENITY_NAME = %s;"
-		dbcursor.execute(query2, (amenityName,))
-		downvotes = dbcursor.fetchall()[0][0]
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND upvotes = 0', (amenityName, netid,))
+		currentlyLiking = True
+		if (dbcursor.fetchone() == None):
+			currentlyLiking = False
 		dbcursor.close()
 		dbconnection.close()
-		html = render_template('displayLikesDislikes.html', num_of_likes = upvotes, num_of_dislikes = downvotes, wasSuccessful = True)
+		html = render_template('displayLikes.html', num_of_likes = upvotes, isLiking = currentlyLiking, wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('displayLikesDislikes.html', wasSuccessful = False)
+		html = render_template('displayLikes.html', wasSuccessful = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
-@app.route('/vote', methods=['POST'])
-def place_vote():
+@app.route('/displaydownvotes', methods=['POST'])
+def show_downvotes():
 	netid = CASClient().authenticate()
 	try:
 		amenityName = request.get_json().get('amenityName')
-		voteType = request.get_json().get('voteType')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (AMENITY_NAME text, NETID text, UPVOTES INT, DOWNVOTES INT);')
-		query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %i, %i);'
-		if (voteType == "upvote"):
-			data = (amenity_name, netid, 1, 0)
-		else:
-			data = (amenity_name, netid, 0, 1)
-		dbcursor.execute(query, data)
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		#dbconnection.commit()
+		query = "SELECT SUM(downvotes) FROM votes WHERE AMENITY_NAME = %s;"
+		dbcursor.execute(query, (amenityName,))
+		downvotes = dbcursor.fetchall()[0][0]
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND downvotes = 0', (amenityName, netid,))
+		currentlyDisliking = True
+		if (dbcursor.fetchone() == None):
+			currentlyDisliking = False
 		dbcursor.close()
 		dbconnection.close()
+		html = render_template('displayDislikes.html', num_of_dislikes = downvotes, isDisliking = currentlyDisliking ,wasSuccessful = True)
+		return make_response(html)
+
+	except Exception as e:
+		print(str(e), file=sys.stderr)
+		html = render_template('displayDislikes.html', wasSuccessful = False)
+		return make_response(html)
+
+# ---------------------------------------------------------------------
+@app.route('/placeupvote', methods=['POST'])
+def place_upvote():
+	netid = CASClient().authenticate()
+	try:
+		amenityName = request.get_json().get('amenityName')
+		DATABASE_URL = os.environ['DATABASE_URL']
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
+		result = dbcursor.fetchone()
+		if (result == None):
+			query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
+			data = (amenityName, netid, 1, 0)
+			dbcursor.execute(query, data)
+
+		else:
+			if (result[0] == 1):
+				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+			else:
+				dbcursor.execute('UPDATE votes set upvotes = 1, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+
+		dbconnection.commit()
+		dbcursor.close()
+		dbconnection.close()
+
 		html = render_template('arcgis.html')
 		return make_response(html)
 
@@ -396,3 +418,40 @@ def place_vote():
 		print(str(e), file=sys.stderr)
 		html = render_template('arcgis.html')
 		return make_response(html)
+
+#---------------------------------------------------------------------
+@app.route('/placedownvote', methods=['POST'])
+def place_downvote():
+	netid = CASClient().authenticate()
+
+	try:
+		amenityName = request.get_json().get('amenityName')
+		DATABASE_URL = os.environ['DATABASE_URL']
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
+		result = dbcursor.fetchone()
+		if (result == None):
+			query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
+			data = (amenityName, netid, 0, 1)
+			dbcursor.execute(query, data)
+
+		else:
+			if (result[1] == 1):
+				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+			else:
+				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 1 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+
+		dbconnection.commit()
+		dbcursor.close()
+		dbconnection.close()
+
+		html = render_template('arcgis.html')
+		return make_response(html)
+
+	except Exception as e:
+		print(str(e), file=sys.stderr)
+		html = render_template('arcgis.html')
+		return make_response(html)
+
