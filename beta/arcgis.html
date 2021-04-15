@@ -160,10 +160,16 @@
               <!-- COMMENT TAB -->
               <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
                 <h4 class="text-center">Provide feedback!</h4>
-                <div class="text-center" id="feedback-buttons">
-                  <button type = "button" class="btn btn-success btn-lg align-center" id="likebutton" ><i class="fas fa-thumbs-up"></i>0</button>
-                  <button type = "button" class="btn btn-danger btn-lg align-center" id="dislikebutton"><i class="fas fa-thumbs-down"></i>0</button>
-                </div>
+								<form class="text-center" id="submit-vote" novalidyate>
+									<button type="button" class="btn btn-success btn-lg align-center" id="likebutton"><i class="fas fa-thumbs-up"></i>
+										<div id="numoflikes"> 0 </div> </button>
+									<button type="button" class="btn btn-danger btn-lg align-center" id="dislikebutton"><i class="fas fa-thumbs-down"></i>
+										<div id="numofdislikes"> 0 </div> </button>
+                  <!---<div class="input-group" novalidate>
+										<button type="button" class="btn btn-success btn-lg align-center" id="likebutton"><i class="fas fa-thumbs-up"></i> 0 </button>
+	                  <button type="button" class="btn btn-danger btn-lg align-center" id="dislikebutton"><i class="fas fa-thumbs-down"></i> 0 </button>
+									</div>-->
+                </form>
                 <!-- Comment input form -->
                 <form id="submit-form" novalidate>
                   <label for="message-text" class="col-form-label">Enter your own feedback here!</label>
