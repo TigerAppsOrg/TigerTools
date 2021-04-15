@@ -223,7 +223,7 @@ def get_info():
 
 		elif amenity_type == "Vending Machine":
 			html = render_template('info_templates/vending.html',
-				directions=request.get_json().get("description"),
+				directions=request.get_json().get("directions"),
 				what=request.get_json().get("what"),
 				payment=request.get_json().get("payment"))
 			return make_response(html)
