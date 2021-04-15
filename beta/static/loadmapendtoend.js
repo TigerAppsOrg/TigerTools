@@ -451,7 +451,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var cluster = data_array[i];
-            point = createPoint(cluster.long, cluster.lat, [255, 128, 0], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
+            point = createPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -595,7 +595,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var vending_machine = data_array[i];
-            point = createPoint(vending_machine.long, vending_machine.lat, [255, 153, 51], {name: vending_machine.name,
+            point = createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0], {name: vending_machine.name,
               type:"Vending Machine", building: vending_machine.buildingname});
 
             // Create new cluster if doesnt exist already
