@@ -31,25 +31,7 @@ class CsvTextBuilder(object):
 
     def write(self, row):
         self.csv_string.append(row)
-''' commented out bc landing page not working
-# ---------------------------------------------------------------------
-@app.route('/', methods=['GET'])
-@app.route('/index', methods=['GET'])
-def display_landing():
-	html = render_template('index.html')
-	return make_response(html)
 
-# ---------------------------------------------------------------------
-@app.route('/validated', methods=['GET'])
-def display_map():
-	netid = CASClient().authenticate()
-
-	# update database
-	update()
-
-	html = render_template('arcgis.html',netid=netid)
-	return make_response(html)
-'''
 # ---------------------------------------------------------------------
 @app.route('/')
 @app.route('/index')
