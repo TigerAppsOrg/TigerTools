@@ -241,7 +241,7 @@ def format_wkorder():
 	writer.writerows(data)
 	csv_string = csvfile.csv_string
 	# testing
-	print('Amenity (this field is only really useful if filling station)','NetID','First Name','Last Name','E-mail','Phone','Alt NetID','Alt First Name','Alt Last Name','Alt Email','Alt Phone', \
+	print('Amenity','NetID','First Name','Last Name','E-mail','Phone','Alt NetID','Alt First Name','Alt Last Name','Alt Email','Alt Phone', \
 	'Contact for Scheduling','Charge Source','Campus','Building','Building Code','Location Code','Asset','Description (with more location info appended if given by user)')
 	print(''.join(csv_string))
 	# testing
