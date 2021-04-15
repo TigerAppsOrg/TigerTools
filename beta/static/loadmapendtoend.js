@@ -303,20 +303,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       });
     });
 
-    // display likes/dislikes for amenity when comments tab is clicked
-    $("#nav-comment-tab").on('click', function(){
-      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
-			$.ajax({
-				type: "POST",
-				url: "/displayvotes",
-				data: JSON.stringify({amenityName: currentAmenityName}),
-				contentType: "application/json",
-				success: function(response){
-					$("#feedback-buttons").html(response);
-				}
-			});
-    });
-
     // When modal is closed, reset its content
     $("#myModal").on("hidden.bs.modal", function () {
         // Reset work order form
