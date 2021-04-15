@@ -1,4 +1,4 @@
-require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track"], function (esriConfig, Map, MapView, Graphic, Track) {
+require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track", "esri/core/watchUtils"], function (esriConfig, Map, MapView, Graphic, Track, watchUtils) {
   esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
 
   var cafeClicks = 0;
@@ -14,14 +14,15 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
   // Track all clusters
   var clusters = [];
+  var clusterDist = 0.00033;
 
   // Cluster symbol
   const expandSymbol = {
     type: "text",
     color: "#8600e6",
-    text: "\ue63d",
-    xoffset: 0,
-    yoffset: -10,
+    text: "\ue63c",
+    xoffset: 0.5,
+    yoffset: -9.5,
     font: {
       size: 16,
       family: "CalciteWebCoreIcons"
@@ -55,6 +56,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     minZoom: 14 // Constrain zooming out
   };
 
+  // When view is stationary, change cluster draw distance and re-render.
+  watchUtils.whenTrue(view, "stationary", function() {
+    if (view.zoom) {
+      clusterDist = 0.00033 * Math.pow(2, 15-view.zoom);
+      renderAll();
+    }
+  });
+
   // Create a normal point
   function createPoint(long, lat, col, attr) {
     const point = { //Create a point
@@ -79,21 +88,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   }
 
   // Create a cluster point
-  function checkPointCluster(point) {
-    let isCluster = false;
-    for (let j = 0; j < clusters.length; j++) {
-      if (clusters[j].geometry.longitude == point.geometry.longitude && clusters[j].geometry.latitude == point.geometry.latitude) {
-        isCluster = true;
-        clusters[j].attributes.pts.push(point);
-        break;
-      }
-    }
-    if (!isCluster) {
-      clust = createCluster(point.geometry.longitude, point.geometry.latitude, {pts: [point], isOpen: false, temp: []});
-      clusters.push(clust);
-    }
-  }
-
   function createCluster(long, lat, attr) {
     const point = { //Create a point
       type: "point",
@@ -108,28 +102,20 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     return pointGraphic;
   }
 
-
-
-  // Remove all points of a certain type
-  function removeGraphic(amenityType) {
-    /*if (view.graphics.length) {
-      for (i = 0; i < view.graphics.length; i++) {
-        if (view.graphics.getItemAt(i).attributes.type == amenityType) {
-          view.graphics.remove(view.graphics.getItemAt(i));
-          i--;
-        }
-      }
-    }*/
+  // Create a new cluster point if the input point's long/lat doesn't match any cluster's long/lat
+  function checkPointCluster(point) {
+    let isCluster = false;
     for (let j = 0; j < clusters.length; j++) {
-      pts = clusters[j].attributes.pts;
-      for (let k = 0; k < pts.length; k++) {
-        if (pts[k].attributes.type == amenityType) {
-          pts.splice(k, 1);
-          k--;
-        }
+      if (clusters[j].geometry.longitude == point.geometry.longitude && clusters[j].geometry.latitude == point.geometry.latitude) {
+        isCluster = true;
+        clusters[j].attributes.pts.push(point);
+        break;
       }
     }
-    renderAll();
+    if (!isCluster) {
+      clust = createCluster(point.geometry.longitude, point.geometry.latitude, {pts: [point], isOpen: false, temp: []});
+      clusters.push(clust);
+    }
   }
 
   // Re-render all clusters/points
@@ -147,9 +133,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         {
           clusters[i].attributes.temp = [];
           for (let j = 0; j < numPts; j++) {
-            sinDist = 0.00025 * Math.sin(2.0*Math.PI * j / numPts);
-            cosDist = 0.00025 * Math.cos(2.0*Math.PI * j / numPts);
-            point = createPoint(pts[j].geometry.longitude + sinDist, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
+            sinDist = clusterDist * Math.sin(2.0*Math.PI * j / numPts);
+            cosDist = clusterDist * Math.cos(2.0*Math.PI * j / numPts);
+            point = createPoint(pts[j].geometry.longitude + sinDist*1.25, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
             view.graphics.add(point);
             clusters[i].attributes.temp.push(point);
           }
@@ -179,13 +165,35 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     else {
       cluster.attributes.isOpen = true;
       for (let j = 0; j < numPts; j++) {
-        sinDist = 0.00025 * Math.sin(2.0*Math.PI * j / numPts);
-        cosDist = 0.00025 * Math.cos(2.0*Math.PI * j / numPts);
-        point = createPoint(pts[j].geometry.longitude + sinDist, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
+        sinDist = clusterDist * Math.sin(2.0*Math.PI * j / numPts);
+        cosDist = clusterDist * Math.cos(2.0*Math.PI * j / numPts);
+        point = createPoint(pts[j].geometry.longitude + sinDist*1.25, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
         view.graphics.add(point);
         cluster.attributes.temp.push(point);
       }
     }
+  }
+
+  // Remove all points of a certain type
+  function removeGraphic(amenityType) {
+    /*if (view.graphics.length) {
+      for (i = 0; i < view.graphics.length; i++) {
+        if (view.graphics.getItemAt(i).attributes.type == amenityType) {
+          view.graphics.remove(view.graphics.getItemAt(i));
+          i--;
+        }
+      }
+    }*/
+    for (let j = 0; j < clusters.length; j++) {
+      pts = clusters[j].attributes.pts;
+      for (let k = 0; k < pts.length; k++) {
+        if (pts[k].attributes.type == amenityType) {
+          pts.splice(k, 1);
+          k--;
+        }
+      }
+    }
+    renderAll();
   }
 
   // Create tracking widget
