@@ -42,6 +42,40 @@
 
 	</div>
   </header>
+
+  <!-- Javascript stuff -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"> </script>
+		<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+		<script>
+			'use strict';
+			function handleResponse(response)
+			{
+				$('html').html(response);
+			}
+
+			let request = null;
+
+			function userLogin()
+			{
+				let url = '/validated';
+
+				if(request != null) request.abort();
+
+				request = $.ajax(
+				{
+					type: 'GET',
+					url: url,
+					success: handleResponse
+				});
+			}
+
+			function setup()
+			{
+				userLogin();
+			}
+
+			$('document').ready(setup);
+		</script>
   <!-- <body>
   	<div class="container bg-info text-green">Welcome to TigerTools!</div>
   	<button type="button" class="btn btn-success" class="form-control">Click Here to Login</button>

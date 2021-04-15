@@ -35,7 +35,13 @@ class CsvTextBuilder(object):
 # ---------------------------------------------------------------------
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
-def display_home():
+def display_landing():
+	html = render_template('index.html')
+	return make_response(html)
+
+# ---------------------------------------------------------------------
+@app.route('/validated', methods=['GET'])
+def display_map():
 	netid = CASClient().authenticate()
 
 	# update database
