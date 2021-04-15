@@ -287,8 +287,7 @@ def show_comments():
 # ---------------------------------------------------------------------
 @app.route('/displayvotes', methods=['POST'])
 def show_votes():
-	#netid = CASClient().authenticate()
-	netid = "arebei"
+	netid = CASClient().authenticate()
 	try:
 		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
@@ -314,8 +313,7 @@ def show_votes():
 # ---------------------------------------------------------------------
 @app.route('/vote', methods=['POST'])
 def place_vote():
-	#netid = CASClient().authenticate()
-	netid = "arebei"
+	netid = CASClient().authenticate()
 	try:
 		amenityName = request.get_json().get('amenityName')
 		voteType = request.get_json().get('voteType')
