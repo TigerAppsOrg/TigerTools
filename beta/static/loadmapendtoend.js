@@ -376,11 +376,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       athleticsClicks=0;
       $("#printers").switchClass("btn-danger", "btn-outline-danger");
       $("#clusters").switchClass("btn-warning", "btn-outline-warning");
-      $("#scanners").switchClass("btn-danger", "btn-outline-danger");
+      $("#scanners").switchClass("btn-maroon-full", "btn-maroon");
       $("#dhalls").switchClass("btn-primary", "btn-outline-primary");
       $("#cafes").switchClass("btn-success", "btn-outline-success");
-      $("#vending").switchClass("btn-secondary", "btn-outline-secondary");
-      $("#athletics").switchClass("btn-dark", "btn-outline-dark");
+      $("#vending").switchClass("btn-orange-full", "btn-orange");
+      $("#athletics").switchClass("btn-purple-full", "btn-purple");
       $("#water").switchClass("btn-info", "btn-outline-info");
 
       //view.graphics.removeAll();
@@ -451,7 +451,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var cluster = data_array[i];
-            point = createPoint(cluster.long, cluster.lat, [255, 193, 7], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
+            point = createPoint(cluster.long, cluster.lat, [255, 128, 0], {name: cluster.name, type:"Computer Cluster", building: cluster.buildingname});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -496,14 +496,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           // Re-render points and clusters
           renderAll();
 
-          $("#scanners").switchClass("btn-outline-danger", "btn-danger");
+          $("#scanners").switchClass("btn-maroon", "btn-maroon-full");
           $("#scanners-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           scannerClicks++;
         }
       });
     } else {
       removeGraphic("Scanner");
-      $("#scanners").switchClass("btn-danger", "btn-outline-danger");
+      $("#scanners").switchClass("btn-maroon-full", "btn-maroon");
       scannerClicks++;
     }
     });
@@ -595,7 +595,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var vending_machine = data_array[i];
-            point = createPoint(vending_machine.long, vending_machine.lat, [108, 117, 125], {name: vending_machine.name,
+            point = createPoint(vending_machine.long, vending_machine.lat, [255, 153, 51], {name: vending_machine.name,
               type:"Vending Machine", building: vending_machine.buildingname});
 
             // Create new cluster if doesnt exist already
@@ -605,14 +605,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           // Re-render points and clusters
           renderAll();
 
-          $("#vending").switchClass("btn-outline-secondary", "btn-secondary");
+          $("#vending").switchClass("btn-orange", "btn-orange-full");
           $("#vending-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           vendingClicks++;
         }
       });
     } else {
       removeGraphic("Vending Machine");
-      $("#vending").switchClass("btn-secondary", "btn-outline-secondary");
+      $("#vending").switchClass("btn-orange-full", "btn-orange");
       vendingClicks++;
     }
     });
@@ -632,7 +632,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var athletic_facility = data_array[i];
-            point = createPoint(athletic_facility.long * (-1), athletic_facility.lat, [34, 38, 42],
+            point = createPoint(athletic_facility.long * (-1), athletic_facility.lat, [136, 77, 255],
               {name: athletic_facility.buildingname, type:"Athletic Facility", building: athletic_facility.sports});
 
             // Create new cluster if doesnt exist already
@@ -642,14 +642,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           // Re-render points and clusters
           renderAll();
 
-          $("#athletics").switchClass("btn-outline-dark", "btn-dark");
+          $("#athletics").switchClass("btn-purple", "btn-purple-full");
           $("#athletics-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           athleticsClicks++;
         }
       });
     } else {
       removeGraphic("Athletic Facility");
-      $("#athletics").switchClass("btn-dark", "btn-outline-dark");
+      $("#athletics").switchClass("btn-purple-full", "btn-purple");
       athleticsClicks++;
     }
     });

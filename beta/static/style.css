@@ -54,27 +54,45 @@ html, body, header, #viewDiv {
   font-size: 36px;
   margin-left: 50px;
 }
-/*
-#scanners {
-  background-color: #855cd6;
+
+.btn-maroon {
+  color: #800000;
+  border-width: 1px;
+  border-color: #800000;
 }
-#scanners:hover {
-  background-color: #7547d1;
+.btn-maroon:hover, .btn-maroon-full {
+  color: white !important;
+  background-color: #800000 !important;
+}
+.btn-maroon:active, .btn-maroon:focus, .btn-maroon-full:active, .btn-maroon-full:focus {
+  box-shadow: 0 0 0 0.2rem rgba(128, 0, 0, 0.5) !important;
 }
 
-#water {
-  background-color: #4881ea;
+.btn-orange {
+  color: #ff9933;
+  border-width: 1px;
+  border-color: #ff9933;
 }
-#water:hover {
-  background-color: #1b61e4;
+.btn-orange:hover, .btn-orange-full {
+  color: white !important;
+  background-color: #ff9933 !important;
+}
+.btn-orange:active, .btn-orange:focus, .btn-orange-full:active, .btn-orange-full:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 153, 51, 0.5) !important;
 }
 
-#athletics {
-  background-color: #ffa31a;
+.btn-purple {
+  color: #884dff;
+  border-width: 1px;
+  border-color: #884dff;
 }
-#athletics:hover {
-  background-color: #ff9900;
-}*/
+.btn-purple:hover, .btn-purple-full {
+  color: white !important;
+  background-color: #884dff !important;
+}
+.btn-purple:active, .btn-purple:focus, .btn-purple-full:active, .btn-purple-full:focus {
+  box-shadow: 0 0 0 0.2rem rgba(136, 77, 255, 0.5) !important;
+}
 
 .sideButton {
   margin: 5px 3px 5px 3px;
