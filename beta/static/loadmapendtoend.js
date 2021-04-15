@@ -472,7 +472,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var printer = data_array[i];
             point = createPoint(printer.long, printer.lat, [220, 53, 69],
-              {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.computers, scanners: printer.scanners});
+              {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.macs, scanners: printer.scanners});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -509,7 +509,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var cluster = data_array[i];
             point = createPoint(cluster.long, cluster.lat, [255, 193, 7],
-              {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.computers, scanners: cluster.scanners});
+              {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.macs, scanners: cluster.scanners});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -546,7 +546,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var scanner = data_array[i];
             point = createPoint(scanner.long, scanner.lat, [128, 0, 0],
-              {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.computers, scanners: scanner.scanners});
+              {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.macs, scanners: scanner.scanners});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
