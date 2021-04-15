@@ -283,3 +283,58 @@ def show_comments():
 		print(str(e), file=sys.stderr)
 		html = render_template('displaycomments.html', data=[], wasSuccessful = False)
 		return make_response(html)
+	
+# ---------------------------------------------------------------------
+@app.route('/displayvotes', methods=['POST'])
+def show_votes():
+	#netid = CASClient().authenticate()
+	netid = "arebei"
+	try:
+		amenityName = request.get_json().get('amenityName')
+		DATABASE_URL = os.environ['DATABASE_URL']
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (AMENITY_NAME text, NETID text, UPVOTES INT, DOWNVOTES INT);')
+		query1 = "SELECT SUM(UPVOTES) FROM votes WHERE AMENITY_NAME = %s;"
+		dbcursor.execute(query1, (amenityName,))
+		upvotes = dbcursor.fetchall()[0][0]
+		query2 = "SELECT SUM(DOWNVOTES) FROM votes WHERE AMENITY_NAME = %s;"
+		dbcursor.execute(query2, (amenityName,))
+		downvotes = dbcursor.fetchall()[0][0]
+		dbcursor.close()
+		dbconnection.close()
+		html = render_template('displayLikesDislikes.html', num_of_likes = upvotes, num_of_dislikes = downvotes, wasSuccessful = True)
+		return make_response(html)
+
+	except Exception as e:
+		print(str(e), file=sys.stderr)
+		html = render_template('displayLikesDislikes.html', wasSuccessful = False)
+		return make_response(html)
+
+# ---------------------------------------------------------------------
+@app.route('/vote', methods=['POST'])
+def place_vote():
+	#netid = CASClient().authenticate()
+	netid = "arebei"
+	try:
+		amenityName = request.get_json().get('amenityName')
+		voteType = request.get_json().get('voteType')
+		DATABASE_URL = os.environ['DATABASE_URL']
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (AMENITY_NAME text, NETID text, UPVOTES INT, DOWNVOTES INT);')
+		query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %i, %i);'
+		if (voteType == "upvote"):
+			data = (amenity_name, netid, 1, 0)
+		else:
+			data = (amenity_name, netid, 0, 1)
+		dbcursor.execute(query, data)
+		dbcursor.close()
+		dbconnection.close()
+		html = render_template('arcgis.html')
+		return make_response(html)
+
+	except Exception as e:
+		print(str(e), file=sys.stderr)
+		html = render_template('arcgis.html')
+		return make_response(html)
