@@ -105,19 +105,19 @@ def get_data():
 
 		if amenity_type == "printers":
 			# get records
-			stmt = 'SELECT * FROM id6 WHERE printers!=%s;'
+			stmt = 'SELECT * FROM id6 WHERE printers<>%s;'
 			dbcursor.execute(stmt,["None"])
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
 
 		elif amenity_type == "scanners":
-			stmt = 'SELECT * FROM id6 WHERE scanners!=%s;'
+			stmt = 'SELECT * FROM id6 WHERE scanners<>%s;'
 			dbcursor.execute(stmt,["None"])
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
 
 		elif amenity_type == "macs":
-			stmt = 'SELECT * FROM id6 WHERE macs!=%s;'
+			stmt = 'SELECT * FROM id6 WHERE macs<>%s;'
 			dbcursor.execute(stmt,["None"])
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
