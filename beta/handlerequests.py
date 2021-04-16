@@ -155,14 +155,11 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			cols.append('lat')
 			cols.append('long')
-			print(cols)
 			# get records
 			stmt = 'SELECT water.*, buildings.lat, buildings.long \
 				FROM water INNER JOIN buildings ON water.buildingcode LIKE buildings.locationcode;'
 			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
-			for i in range(20):
-				print(data[i])
 			data_json = _tuples_to_json(cols, data)
 
 		dbcursor.close()
