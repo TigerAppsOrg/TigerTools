@@ -56,6 +56,44 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     minZoom: 14 // Constrain zooming out
   };
 
+  var trackGraphic = new Graphic({
+    symbol: {
+      type: "simple-marker",
+      color: [102, 153, 255],
+      outline: {
+        color: [255,255,255],
+        width: 0.7
+      }
+    }
+  });
+
+  // Create tracking widget
+  var track = new Track({
+    view: view,
+    graphic: trackGraphic,
+    /*graphic: new Graphic({
+      symbol: {
+        type: "simple-marker",
+        size: "12px",
+        color: "green",
+        outline: {
+          color: "#efefef",
+          width: "1.5px"
+        }
+      }
+    }),*/
+    useHeadingEnabled: false, // Prevent map view from rotating
+    goToLocationEnabled: false // Don't automatically move to user
+  });
+
+  view.ui.add(track, "top-left");
+
+  // Start tracking once view becomes ready
+  view.when(function() {
+    view.ui.move([ "zoom", track ], "top-right");
+    track.start();
+  });
+
   // When view is stationary, change cluster draw distance and re-render.
   watchUtils.whenTrue(view, "stationary", function() {
     if (view.zoom) {
@@ -118,9 +156,24 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     }
   }
 
+  // Remove all graphics except tracking graphic
+  function removeAllExceptTrack() {
+    if (view.graphics.length) {
+      for (i = 0; i < view.graphics.length; i++) {
+        let temp = view.graphics.getItemAt(i);
+        // Remove if NOT track
+        if (JSON.stringify(temp.symbol) !== JSON.stringify(trackGraphic.symbol)) {
+          view.graphics.remove(temp);
+          i--;
+        }
+      }
+    }
+  }
+
   // Re-render all clusters/points
   function renderAll() {
-    view.graphics.removeAll();
+    //view.graphics.removeAll();
+    removeAllExceptTrack();
 
     for (let i = 0; i < clusters.length; i++) {
       let pts = clusters[i].attributes.pts;
@@ -195,31 +248,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     }
     renderAll();
   }
-
-  // Create tracking widget
-  var track = new Track({
-    view: view,
-    /*graphic: new Graphic({
-      symbol: {
-        type: "simple-marker",
-        size: "12px",
-        color: "green",
-        outline: {
-          color: "#efefef",
-          width: "1.5px"
-        }
-      }
-    }),*/
-    useHeadingEnabled: false, // Prevent map view from rotating
-    goToLocationEnabled: false // Don't automatically move to user
-  });
-  view.ui.add(track, "top-left");
-
-  // Start tracking once view becomes ready
-  view.when(function() {
-    view.ui.move([ "zoom", track ], "top-right");
-    track.start();
-  });
 
   // Function for point clicks
   view.on("click", function(event) {
