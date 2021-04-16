@@ -48,6 +48,7 @@ def load_water(dbcursor):
 def load_buildings(dbcursor):
 	dbcursor.execute('DROP TABLE IF EXISTS buildings')
 	dbcursor.execute('CREATE TABLE buildings (locationcode VARCHAR(6), name VARCHAR(110), lat VARCHAR(20), long VARCHAR(20))')
+	dbcursor.execute('UPDATE buildings SET locationcode=CONCAT(locationcode,\'%\');')
 	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/buildings.csv'
 	sql = "COPY buildings FROM STDIN CSV HEADER"
 	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
