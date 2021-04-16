@@ -216,7 +216,9 @@ def get_info():
 			return make_response(html)
 
 		elif amenity_type == "Bottle-Filling Station":
-			pass
+			html = render_template('info_templates/water.html',
+				floor=request.get_json().get("floor"),directions=request.get_json().get("directions"))
+			return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
