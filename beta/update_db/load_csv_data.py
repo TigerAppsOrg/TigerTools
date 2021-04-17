@@ -32,9 +32,9 @@ def load_athletics(dbcursor):
 # ----------------------------------------------------------
 def load_water(dbcursor):
 	dbcursor.execute('DROP TABLE IF EXISTS water')
-	dbcursor.execute('CREATE TABLE water (asset VARCHAR(6), description VARCHAR(110), buildingcode VARCHAR(20), building VARCHAR(80), floor VARCHAR(80), directions VARCHAR(80),PRIMARY KEY (asset))')
+	dbcursor.execute('CREATE TABLE water (asset VARCHAR(6), description VARCHAR(110), buildingcode VARCHAR(20), buildingname VARCHAR(80), floor VARCHAR(80), directions VARCHAR(80),PRIMARY KEY (asset))')
 	# https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python
-	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/water_data2.csv'
+	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/water_data.csv'
 	sql = "COPY water FROM STDIN CSV HEADER"
 	dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 	# checking if it worked
@@ -47,7 +47,7 @@ def load_water(dbcursor):
 # ----------------------------------------------------------
 def load_buildings(dbcursor):
 	dbcursor.execute('DROP TABLE IF EXISTS buildings')
-	dbcursor.execute('CREATE TABLE buildings (locationcode VARCHAR(6), name VARCHAR(110), lat VARCHAR(20), long VARCHAR(20))')
+	dbcursor.execute('CREATE TABLE buildings (locationcode VARCHAR(6), name VARCHAR(110), lat VARCHAR(20), long VARCHAR(20), PRIMARY KEY (locationcode))')
 	dbcursor.execute('UPDATE buildings SET locationcode=CONCAT(locationcode,\'%\');')
 	csv_file_name = '/Users/indup/Documents/TigerTools/beta/update_db/buildings.csv'
 	sql = "COPY buildings FROM STDIN CSV HEADER"

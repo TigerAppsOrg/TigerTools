@@ -26,7 +26,7 @@ def dining_halls():
 	dbcursor.execute('DROP TABLE IF EXISTS dining')
 	dbcursor.execute('CREATE TABLE dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
-		payment VARCHAR(500), capacity VARCHAR(6), open VARCHAR(4))')
+		payment VARCHAR(500), capacity VARCHAR(6), open VARCHAR(4), PRIMARY KEY(name, dbid))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -95,7 +95,7 @@ def cafes():
 	dbcursor.execute('DROP TABLE IF EXISTS cafes')
 	dbcursor.execute('CREATE TABLE cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
-		payment VARCHAR(500), open VARCHAR(4))')
+		payment VARCHAR(500), open VARCHAR(4), PRIMARY KEY(name, dbid))')
 	# , PRIMARY KEY (dbid)
 
 	req_lib = ReqLib()
@@ -167,7 +167,7 @@ def vending_machines():
 	dbcursor.execute('DROP TABLE IF EXISTS vendingmachines')
 	dbcursor.execute('CREATE TABLE vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), what VARCHAR(500), \
-		payment VARCHAR(500))')
+		payment VARCHAR(500), PRIMARY KEY(name, dbid))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -245,7 +245,8 @@ def categoryid6():
 	dbcursor.execute('DROP TABLE IF EXISTS id6')
 	dbcursor.execute('CREATE TABLE id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), accessible VARCHAR(30), description VARCHAR(80), \
-		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), locationmore VARCHAR(30))')
+		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), \
+		locationmore VARCHAR(30), PRIMARY KEY(name, dbid))')
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -333,7 +334,7 @@ def places_open():
 	data = req_lib.getJSON(req_lib.configs.PLACES_OPEN,)
 
 	dbcursor.execute('DROP TABLE IF EXISTS isitopen;')
-	dbcursor.execute('CREATE TABLE isitopen (name VARCHAR (100), dbid VARCHAR(4), open VARCHAR(4));')
+	dbcursor.execute('CREATE TABLE isitopen (name VARCHAR (100), dbid VARCHAR(4), open VARCHAR(4), PRIMARY KEY(name, dbid));')
 
 	for i in range(len(data)):
 		row = data[i]
