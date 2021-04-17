@@ -326,9 +326,11 @@ def show_upvotes():
 		query = "SELECT SUM(upvotes) FROM votes WHERE AMENITY_NAME = %s;"
 		dbcursor.execute(query, (amenityName,))
 		upvotes = dbcursor.fetchall()[0][0]
-		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND upvotes = 0', (amenityName, netid,))
+		if (upvotes == None): upvotes = 0
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND upvotes = 1 AND downvotes = 0', (amenityName, netid,))
+		result = dbcursor.fetchone()
 		currentlyLiking = True
-		if (dbcursor.fetchone() == None):
+		if (result == None):
 			currentlyLiking = False
 		dbcursor.close()
 		dbconnection.close()
@@ -337,7 +339,7 @@ def show_upvotes():
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('displayLikes.html', wasSuccessful = False)
+		html = render_template('displayLikes.html', num_of_likes = "Error", wasSuccessful = False, isLiking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -354,9 +356,11 @@ def show_downvotes():
 		query = "SELECT SUM(downvotes) FROM votes WHERE AMENITY_NAME = %s;"
 		dbcursor.execute(query, (amenityName,))
 		downvotes = dbcursor.fetchall()[0][0]
-		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND downvotes = 0', (amenityName, netid,))
+		if (downvotes == None): downvotes = 0
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND downvotes = 1 AND upvotes = 0', (amenityName, netid,))
+		result = dbcursor.fetchone()
 		currentlyDisliking = True
-		if (dbcursor.fetchone() == None):
+		if (result == None):
 			currentlyDisliking = False
 		dbcursor.close()
 		dbconnection.close()
@@ -365,7 +369,7 @@ def show_downvotes():
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('displayDislikes.html', wasSuccessful = False)
+		html = render_template('displayDislikes.html', num_of_dislikes = "Error", wasSuccessful = False, isDisliking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
