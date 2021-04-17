@@ -387,6 +387,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           contentType: "application/json",
           success: function(comment){
             $("#message-text").val("");
+            $("#comment-success").show().delay(5000).fadeOut();
           }
         });
       // If value is blank, alert user to enter something
