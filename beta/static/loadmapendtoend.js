@@ -768,7 +768,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var water_station = data_array[i];
             point = createPoint(water_station.long, water_station.lat, [23, 162, 184],
-              {name: water_station.building + ", Floor " + water_station.floor, floor: water_station.floor, directions: water_station.directions, type:"Bottle-Filling Station"});
+              {name: water_station.buildingname + ", Floor " + water_station.floor, floor: water_station.floor, directions: water_station.directions, type:"Bottle-Filling Station"});
     
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
