@@ -302,6 +302,71 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     $("#nav-workorder-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
     });
+	  	// implement search results
+		var oldSearch = "";
+		$("#buttonsearch").on("change keyup paste", function() {
+			var currentSearch = $(this).val();
+			if(currentSearch == oldSearch) {
+				return; //check to prevent multiple simultaneous triggers
+			}
+			oldSearch = currentSearch;
+			var matches = 0;
+			//action to be performed on textarea changed
+			if (("printers").match(currentSearch.toLowerCase())){
+				$("#printers").show();
+				matches++;
+			} else {
+				$("#printers").hide();
+			}
+			if (("dining halls").match(currentSearch.toLowerCase())){
+				$("#dhalls").show();
+				matches++;
+			} else {
+				$("#dhalls").hide();
+			}
+			if (("computer clusters").match(currentSearch.toLowerCase())){
+				$("#clusters").show();
+				matches++;
+			} else {
+				$("#clusters").hide();
+			}
+			if (("cafes").match(currentSearch.toLowerCase())){
+				$("#cafes").show();
+				matches++;
+			} else {
+				$("#cafes").hide();
+			}
+			if (("scanners").match(currentSearch.toLowerCase())){
+				$("#scanners").show();
+				matches++;
+			} else {
+				$("#scanners").hide();
+			}
+			if (("vending machines").match(currentSearch.toLowerCase())){
+				$("#vending").show();
+				matches++;
+			} else {
+				$("#vending").hide();
+			}
+			if (("water filling").match(currentSearch.toLowerCase())){
+				$("#water").show();
+				matches++;
+			} else {
+				$("#water").hide();
+			}
+			if (("athletics").match(currentSearch.toLowerCase())){
+				$("#athletics").show();
+				matches++;
+			} else {
+				$("#athletics").hide();
+			}
+
+			if (matches == 0) {
+				searchmessage.innerText = "No results found! Please try a different search."
+			} else {
+				searchmessage.innerText = ""
+			}
+		});
 	  
     // display likes/dislikes for amenity when comments tab is clicked
     $("#nav-comment-tab").on('click', function(){
@@ -468,6 +533,17 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       vendingClicks=0;
       waterClicks=0;
       athleticsClicks=0;
+	    
+	$("#buttonsearch").val("")
+	$("#printers").show();
+	$("#clusters").show();
+      $("#scanners").show();
+      $("#dhalls").show();
+      $("#cafes").show();
+      $("#vending").show();
+      $("#athletics").show();
+      $("#water").show();
+	    
       $("#printers").switchClass("btn-danger", "btn-outline-danger");
       $("#clusters").switchClass("btn-warning", "btn-outline-warning");
       $("#scanners").switchClass("btn-maroon-full", "btn-maroon");
