@@ -4,4 +4,3 @@
 # heroku config:get DATABASE_URL -a tigertools
 
 export DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools)
-export SENDGRID_API_KEY=$(heroku config:get SENDGRID_API_KEY -a tigertools)
