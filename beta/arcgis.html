@@ -129,7 +129,7 @@
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
       <!-- Confirmation alert -->
-      <div class="alert alert-success" role="alert" id="alert-success">
+      <div class="alert alert-success text-center" role="alert" id="alert-success">
         <strong>Comment successfully submitted!</strong>
       </div>
       
@@ -313,10 +313,17 @@
                   <!-- CONSIDER AUTOFILLING BUILDING BASED ON LOCATION AND OFFERING OPTION FOR USER TO EDIT -->
                   <!-- COULD ALSO DO SEARCH SUGGESTIONS AS USER TYPES BUILDING NAME -->
                   <!-- POSSIBLY PUT NOTE FOR USER THAT EITHER FILL ALL THREE FIELDS OR ONLY FILL BUILDING -->
-                  <label for="building">Building</label>
+
+                  <!--<label for="building">Building</label>
                   <select class="form-control mb-2" name="building" id="building" required>
                      <option>Some Building</option>
-                  </select>
+                  </select>-->
+                  <div class="form-row mb-2">
+                    <div class="col-sm-12">
+                      <label for="building">Building</label>
+                      <input class="form-control" type="text" name="building" id="building" placeholder="Building" aria-label="building">
+                    </div>
+                  </div>
 
                   <!--<label for="buildingcode">Building Code</label>-->
                   <select class="form-control mb-2 d-none" name="buildingcode" id="buildingcode">

@@ -33,8 +33,9 @@ html, body, header, #viewDiv {
 
 #alert-success {
   position: fixed;
-  top: 25px;
+  top: 40px;
   left: 50%;
+  min-width: 30%;
   transform: translate(-50%, 0);
   display: none;
   z-index: 1060;

@@ -239,48 +239,59 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     view.on("click", function(event) {
       const opts = { include: view.graphics }
       view.hitTest(event, opts).then(function(response) {
-          // Check if a graphic is returned
-          const graphic = response.results[0].graphic;
-          if (response.results.length && !graphic.attributes.layerId) {
+        // Check if a graphic is returned
+        const graphic = response.results[0].graphic;
+        if (response.results.length && !graphic.attributes.layerId) {
 
-            // Toggle showing cluster points if user clicked on cluster
-            if (graphic.attributes.pts) {
-              toggleCluster(graphic);
-            }
-
-            else {
-              // Set title
-              let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
-              $(".modal-title").text(titleString);
-
-              // Get information
-              $.ajax({
-                type: "POST",
-                url: "/info",
-                data: JSON.stringify(graphic.attributes),
-                contentType: "application/json",
-                success: function(response){
-                  $("#info-div").html(response);
-                }
-              });
-
-              currentAmenityName = graphic.attributes["type"] + " - " + graphic.attributes["name"];
-
-              // Get comments
-              $.ajax({
-                type: "POST",
-                url: "/displaycomments",
-                data: JSON.stringify({amenityName: titleString}),
-                contentType: "application/json",
-                success: function(response){
-                  $("#comment-div").html(response);
-                }
-              });
-
-              $("#modalTrigger").click(); // Open the modal
-            }
+          // Toggle showing cluster points if user clicked on cluster
+          if (graphic.attributes.pts) {
+            toggleCluster(graphic);
           }
-        });
+
+          else {
+            // Set title
+            let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
+            $(".modal-title").text(titleString);
+
+            // Get information
+            $.ajax({
+              type: "POST",
+              url: "/info",
+              data: JSON.stringify(graphic.attributes),
+              contentType: "application/json",
+              success: function(response){
+                $("#info-div").html(response);
+              }
+            });
+
+            currentAmenityName = titleString;
+
+            // Get comments
+            $.ajax({
+              type: "POST",
+              url: "/displaycomments",
+              data: JSON.stringify({amenityName: titleString}),
+              contentType: "application/json",
+              success: function(response){
+                $("#comment-div").html(response);
+              }
+            });
+
+            // Autofill work order inputs: building, room, floor
+            var building = graphic.attributes.building;
+            var room = graphic.attributes.room;
+            var floor = graphic.attributes.floor;
+            if (building != "None")
+              $("#building").val(building);
+            if (room != "None")
+              $("#room").val(room);
+            if (floor != "None" && floor != "N/A")
+              $("#floor").val(floor);
+
+            $("#modalTrigger").click(); // Open the modal
+          }
+        }
+      });
     });
   });
 
@@ -607,7 +618,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var printer = data_array[i];
             point = createPoint(printer.long, printer.lat, [220, 53, 69],
-              {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.macs, scanners: printer.scanners});
+              {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.macs, scanners: printer.scanners,
+              building: printer.buildingname, room: printer.room, floor: printer.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -631,7 +643,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Computer Clusters
     $("#clusters").click(function(){
+      if (clusterLoading)
+        return;
+
       if (clusterClicks % 2 == 0) {
+      clusterLoading = true;
       $("#clusters-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -645,7 +661,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var cluster = data_array[i];
             point = createPoint(cluster.long, cluster.lat, [255, 193, 7],
-              {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.macs, scanners: cluster.scanners});
+              {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.macs, scanners: cluster.scanners,
+              building: cluster.buildingname, room: cluster.room, floor: cluster.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -657,6 +674,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#clusters").switchClass("btn-outline-warning", "btn-warning");
           $("#clusters-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           clusterClicks++;
+          clusterLoading = false;
         }
       });
     } else {
@@ -668,7 +686,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Scanners
     $("#scanners").click(function(){
+      if (scannerLoading)
+        return;
       if (scannerClicks % 2 == 0) {
+      scannerLoading = true;
       $("#scanners-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -682,7 +703,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var scanner = data_array[i];
             point = createPoint(scanner.long, scanner.lat, [128, 0, 0],
-              {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.macs, scanners: scanner.scanners});
+              {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.macs, scanners: scanner.scanners,
+              building: scanner.buildingname, room: scanner.room, floor: scanner.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -694,6 +716,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#scanners").switchClass("btn-maroon", "btn-maroon-full");
           $("#scanners-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           scannerClicks++;
+          scannerLoading = false;
         }
       });
     } else {
@@ -724,7 +747,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var dhall = data_array[i];
             point = createPoint(dhall.long, dhall.lat, [0, 123, 255],
-              {name: dhall.name, type:"Dining hall", who: dhall.who, payment: dhall.payment, open: dhall.open, capacity: dhall.capacity});
+              {name: dhall.name, type:"Dining hall", who: dhall.who, payment: dhall.payment, open: dhall.open, capacity: dhall.capacity,
+              building: dhall.buildingname, room: dhall.room, floor: dhall.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -748,7 +772,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Cafés
     $("#cafes").click(function(){
+      if (cafeLoading)
+        return;
       if (cafeClicks % 2 == 0) {
+      cafeLoading = true;
       $("#cafes-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -762,7 +789,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var cafe = data_array[i];
             point = createPoint(cafe.long, cafe.lat, [40, 167, 69],
-              {name: cafe.name, type:"Café", description: cafe.description, who: cafe.who, payment: cafe.payment, open: cafe.open});
+              {name: cafe.name, type:"Café", description: cafe.description, who: cafe.who, payment: cafe.payment, open: cafe.open,
+              building: cafe.buildingname, room: cafe.room, floor: cafe.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -774,6 +802,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#cafes").switchClass("btn-outline-success", "btn-success");
           $("#cafes-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           cafeClicks++;
+          cafeLoading = false;
         }
       });
     } else {
@@ -785,7 +814,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Vending Machines
     $("#vending").click(function(){
+      if (vendingLoading)
+        return;
       if (vendingClicks % 2 == 0) {
+      vendingLoading = true;
       $("#vending-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -799,7 +831,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var vending_machine = data_array[i];
             point = createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0],
-              {name: vending_machine.name, type:"Vending Machine", directions: vending_machine.description, what: vending_machine.what, payment: vending_machine.payment});
+              {name: vending_machine.name, type:"Vending Machine", directions: vending_machine.description, what: vending_machine.what, payment: vending_machine.payment,
+              building: vending_machine.buildingname, room: vending_machine.room, floor: vending_machine.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -811,6 +844,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#vending").switchClass("btn-orange", "btn-orange-full");
           $("#vending-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           vendingClicks++;
+          vendingLoading = false;
         }
       });
     } else {
@@ -822,7 +856,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Athletic Facilities
     $("#athletics").click(function(){
+      if (athleticsLoading)
+        return;
       if (athleticsClicks % 2 == 0) {
+      athleticsLoading = true;
       $("#athletics-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -836,7 +873,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var athletic_facility = data_array[i];
             point = createPoint(athletic_facility.long * (-1), athletic_facility.lat, [136, 77, 255],
-              {name: athletic_facility.buildingname, type:"Athletic Facility", sports: athletic_facility.sports});
+              {name: athletic_facility.buildingname, type:"Athletic Facility", sports: athletic_facility.sports,
+              building: athletic_facility.buildingname, room: athletic_facility.room, floor: athletic_facility.floor});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -848,6 +886,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#athletics").switchClass("btn-purple", "btn-purple-full");
           $("#athletics-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           athleticsClicks++;
+          athleticsLoading = false;
         }
       });
     } else {
@@ -859,7 +898,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Bottle Filling Stations NEED LAT LONG DATA FOR BUILDINGS
     $("#water").click(function(){
+      if (waterLoading)
+        return;
       if (waterClicks % 2 == 0) {
+      waterLoading = true;
       $("#water-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -873,7 +915,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var water_station = data_array[i];
             point = createPoint(water_station.long, water_station.lat, [23, 162, 184],
-              {name: water_station.buildingname + ", Floor " + water_station.floor, floor: water_station.floor, directions: water_station.directions, type:"Bottle-Filling Station"});
+              {name: water_station.buildingname + ", Floor " + water_station.floor, directions: water_station.directions, type:"Bottle-Filling Station",
+              building: water_station.buildingname, room: water_station.room, floor: water_station.floor});
     
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -885,6 +928,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#water").switchClass("btn-outline-info", "btn-info");
           $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           waterClicks++;
+          waterLoading = false;
         }
       });
       
