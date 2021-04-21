@@ -31,11 +31,11 @@ html, body, header, #viewDiv {
   right: 15px;
 }
 
-#alert-success {
+#comment-success, #workorder-success {
   position: fixed;
   top: 40px;
   left: 50%;
-  min-width: 30%;
+  min-width: 40%;
   transform: translate(-50%, 0);
   display: none;
   z-index: 1060;

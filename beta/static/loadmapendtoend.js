@@ -303,7 +303,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     }
   });
 
-
   $(document).ready(function(){
     var printerClicks = 0;
     var diningClicks = 0;
@@ -322,6 +321,32 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     var vendingLoading = false;
     var waterLoading = false;
     var athleticsLoading = false;
+
+    // Handle work order form submit
+    // https://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
+    $("form").on("submit", function(e) {
+      var dataString = $(this).serialize();
+      $.ajax({
+        type: "POST",
+        url: "/wkorder",
+        data: dataString,
+        success: function () {
+          // Show confirmation message
+          $("#workorder-success").slideDown("slow").delay(4000).slideUp("slow");
+
+          // Reset work order form
+          var form = $("#workorder-form");
+          form[0].reset();
+          form.removeClass("was-validated");
+
+          // Set main info tab as active
+          $("#nav-home-tab").tab("show");
+          $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+        }
+      });
+      // Prevent form from doing default submit & page refresh
+      e.preventDefault();
+    });
 
     // Filtering menu search bar
     var oldSearch = "";
@@ -477,15 +502,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           contentType: "application/json",
           success: function(comment){
             $("#message-text").val("");
-            $("#comment-success").show().delay(5000).fadeOut();
-            /*$("#alert-success").slideDown("slow", function() {
-              setTimeout(
-                function() 
-                {
-                  $("#alert-success").slideUp("slow");
-                }, 3000);
-            });*/
-            $("#alert-success").slideDown("slow").delay(3000).slideUp("slow");
+            //$("#comment-success-message").show().delay(5000).fadeOut();
+            $("#comment-success").slideDown("slow").delay(4000).slideUp("slow");
           }
         });
       // If value is blank, alert user to enter something
@@ -494,7 +512,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       }
     });
 
-      // place upvote
+    // place upvote
     $("#likebutton").click(function(){
       //currentVoteType = "like"
       $.ajax({

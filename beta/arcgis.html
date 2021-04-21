@@ -128,9 +128,13 @@
 
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <!-- Confirmation alert -->
-      <div class="alert alert-success text-center" role="alert" id="alert-success">
+      <!-- Comment confirmation alert -->
+      <div class="alert alert-success text-center" role="alert" id="comment-success">
         <strong>Comment successfully submitted!</strong>
+      </div>
+      <!-- Work order confirmation alert -->
+      <div class="alert alert-success text-center" role="alert" id="workorder-success">
+        <strong>Work order successfully submitted!</strong>
       </div>
       
       <div class="modal-dialog modal-lg mb-5" id="myModalDialog">
@@ -185,7 +189,7 @@
                       Please enter a comment.
                     </div>
                   </div>
-                  <div id="comment-success" class="text-center" style="display:none;">
+                  <div id="comment-success-message" class="text-center" style="display:none;">
                     <h5 class="text-success">Comment successfully submitted!</h5>
                   </div>
                   <button type="button" class="btn btn-success float-right" id="submitcomment">Submit</button>
