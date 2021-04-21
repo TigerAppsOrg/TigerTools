@@ -1,16 +1,7 @@
 require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track", "esri/core/watchUtils", "esri/layers/GraphicsLayer"], function (esriConfig, Map, MapView, Graphic, Track, watchUtils, GraphicsLayer) {
   esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
 
-  var cafeClicks = 0;
-  var printerClicks = 0;
-  var diningClicks = 0;
-  var clusterClicks = 0;
-  var scannerClicks = 0;
-  var vendingClicks = 0;
-  var waterClicks = 0;
-  var athleticsClicks = 0;
-
-  let currentAmenityName = "";
+  var currentAmenityName = "";
 
   // Track all clusters
   var clusters = [];
@@ -55,50 +46,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     },*/
     minZoom: 14 // Constrain zooming out
   };
-
-  // Add point and move map to user position
-  function showPosition(position) {
-    var lat = position.coords.latitude;
-    var long = position.coords.longitude;
-    view.center = [long, lat];
-    
-    var locGraphic = new Graphic({
-      geometry: {
-        type: "point",
-        longitude: long,
-        latitude: lat
-      },
-      symbol: {
-        type: "simple-marker",
-        color: [102, 153, 255],
-        outline: {
-          color: [255,255,255],
-          width: 0.7
-        }
-      }
-    });
-
-    var layer = new GraphicsLayer({
-      graphics: [locGraphic]
-    });
-    map.add(layer);
-  }
-
-  // Start tracking once view becomes ready
-  view.when(function() {
-    view.ui.move([ "zoom" ], "top-right");
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    }
-  });
-
-  // When view is stationary, change cluster draw distance and re-render.
-  watchUtils.whenTrue(view, "stationary", function() {
-    if (view.zoom) {
-      clusterDist = 0.00033 * Math.pow(2, 15-view.zoom);
-      renderAll();
-    }
-  });
 
   // Create a normal point
   function createPoint(long, lat, col, attr) {
@@ -212,14 +159,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
   // Remove all points of a certain type
   function removeGraphic(amenityType) {
-    /*if (view.graphics.length) {
-      for (i = 0; i < view.graphics.length; i++) {
-        if (view.graphics.getItemAt(i).attributes.type == amenityType) {
-          view.graphics.remove(view.graphics.getItemAt(i));
-          i--;
-        }
-      }
-    }*/
     for (let j = 0; j < clusters.length; j++) {
       pts = clusters[j].attributes.pts;
       for (let k = 0; k < pts.length; k++) {
@@ -232,14 +171,77 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     renderAll();
   }
 
-  // Function for point clicks
-  view.on("click", function(event) {
-    const opts = { include: view.graphics }
-    view.hitTest(event, opts).then(function(response) {
-        // check if a graphic is returned
-        if (response.results.length) {
+  // User location graphic
+  var locGraphic = new Graphic({
+    geometry: {
+      type: "point",
+      longitude: 0,
+      latitude: 0
+    },
+    symbol: {
+      type: "simple-marker",
+      color: [102, 153, 255],
+      outline: {
+        color: [255,255,255],
+        width: 0.7
+      }
+    }
+  });
+
+  // Add point and move map to user position
+  function showPosition(position) {
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    locGraphic.geometry.longitude = long;
+    locGraphic.geometry.latitude = lat;
+
+    view.center = [long, lat];
+    
+    var layer = new GraphicsLayer({
+      graphics: [locGraphic]
+    });
+    map.add(layer); 
+  }
+
+  // Handle location error
+  function handleLocationError(error) {
+    switch(error.code) {
+      case error.PERMISSION_DENIED:
+        console.log("User denied the request for Geolocation.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        console.log("Location information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        console.log("The request to get user location timed out.");
+        break;
+      case error.UNKNOWN_ERROR:
+        console.log("An unknown error occurred.");
+        break;
+    }
+  }
+
+  // Start tracking once view becomes ready
+  view.when(function() {
+    // Move arcgis zoom buttons to top right
+    view.ui.move([ "zoom" ], "top-right");
+
+    // Watch for location changes
+    // https://www.w3schools.com/html/html5_geolocation.asp
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition(showPosition, handleLocationError);
+    }
+    else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+
+    // Handle point/cluster clicks
+    view.on("click", function(event) {
+      const opts = { include: view.graphics }
+      view.hitTest(event, opts).then(function(response) {
+          // Check if a graphic is returned
           const graphic = response.results[0].graphic;
-          if (!graphic.attributes.layerId) { // Don't do anything if user clicks on map with no graphics
+          if (response.results.length && !graphic.attributes.layerId) {
 
             // Toggle showing cluster points if user clicked on cluster
             if (graphic.attributes.pts) {
@@ -278,101 +280,116 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
               $("#modalTrigger").click(); // Open the modal
             }
           }
-        }
-      });
+        });
+    });
   });
 
-  $(document).ready(function(){
-    $("#nav-workorder-tab").on('click', function(){
-      $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
-    });
-	  	// implement search results
-		var oldSearch = "";
-		$("#buttonsearch").on("change keyup paste", function() {
-			var currentSearch = $(this).val();
-			if(currentSearch == oldSearch) {
-				return; //check to prevent multiple simultaneous triggers
-			}
-			oldSearch = currentSearch;
-			var matches = 0;
-			//action to be performed on textarea changed
-			if (("printers").match(currentSearch.toLowerCase())){
-				$("#printers").show();
-				matches++;
-			} else {
-				$("#printers").hide();
-			}
-			if (("dining halls").match(currentSearch.toLowerCase())){
-				$("#dhalls").show();
-				matches++;
-			} else {
-				$("#dhalls").hide();
-			}
-			if (("computer clusters").match(currentSearch.toLowerCase())){
-				$("#clusters").show();
-				matches++;
-			} else {
-				$("#clusters").hide();
-			}
-			if (("cafes").match(currentSearch.toLowerCase())){
-				$("#cafes").show();
-				matches++;
-			} else {
-				$("#cafes").hide();
-			}
-			if (("scanners").match(currentSearch.toLowerCase())){
-				$("#scanners").show();
-				matches++;
-			} else {
-				$("#scanners").hide();
-			}
-			if (("vending machines").match(currentSearch.toLowerCase())){
-				$("#vending").show();
-				matches++;
-			} else {
-				$("#vending").hide();
-			}
-			if (("water filling").match(currentSearch.toLowerCase())){
-				$("#water").show();
-				matches++;
-			} else {
-				$("#water").hide();
-			}
-			if (("athletics").match(currentSearch.toLowerCase())){
-				$("#athletics").show();
-				matches++;
-			} else {
-				$("#athletics").hide();
-			}
+  // When view is stationary, change cluster draw distance and re-render.
+  watchUtils.whenTrue(view, "stationary", function() {
+    if (view.zoom) {
+      clusterDist = 0.00033 * Math.pow(2, 15-view.zoom);
+      renderAll();
+    }
+  });
 
-			if (matches == 0) {
-				searchmessage.innerText = "No results found! Please try a different search."
-			} else {
-				searchmessage.innerText = ""
-			}
-		});
-	  
+
+  $(document).ready(function(){
+    var printerClicks = 0;
+    var diningClicks = 0;
+    var clusterClicks = 0;
+    var cafeClicks = 0;
+    var scannerClicks = 0;
+    var vendingClicks = 0;
+    var waterClicks = 0;
+    var athleticsClicks = 0;
+
+    // Filtering menu search bar
+    var oldSearch = "";
+    $("#buttonsearch").on("change keyup paste", function() {
+      var currentSearch = $(this).val();
+      if(currentSearch == oldSearch) {
+        return; //check to prevent multiple simultaneous triggers
+      }
+      oldSearch = currentSearch;
+      var matches = 0;
+      //action to be performed on textarea changed
+      if (("printers").match(currentSearch.toLowerCase())){
+        $("#printers").show();
+        matches++;
+      } else {
+        $("#printers").hide();
+      }
+      if (("dining halls").match(currentSearch.toLowerCase())){
+        $("#dhalls").show();
+        matches++;
+      } else {
+        $("#dhalls").hide();
+      }
+      if (("computer clusters").match(currentSearch.toLowerCase())){
+        $("#clusters").show();
+        matches++;
+      } else {
+        $("#clusters").hide();
+      }
+      if (("cafes").match(currentSearch.toLowerCase())){
+        $("#cafes").show();
+        matches++;
+      } else {
+        $("#cafes").hide();
+      }
+      if (("scanners").match(currentSearch.toLowerCase())){
+        $("#scanners").show();
+        matches++;
+      } else {
+        $("#scanners").hide();
+      }
+      if (("vending machines").match(currentSearch.toLowerCase())){
+        $("#vending").show();
+        matches++;
+      } else {
+        $("#vending").hide();
+      }
+      if (("water filling").match(currentSearch.toLowerCase())){
+        $("#water").show();
+        matches++;
+      } else {
+        $("#water").hide();
+      }
+      if (("athletics").match(currentSearch.toLowerCase())){
+        $("#athletics").show();
+        matches++;
+      } else {
+        $("#athletics").hide();
+      }
+
+      if (matches == 0) {
+        searchmessage.innerText = "No results found! Please try a different search."
+      } else {
+        searchmessage.innerText = ""
+      }
+    });
+    
     // display likes/dislikes for amenity when comments tab is clicked
     $("#nav-comment-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
-			$.ajax({
-				type: "POST",
-				url: "/displayupvotes",
-				data: JSON.stringify({amenityName: currentAmenityName}),
-				contentType: "application/json",
-				success: function(response){
-					$.ajax({
-						type: "POST",
-						url: "/displaydownvotes",
-						data: JSON.stringify({amenityName: currentAmenityName}),
-						contentType: "application/json",
-						success: function(response){
-							$("#numofdislikes").html(response);
-						}
-					});
-					$("#numoflikes").html(response);
-				}
-			});
+      $.ajax({
+        type: "POST",
+        url: "/displayupvotes",
+        data: JSON.stringify({amenityName: currentAmenityName}),
+        contentType: "application/json",
+        success: function(response){
+          $.ajax({
+            type: "POST",
+            url: "/displaydownvotes",
+            data: JSON.stringify({amenityName: currentAmenityName}),
+            contentType: "application/json",
+            success: function(response){
+              $("#numofdislikes").html(response);
+            }
+          });
+          $("#numoflikes").html(response);
+        }
+      });
     });
     
     // display comments if home tab is clicked
@@ -387,6 +404,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#comment-div").html(response);
         }
       });
+    });
+
+    // Expand modal when opening work order tab
+    $("#nav-workorder-tab").on('click', function(){
+      $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
     });
 
     // When modal is closed, reset its content
@@ -445,64 +467,64 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       }
     });
 
-			// place upvote
+      // place upvote
     $("#likebutton").click(function(){
-			//currentVoteType = "like"
-       $.ajax({
+      //currentVoteType = "like"
+        $.ajax({
           type: "POST",
           url: "/placeupvote",
           data: JSON.stringify({amenityName: currentAmenityName}),
           contentType: "application/json",
           success: function(){
-						$.ajax({
-							type: "POST",
-							url: "/displayupvotes",
-							data: JSON.stringify({amenityName: currentAmenityName}),
-							contentType: "application/json",
-							success: function(response){
-								$("#numoflikes").html(response);
-							}
-						});
-						$.ajax({
-							type: "POST",
-							url: "/displaydownvotes",
-							data: JSON.stringify({amenityName: currentAmenityName}),
-							contentType: "application/json",
-							success: function(response){
-								$("#numofdislikes").html(response);
-							}
-						});
+            $.ajax({
+              type: "POST",
+              url: "/displayupvotes",
+              data: JSON.stringify({amenityName: currentAmenityName}),
+              contentType: "application/json",
+              success: function(response){
+                $("#numoflikes").html(response);
+              }
+            });
+            $.ajax({
+              type: "POST",
+              url: "/displaydownvotes",
+              data: JSON.stringify({amenityName: currentAmenityName}),
+              contentType: "application/json",
+              success: function(response){
+                $("#numofdislikes").html(response);
+              }
+            });
           }
         });
     });
 
-		// place downvote
+    // place downvote
     $("#dislikebutton").click(function(){
-			//currentVoteType = "dislike"
-       $.ajax({
+      //currentVoteType = "dislike"
+        $.ajax({
           type: "POST",
           url: "/placedownvote",
           data: JSON.stringify({amenityName: currentAmenityName}),
           contentType: "application/json",
           success: function(){
-						$.ajax({
-							type: "POST",
-							url: "/displaydownvotes",
-							data: JSON.stringify({amenityName: currentAmenityName}),
-							contentType: "application/json",
-							success: function(response){
-								$("#numofdislikes").html(response);
-							}
-						});
-						$.ajax({
-							type: "POST",
-							url: "/displayupvotes",
-							data: JSON.stringify({amenityName: currentAmenityName}),
-							contentType: "application/json",
-							success: function(response){
-								$("#numoflikes").html(response);
-							}
-						});
+            $.ajax({
+              type: "POST",
+              url: "/displaydownvotes",
+              data: JSON.stringify({amenityName: currentAmenityName}),
+              contentType: "application/json",
+              success: function(response){
+                $("#numofdislikes").html(response);
+              }
+            });
+            $.ajax({
+              type: "POST",
+              url: "/displayupvotes",
+              data: JSON.stringify({amenityName: currentAmenityName}),
+              contentType: "application/json",
+              success: function(response){
+                $("#numoflikes").html(response);
+              }
+            });
           }
         });
     });
@@ -517,17 +539,17 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       vendingClicks=0;
       waterClicks=0;
       athleticsClicks=0;
-	    
-	$("#buttonsearch").val("")
-	$("#printers").show();
-	$("#clusters").show();
+      
+      $("#buttonsearch").val("")
+      $("#printers").show();
+      $("#clusters").show();
       $("#scanners").show();
       $("#dhalls").show();
       $("#cafes").show();
       $("#vending").show();
       $("#athletics").show();
       $("#water").show();
-	    
+      
       $("#printers").switchClass("btn-danger", "btn-outline-danger");
       $("#clusters").switchClass("btn-warning", "btn-outline-warning");
       $("#scanners").switchClass("btn-maroon-full", "btn-maroon");
@@ -547,12 +569,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       removeGraphic("Athletic Facility");
       removeGraphic("Bottle-Filling Station");
     });
-
-
-    //$(".btn").click(function(e) {
-    //e.preventDefault();
-    //$(this).addClass('active');
-    //});
 
     // Printers
     $("#printers").click(function(){
