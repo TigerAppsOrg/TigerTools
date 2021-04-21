@@ -1,4 +1,4 @@
-require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track", "esri/core/watchUtils"], function (esriConfig, Map, MapView, Graphic, Track, watchUtils) {
+require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track", "esri/core/watchUtils", "esri/layers/GraphicsLayer"], function (esriConfig, Map, MapView, Graphic, Track, watchUtils, GraphicsLayer) {
   esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
 
   var cafeClicks = 0;
@@ -40,7 +40,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   // Set up MapView on which to render graphics
   var view = new MapView({
     map: map,
-    center: [-74.657, 40.346], // Longitude, latitude of PU
+    center: [-74.657, 40.345], // Longitude, latitude of PU
     zoom: 15, // Default zoom level
     container: "viewDiv" // Div element
   });
@@ -56,42 +56,40 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     minZoom: 14 // Constrain zooming out
   };
 
-  var trackGraphic = new Graphic({
-    symbol: {
-      type: "simple-marker",
-      color: [102, 153, 255],
-      outline: {
-        color: [255,255,255],
-        width: 0.7
-      }
-    }
-  });
-
-  // Create tracking widget
-  var track = new Track({
-    view: view,
-    graphic: trackGraphic,
-    /*graphic: new Graphic({
+  // Add point and move map to user position
+  function showPosition(position) {
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    view.center = [long, lat];
+    
+    var locGraphic = new Graphic({
+      geometry: {
+        type: "point",
+        longitude: long,
+        latitude: lat
+      },
       symbol: {
         type: "simple-marker",
-        size: "12px",
-        color: "green",
+        color: [102, 153, 255],
         outline: {
-          color: "#efefef",
-          width: "1.5px"
+          color: [255,255,255],
+          width: 0.7
         }
       }
-    }),*/
-    useHeadingEnabled: false, // Prevent map view from rotating
-    goToLocationEnabled: false // Don't automatically move to user
-  });
+    });
 
-  view.ui.add(track, "top-left");
+    var layer = new GraphicsLayer({
+      graphics: [locGraphic]
+    });
+    map.add(layer);
+  }
 
   // Start tracking once view becomes ready
   view.when(function() {
-    view.ui.move([ "zoom", track ], "top-right");
-    track.start();
+    view.ui.move([ "zoom" ], "top-right");
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    }
   });
 
   // When view is stationary, change cluster draw distance and re-render.
@@ -156,24 +154,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     }
   }
 
-  // Remove all graphics except tracking graphic
-  function removeAllExceptTrack() {
-    if (view.graphics.length) {
-      for (i = 0; i < view.graphics.length; i++) {
-        let temp = view.graphics.getItemAt(i);
-        // Remove if NOT track
-        if (JSON.stringify(temp.symbol) !== JSON.stringify(trackGraphic.symbol)) {
-          view.graphics.remove(temp);
-          i--;
-        }
-      }
-    }
-  }
-
   // Re-render all clusters/points
   function renderAll() {
-    //view.graphics.removeAll();
-    removeAllExceptTrack();
+    view.graphics.removeAll();
 
     for (let i = 0; i < clusters.length; i++) {
       let pts = clusters[i].attributes.pts;
@@ -256,8 +239,9 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         // check if a graphic is returned
         if (response.results.length) {
           const graphic = response.results[0].graphic;
-          if (!graphic.attributes.layerId) { // Bandaid solution to clicking on map when no graphics
+          if (!graphic.attributes.layerId) { // Don't do anything if user clicks on map with no graphics
 
+            // Toggle showing cluster points if user clicked on cluster
             if (graphic.attributes.pts) {
               toggleCluster(graphic);
             }
