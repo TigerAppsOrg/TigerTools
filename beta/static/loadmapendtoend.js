@@ -502,8 +502,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           contentType: "application/json",
           success: function(comment){
             $("#message-text").val("");
-            //$("#comment-success-message").show().delay(5000).fadeOut();
-            $("#comment-success").slideDown("slow").delay(4000).slideUp("slow");
+            $("#comment-success-message").show().delay(5000).fadeOut();
+            //$("#comment-success").slideDown("slow").delay(4000).slideUp("slow");
           }
         });
       // If value is blank, alert user to enter something
