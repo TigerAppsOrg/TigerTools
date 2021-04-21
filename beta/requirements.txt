@@ -18,3 +18,4 @@ psycopg2==2.7.7
 arrow==1.0.3
 datetime==4.3
 datetimerange==1.0.0
+sendgrid==6.6.0
