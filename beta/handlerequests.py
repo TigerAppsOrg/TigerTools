@@ -248,7 +248,7 @@ def format_wkorder():
 	'Contact for Scheduling','Charge Source','Campus','Building','Building Code','Location Code','Asset','Description (with more location info appended if given by user)')
 	print(''.join(csv_string))
 	# email
-	message = Mail(from_email='from_email@example.com',to_emails='indup@princeton.edu',subject='Work order test',\
+	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='indup@princeton.edu',subject='Work order test',\
 		html_content=('<p>%s</p>'%csv_string))
 	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 	response = sg.send(message)
