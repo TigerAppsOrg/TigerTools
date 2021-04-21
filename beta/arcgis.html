@@ -37,6 +37,9 @@
     <!-- Button for opening the menu
       https://getbootstrap.com/docs/4.0/components/buttons/ -->
     <button id="openNav" type="button" class="btn btn-dark btn-lg" data-toggle="collapse" data-target="#mySidenav" aria-expanded="false">Select Tools &#9776;</button>
+    
+    <!-- Logout button -->
+    <a href="/logout" id="logout" class="btn btn-danger btn-sm">Logout <i class="fas fa-sign-out-alt"></i></a>
 
     <!-- The menu for filtering amenities -->
     <div id="mySidenav" class="collapse">
@@ -49,8 +52,8 @@
       </div>
       <hr>
       <!-- Search bar -->
-	<input class="form-control mr-sm-2" type="text" placeholder="Search" id="buttonsearch">
-	<h6 id="searchmessage"></h6>
+      <input class="form-control mr-sm-2" type="text" placeholder="Search" id="buttonsearch">
+      <h6 id="searchmessage"></h6>
       <p></p>
       <!-- Filtering options -->
       <button type="button" class="btn btn-outline-danger btn-lg sideButton" id="printers">Printers</button>
@@ -125,6 +128,11 @@
 
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+      <!-- Confirmation alert -->
+      <div class="alert alert-success" role="alert" id="alert-success">
+        <strong>Comment successfully submitted!</strong>
+      </div>
+      
       <div class="modal-dialog modal-lg mb-5" id="myModalDialog">
         <div class="modal-content">
 

@@ -303,6 +303,15 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     var waterClicks = 0;
     var athleticsClicks = 0;
 
+    var printerLoading = false;
+    var diningLoading = false;
+    var clusterLoading = false;
+    var cafeLoading = false;
+    var scannerLoading = false;
+    var vendingLoading = false;
+    var waterLoading = false;
+    var athleticsLoading = false;
+
     // Filtering menu search bar
     var oldSearch = "";
     $("#buttonsearch").on("change keyup paste", function() {
@@ -413,20 +422,20 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // When modal is closed, reset its content
     $("#myModal").on("hidden.bs.modal", function () {
-        // Reset work order form
-        var form = $("#workorder-form");
-        form[0].reset();
-        form.removeClass("was-validated");
+      // Reset work order form
+      var form = $("#workorder-form");
+      form[0].reset();
+      form.removeClass("was-validated");
 
-        // Reset info content and set info tab as active
-        $("#nav-home-tab").tab("show");
-        $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
-        $("#nav-info").html('<div id="info-div"></div><div id="comment-div"><h5 class="text-center">Loading...</h5></div>');
+      // Reset info content and set info tab as active
+      $("#nav-home-tab").tab("show");
+      $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
+      $("#nav-info").html('<div id="info-div"></div><div id="comment-div"><h5 class="text-center">Loading...</h5></div>');
 
-        // Reset submit form
-        var form = $("#submit-form");
-        form[0].reset();
-        form.removeClass("was-validated");
+      // Reset submit form
+      var form = $("#submit-form");
+      form[0].reset();
+      form.removeClass("was-validated");
     });
 
     // Validate required fields in work order form when user clicks submit
@@ -436,7 +445,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         event.preventDefault();
         event.stopPropagation();
       }
-
       form.addClass("was-validated");
     });
 
@@ -459,6 +467,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           success: function(comment){
             $("#message-text").val("");
             $("#comment-success").show().delay(5000).fadeOut();
+            /*$("#alert-success").slideDown("slow", function() {
+              setTimeout(
+                function() 
+                {
+                  $("#alert-success").slideUp("slow");
+                }, 3000);
+            });*/
+            $("#alert-success").slideDown("slow").delay(3000).slideUp("slow");
           }
         });
       // If value is blank, alert user to enter something
@@ -470,63 +486,63 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       // place upvote
     $("#likebutton").click(function(){
       //currentVoteType = "like"
-        $.ajax({
-          type: "POST",
-          url: "/placeupvote",
-          data: JSON.stringify({amenityName: currentAmenityName}),
-          contentType: "application/json",
-          success: function(){
-            $.ajax({
-              type: "POST",
-              url: "/displayupvotes",
-              data: JSON.stringify({amenityName: currentAmenityName}),
-              contentType: "application/json",
-              success: function(response){
-                $("#numoflikes").html(response);
-              }
-            });
-            $.ajax({
-              type: "POST",
-              url: "/displaydownvotes",
-              data: JSON.stringify({amenityName: currentAmenityName}),
-              contentType: "application/json",
-              success: function(response){
-                $("#numofdislikes").html(response);
-              }
-            });
-          }
-        });
+      $.ajax({
+        type: "POST",
+        url: "/placeupvote",
+        data: JSON.stringify({amenityName: currentAmenityName}),
+        contentType: "application/json",
+        success: function(){
+          $.ajax({
+            type: "POST",
+            url: "/displayupvotes",
+            data: JSON.stringify({amenityName: currentAmenityName}),
+            contentType: "application/json",
+            success: function(response){
+              $("#numoflikes").html(response);
+            }
+          });
+          $.ajax({
+            type: "POST",
+            url: "/displaydownvotes",
+            data: JSON.stringify({amenityName: currentAmenityName}),
+            contentType: "application/json",
+            success: function(response){
+              $("#numofdislikes").html(response);
+            }
+          });
+        }
+      });
     });
 
     // place downvote
     $("#dislikebutton").click(function(){
       //currentVoteType = "dislike"
-        $.ajax({
-          type: "POST",
-          url: "/placedownvote",
-          data: JSON.stringify({amenityName: currentAmenityName}),
-          contentType: "application/json",
-          success: function(){
-            $.ajax({
-              type: "POST",
-              url: "/displaydownvotes",
-              data: JSON.stringify({amenityName: currentAmenityName}),
-              contentType: "application/json",
-              success: function(response){
-                $("#numofdislikes").html(response);
-              }
-            });
-            $.ajax({
-              type: "POST",
-              url: "/displayupvotes",
-              data: JSON.stringify({amenityName: currentAmenityName}),
-              contentType: "application/json",
-              success: function(response){
-                $("#numoflikes").html(response);
-              }
-            });
-          }
-        });
+      $.ajax({
+        type: "POST",
+        url: "/placedownvote",
+        data: JSON.stringify({amenityName: currentAmenityName}),
+        contentType: "application/json",
+        success: function(){
+          $.ajax({
+            type: "POST",
+            url: "/displaydownvotes",
+            data: JSON.stringify({amenityName: currentAmenityName}),
+            contentType: "application/json",
+            success: function(response){
+              $("#numofdislikes").html(response);
+            }
+          });
+          $.ajax({
+            type: "POST",
+            url: "/displayupvotes",
+            data: JSON.stringify({amenityName: currentAmenityName}),
+            contentType: "application/json",
+            success: function(response){
+              $("#numoflikes").html(response);
+            }
+          });
+        }
+      });
     });
     
     // Reset/remove all graphics
@@ -572,7 +588,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Printers
     $("#printers").click(function(){
+      if (printerLoading)
+        return;
+
       if (printerClicks % 2 == 0) {
+      printerLoading = true;
+
       $("#printers-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -598,13 +619,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#printers").switchClass("btn-outline-danger", "btn-danger");
           $("#printers-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           printerClicks++;
+          printerLoading = false;
         }
       });
-    } else {
-      removeGraphic("Printer");
-      $("#printers").switchClass("btn-danger", "btn-outline-danger");
-      printerClicks++;
-    }
+      } else {
+        removeGraphic("Printer");
+        $("#printers").switchClass("btn-danger", "btn-outline-danger");
+        printerClicks++;
+      }
     });
 
     // Computer Clusters
@@ -683,7 +705,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Dining Halls
     $("#dhalls").click(function(){
+      if (diningLoading)
+        return;
+
       if (diningClicks % 2 == 0) {
+      diningLoading = true;
+
       $("#dhalls-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
       $.ajax({
         type: "POST",
@@ -709,6 +736,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           $("#dhalls").switchClass("btn-outline-primary", "btn-primary");
           $("#dhalls-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
           diningClicks++;
+          diningLoading = false;
         }
       });
     } else {

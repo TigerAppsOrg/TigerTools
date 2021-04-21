@@ -25,6 +25,21 @@ html, body, header, #viewDiv {
   /*transform: translate(-50%, -50%);*/ /* this is for centering the button */
 }
 
+#logout {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+}
+
+#alert-success {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: none;
+  z-index: 1060;
+}
+
 #mySidenav {
   /*height: 100%;*/
   width: 360px;

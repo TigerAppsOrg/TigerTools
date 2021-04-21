@@ -451,3 +451,9 @@ def place_downvote():
 		html = render_template('arcgis.html')
 		return make_response(html)
 
+#-----------------------------------------------------------------------
+@app.route('/logout', methods=['GET'])
+def logout():
+    casClient = CASClient()
+    casClient.authenticate()
+    casClient.logout()
