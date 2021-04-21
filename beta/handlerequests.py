@@ -17,8 +17,8 @@ import sys
 import os
 import csv
 from load_api_data import update, places_open
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail
+# from sendgrid import SendGridAPIClient
+# from sendgrid.helpers.mail import Mail
 
 app = Flask(__name__, template_folder='.')
 
@@ -249,15 +249,10 @@ def format_wkorder():
 	print(''.join(csv_string))
 	# email
 	# https://www.twilio.com/blog/how-to-send-emails-in-python-with-sendgrid
-	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='indup@princeton.edu',subject='Work order test',\
-		html_content=('<p>%s</p>'%csv_string))
-	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-	response = sg.send(message)
-	# testing
-	# print(request.form.get('firstname'), request.form.get('lastname'), request.form.get('email'), request.form.get('phone'),
-	# 	request.form.get('alt-firstname'), request.form.get('alt-lastname'), request.form.get('alt-email'), request.form.get('alt-phone'), 
-	# 	request.form.get('alt-netid'), request.form.get('contacted'), 'Operating', request.form.get('minors-pets'), request.form.get('grad-faculty'), request.form.get('campus'), 
-	# 	request.form.get('building'), request.form.get('floor'),request.form.get('room'),request.form.get('description'))
+	# message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='indup@princeton.edu',subject='Work order test',\
+	# 	html_content=('<p>%s</p>'%csv_string))
+	# sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+	# response = sg.send(message)
 	html = render_template('arcgis.html', netid=netid)
 	return make_response(html)
 
