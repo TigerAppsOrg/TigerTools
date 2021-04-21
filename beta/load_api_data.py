@@ -23,10 +23,11 @@ def dining_halls():
 
 	categoryID = 2
 	# make table
-	dbcursor.execute('DROP TABLE IF EXISTS dining')
-	dbcursor.execute('CREATE TABLE dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+	dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
-		payment VARCHAR(500), capacity VARCHAR(6), open VARCHAR(4), PRIMARY KEY(name, dbid))')
+		payment VARCHAR(500), capacity VARCHAR(6), open VARCHAR(4), PRIMARY KEY(name, dbid));')
+	dbcursor.execute('DELETE FROM dining;')
+	dbconnection.commit()
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -92,10 +93,11 @@ def cafes():
 
 	categoryID = 3
 	# make table
-	dbcursor.execute('DROP TABLE IF EXISTS cafes')
-	dbcursor.execute('CREATE TABLE cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+	dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
-		payment VARCHAR(500), open VARCHAR(4), PRIMARY KEY(name, dbid))')
+		payment VARCHAR(500), open VARCHAR(4), PRIMARY KEY(name, dbid));')
+	dbcursor.execute('DELETE FROM cafes;')
+	dbconnection.commit()
 	# , PRIMARY KEY (dbid)
 
 	req_lib = ReqLib()
@@ -164,10 +166,11 @@ def vending_machines():
 
 	categoryID = 4
 	# make table
-	dbcursor.execute('DROP TABLE IF EXISTS vendingmachines')
-	dbcursor.execute('CREATE TABLE vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+	dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), what VARCHAR(500), \
-		payment VARCHAR(500), PRIMARY KEY(name, dbid))')
+		payment VARCHAR(500), PRIMARY KEY(name, dbid));')
+	dbcursor.execute('DELETE FROM vendingmachines;')
+	dbconnection.commit()
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -242,11 +245,12 @@ def categoryid6():
 
 	categoryID = 6
 	# make table
-	dbcursor.execute('DROP TABLE IF EXISTS id6')
-	dbcursor.execute('CREATE TABLE id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+	dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), accessible VARCHAR(30), description VARCHAR(80), \
 		printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), \
-		locationmore VARCHAR(30), PRIMARY KEY(name, dbid))')
+		locationmore VARCHAR(30), PRIMARY KEY(name, dbid));')
+	dbcursor.execute('DELETE FROM id6;')
+	dbconnection.commit()
 
 	req_lib = ReqLib()
 	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -333,8 +337,10 @@ def places_open():
 	req_lib = ReqLib()
 	data = req_lib.getJSON(req_lib.configs.PLACES_OPEN,)
 
-	dbcursor.execute('DROP TABLE IF EXISTS isitopen;')
-	dbcursor.execute('CREATE TABLE isitopen (name VARCHAR (100), dbid VARCHAR(4), open VARCHAR(4), PRIMARY KEY(name, dbid));')
+	dbcursor.execute('CREATE TABLE IF NOT EXISTS isitopen (name VARCHAR (100), dbid VARCHAR(4), open VARCHAR(4), \
+		PRIMARY KEY(name, dbid));')
+	dbcursor.execute('DELETE FROM isitopen;')
+	dbconnection.commit()
 
 	for i in range(len(data)):
 		row = data[i]
