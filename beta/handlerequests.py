@@ -17,6 +17,8 @@ import sys
 import os
 import csv
 from load_api_data import update, places_open
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 app = Flask(__name__, template_folder='.')
 
@@ -245,6 +247,11 @@ def format_wkorder():
 	print('Amenity','NetID','First Name','Last Name','E-mail','Phone','Alt NetID','Alt First Name','Alt Last Name','Alt Email','Alt Phone', \
 	'Contact for Scheduling','Charge Source','Campus','Building','Building Code','Location Code','Asset','Description (with more location info appended if given by user)')
 	print(''.join(csv_string))
+	# email
+	message = Mail(from_email='from_email@example.com',to_emails='indup@princeton.edu',subject='Work order test',\
+		html_content=('<p>%s</p>'%csv_string))
+	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+	response = sg.send(message)
 	# testing
 	# print(request.form.get('firstname'), request.form.get('lastname'), request.form.get('email'), request.form.get('phone'),
 	# 	request.form.get('alt-firstname'), request.form.get('alt-lastname'), request.form.get('alt-email'), request.form.get('alt-phone'), 
