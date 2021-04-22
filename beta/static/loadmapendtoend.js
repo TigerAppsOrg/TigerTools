@@ -282,11 +282,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var room = graphic.attributes.room;
             var floor = graphic.attributes.floor;
             if (building != "None")
-              $("#building").val(building);
+              $("#building").attr("value", building);
             if (room != "None")
-              $("#room").val(room);
+              $("#room").attr("value", room);
             if (floor != "None" && floor != "N/A")
-              $("#floor").val(floor);
+              $("#floor").attr("value", floor);
 
             $("#modalTrigger").click(); // Open the modal
           }
@@ -454,6 +454,14 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // Expand modal when opening work order tab
     $("#nav-workorder-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
+    });
+
+    // Attach functionality to work order reset button
+    $("#reset-workorder").on("click", function() {
+      // Reset work order form
+      var form = $("#workorder-form");
+      form[0].reset();
+      form.removeClass("was-validated");
     });
 
     // When modal is closed, reset its content
