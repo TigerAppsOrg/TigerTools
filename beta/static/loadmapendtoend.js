@@ -171,36 +171,44 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     renderAll();
   }
 
-  // User location graphic
-  var locGraphic = new Graphic({
-    geometry: {
-      type: "point",
-      longitude: 0,
-      latitude: 0
-    },
-    symbol: {
-      type: "simple-marker",
-      color: [102, 153, 255],
-      outline: {
-        color: [255,255,255],
-        width: 0.7
-      }
-    }
+  // GraphicsLayer for holding user location
+  var layer = new GraphicsLayer({
+    graphics: []
   });
+  map.add(layer);
 
-  // Add point and move map to user position
+  var initPos = true;
+
+  // Continually update user position
   function showPosition(position) {
+    layer.removeAll();
+
     var lat = position.coords.latitude;
     var long = position.coords.longitude;
-    locGraphic.geometry.longitude = long;
-    locGraphic.geometry.latitude = lat;
 
-    view.center = [long, lat];
-    
-    var layer = new GraphicsLayer({
-      graphics: [locGraphic]
+    // Create new location graphic
+    var locGraphic = new Graphic({
+      geometry: {
+        type: "point",
+        longitude: long,
+        latitude: lat
+      },
+      symbol: {
+        type: "simple-marker",
+        color: [102, 153, 255],
+        outline: {
+          color: [255,255,255],
+          width: 0.7
+        }
+      }
     });
-    map.add(layer); 
+    
+    layer.graphics.push(locGraphic);
+
+    if (initPos) {
+      initPos = false;
+      view.center = [long, lat];
+    }
   }
 
   // Handle location error
@@ -229,7 +237,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // Watch for location changes
     // https://www.w3schools.com/html/html5_geolocation.asp
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(showPosition, handleLocationError);
+      navigator.geolocation.getCurrentPosition(showPosition, handleLocationError);
+      // watchPosition doesn't work with location spoofing??
     }
     else {
       console.log("Geolocation is not supported by this browser.");
@@ -243,21 +252,23 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         const graphic = response.results[0].graphic;
         if (response.results.length && !graphic.attributes.layerId) {
 
+          const attr = graphic.attributes;
+
           // Toggle showing cluster points if user clicked on cluster
-          if (graphic.attributes.pts) {
+          if (attr.pts) {
             toggleCluster(graphic);
           }
 
           else {
             // Set title
-            let titleString = graphic.attributes["type"] + " - " + graphic.attributes["name"];
+            let titleString = attr["type"] + " - " + attr["name"];
             $(".modal-title").text(titleString);
 
             // Get information
             $.ajax({
               type: "POST",
               url: "/info",
-              data: JSON.stringify(graphic.attributes),
+              data: JSON.stringify(attr),
               contentType: "application/json",
               success: function(response){
                 $("#info-div").html(response);
@@ -278,15 +289,25 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             });
 
             // Autofill work order inputs: building, room, floor
-            var building = graphic.attributes.building;
-            var room = graphic.attributes.room;
-            var floor = graphic.attributes.floor;
+            var building = attr.building;
+            var room = attr.room;
+            var floor = attr.floor;
             if (building != "None")
               $("#building").attr("value", building);
             if (room != "None")
               $("#room").attr("value", room);
             if (floor != "None" && floor != "N/A")
               $("#floor").attr("value", floor);
+              
+            // Autofill hidden fields: locationcode, buildingcode, asset, locationmore
+            if ("locationcode" in attr)
+              $("#locationcode").attr("value", attr.locationcode);
+            if ("buildingcode" in attr)
+              $("#buildingcode").attr("value", attr.buildingcode);
+            if ("asset" in attr)
+              $("#asset").attr("value", attr.asset);
+            if ("locationmore" in attr)
+              $("#locationmore").attr("value", attr.locationmore);
 
             $("#modalTrigger").click(); // Open the modal
           }
@@ -471,6 +492,12 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       form[0].reset();
       form.removeClass("was-validated");
 
+      // Manually reset hidden fields
+      $("#locationcode").attr("value", "");
+      $("#buildingcode").attr("value", "");
+      $("#asset").attr("value", "");
+      $("#locationmore").attr("value", "");
+
       // Reset info content and set info tab as active
       $("#nav-home-tab").tab("show");
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
@@ -645,7 +672,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var printer = data_array[i];
             point = createPoint(printer.long, printer.lat, [220, 53, 69],
               {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.macs, scanners: printer.scanners,
-              building: printer.buildingname, room: printer.room, floor: printer.floor});
+              building: printer.buildingname, room: printer.room, floor: printer.floor, locationcode: printer.locationcode, locationmore: printer.locationmore});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -688,7 +715,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var cluster = data_array[i];
             point = createPoint(cluster.long, cluster.lat, [255, 193, 7],
               {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.macs, scanners: cluster.scanners,
-              building: cluster.buildingname, room: cluster.room, floor: cluster.floor});
+              building: cluster.buildingname, room: cluster.room, floor: cluster.floor, locationcode: cluster.locationcode, locationmore: cluster.locationmore});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -730,7 +757,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var scanner = data_array[i];
             point = createPoint(scanner.long, scanner.lat, [128, 0, 0],
               {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.macs, scanners: scanner.scanners,
-              building: scanner.buildingname, room: scanner.room, floor: scanner.floor});
+              building: scanner.buildingname, room: scanner.room, floor: scanner.floor, locationcode: scanner.locationcode, locationmore: scanner.locationmore});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -773,8 +800,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           for (var i = 0; i < data_array.length; i++) {
             var dhall = data_array[i];
             point = createPoint(dhall.long, dhall.lat, [0, 123, 255],
-              {name: dhall.name, type:"Dining hall", who: dhall.who, payment: dhall.payment, open: dhall.open, capacity: dhall.capacity,
-              building: dhall.buildingname, room: dhall.room, floor: dhall.floor});
+              {name: dhall.name, type:"Dining hall", who: dhall.who, payment: dhall.payment, open: dhall.open, capacity: dhall.capacity, rescollege: dhall.rescollege,
+              building: dhall.buildingname, room: dhall.room, floor: dhall.floor, locationcode: dhall.locationcode});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -816,7 +843,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var cafe = data_array[i];
             point = createPoint(cafe.long, cafe.lat, [40, 167, 69],
               {name: cafe.name, type:"Café", description: cafe.description, who: cafe.who, payment: cafe.payment, open: cafe.open,
-              building: cafe.buildingname, room: cafe.room, floor: cafe.floor});
+              building: cafe.buildingname, room: cafe.room, floor: cafe.floor, locationcode: cafe.locationcode});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -858,7 +885,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var vending_machine = data_array[i];
             point = createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0],
               {name: vending_machine.name, type:"Vending Machine", directions: vending_machine.description, what: vending_machine.what, payment: vending_machine.payment,
-              building: vending_machine.buildingname, room: vending_machine.room, floor: vending_machine.floor});
+              building: vending_machine.buildingname, room: vending_machine.room, floor: vending_machine.floor, locationcode: vending_machine.locationcode});
 
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
@@ -942,7 +969,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
             var water_station = data_array[i];
             point = createPoint(water_station.long, water_station.lat, [23, 162, 184],
               {name: water_station.buildingname + ", Floor " + water_station.floor, directions: water_station.directions, type:"Bottle-Filling Station",
-              building: water_station.buildingname, room: water_station.room, floor: water_station.floor});
+              building: water_station.buildingname, room: water_station.room, floor: water_station.floor, buildingcode: water_station.buildingcode, asset: water_station.asset});
     
             // Create new cluster if doesnt exist already
             checkPointCluster(point);

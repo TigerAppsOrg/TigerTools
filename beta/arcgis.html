@@ -329,16 +329,6 @@
                     </div>
                   </div>
 
-                  <!--<label for="buildingcode">Building Code</label>-->
-                  <select class="form-control mb-2 d-none" name="buildingcode" id="buildingcode">
-                     <option></option>
-                  </select>
-
-                  <!--<label for="locationcode">Location Code</label>-->
-                  <select class="form-control mb-2 d-none" name="locationcode" id="locationcode">
-                     <option></option>
-                  </select>
-
                   <div class="form-row mb-2">
                     <div class="col-sm-12">
                       <label for="floor">Floor - if select Floor, must also select Room</label>
@@ -353,10 +343,25 @@
                     </div>
                   </div>
 
-                  <!--<label for="asset">Asset Number</label>-->
+                  <!-- BELOW ARE HIDDEN FIELDS, NOT FOR USER INPUT -->
+                  <input class="form-control d-none" type="text" name="locationcode" id="locationcode" value="">
+                  <input class="form-control d-none" type="text" name="buildingcode" id="buildingcode" value="">
+                  <input class="form-control d-none" type="text" name="asset" id="asset" value="">
+                  <input class="form-control d-none" type="text" name="locationmore" id="locationmore" value="">
+
+                  <!--
+                  <select class="form-control mb-2 d-none" name="buildingcode" id="buildingcode">
+                     <option></option>
+                  </select>
+
+                  <select class="form-control mb-2 d-none" name="locationcode" id="locationcode">
+                     <option></option>
+                  </select>
+
                   <select class="form-control mb-2 d-none" name="asset" id="asset">
                      <option></option>
                   </select>
+                -->
                 </div>
 
                 </div>

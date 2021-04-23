@@ -194,7 +194,8 @@ def get_info():
 				who=request.get_json().get("who"),
 				payment=request.get_json().get("payment"),
 				open=request.get_json().get("open"),
-				capacity=request.get_json().get("capacity"))
+				capacity=request.get_json().get("capacity"),
+				rescollege=request.get_json().get("rescollege"))
 			return make_response(html)
 
 		elif amenity_type == "Café":
