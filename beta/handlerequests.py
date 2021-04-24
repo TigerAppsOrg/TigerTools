@@ -45,6 +45,12 @@ def landing():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+@app.route('/error')
+def error_page():
+	html = render_template('error.html')
+	return make_response(html)
+
+# ---------------------------------------------------------------------
 @app.route('/map', methods=['GET'])
 def display_map():
 	netid = CASClient().authenticate()
@@ -171,7 +177,7 @@ def get_data():
 		return data_json
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		return ''
+		return redirect(url_for('error_page'))
 
 # ---------------------------------------------------------------------
 @app.route('/info', methods=['POST'])
@@ -225,7 +231,7 @@ def get_info():
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		return ''
+		return '<h6> Unable to display amenity information. Please try again later. </h6>'
 
 # ---------------------------------------------------------------------
 @app.route('/wkorder', methods=['POST'])
