@@ -172,16 +172,35 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   }
 
   // GraphicsLayer for holding user location
-  var layer = new GraphicsLayer({
+  var locLayer = new GraphicsLayer({
     graphics: []
   });
-  map.add(layer);
+  
+  map.add(locLayer);
+
+  // Pulsing location graphic
+  function pulse(){
+		var opacity = 1;
+    locLayer.opacity = 1;
+    var sign = -1;
+		function reduceOpacity(){
+      opacity += sign * 0.012;
+      locLayer.opacity = opacity;
+
+			if (opacity <= 0.4 || opacity >= 1) {
+        sign *= -1;
+        return;
+      }
+		}
+		setInterval(reduceOpacity, 20);
+		setTimeout(pulse, 2000); // repeat
+	}
 
   var initPos = true;
 
   // Continually update user position
   function showPosition(position) {
-    layer.removeAll();
+    locLayer.removeAll();
 
     var lat = position.coords.latitude;
     var long = position.coords.longitude;
@@ -203,7 +222,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       }
     });
     
-    layer.graphics.push(locGraphic);
+    locLayer.graphics.push(locGraphic);
 
     if (initPos) {
       initPos = false;
@@ -233,15 +252,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   view.when(function() {
     // Move arcgis zoom buttons to top right
     view.ui.move([ "zoom" ], "top-right");
-
-    // Watch for location changes
-    // https://www.w3schools.com/html/html5_geolocation.asp
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(showPosition, handleLocationError);
-    }
-    else {
-      console.log("Geolocation is not supported by this browser.");
-    }
 
     // Handle point/cluster clicks
     view.on("click", function(event) {
@@ -346,6 +356,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     var vendingLoading = false;
     var waterLoading = false;
     var athleticsLoading = false;
+
+    // Watch for location changes
+    // https://www.w3schools.com/html/html5_geolocation.asp
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition, handleLocationError);
+      // watchPosition doesn't work with location spoofing??
+    }
+    else {
+      console.log("Geolocation is not supported by this browser.");
+    }
+
+    pulse();
 
     // Handle work order form submit
     // https://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
