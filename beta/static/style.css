@@ -31,7 +31,7 @@ html, body, header, #viewDiv {
   right: 15px;
 }
 
-#comment-success, #workorder-success {
+#comment-success, #workorder-success, #ajax-error {
   position: fixed;
   top: 40px;
   left: 50%;

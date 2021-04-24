@@ -324,6 +324,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     }
   });
 
+  // Alert users of AJAX error
+  $(document).ajaxError(function (event, jqXHR, settings, thrownError) {
+    $("#ajax-error").slideDown("slow").delay(4000).slideUp("slow");
+  });
+
   $(document).ready(function(){
     var printerClicks = 0;
     var diningClicks = 0;
@@ -537,7 +542,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           contentType: "application/json",
           success: function(comment){
             $("#message-text").val("");
-            $("#comment-success-message").show().delay(5000).fadeOut();
+            $("#comment-success-message").slideDown("slow").delay(4000).slideUp("slow");
             //$("#comment-success").slideDown("slow").delay(4000).slideUp("slow");
           }
         });
