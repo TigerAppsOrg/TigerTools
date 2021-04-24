@@ -1,7 +1,13 @@
 # ---------------------------------------------------------------------
 # runlocal.py
-# This script is for running the app locally
+# This script is for running the TigerTools application locally.
+# Access using localhost:port. 0.0.0.0 is not authorized to use CAS.
 # ---------------------------------------------------------------------
+
+'''
+	IMPORTANT: EXECUTE . get-db-url.sh AND . get-email-key.sh IN COMMAND 
+	LINE BEFORE RUNNING THIS PYTHON SCRIPT LOCALLY
+'''
 
 from flask import Flask, request
 import sys

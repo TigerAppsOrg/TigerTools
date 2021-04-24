@@ -3,11 +3,6 @@
 # Updates Heroku database with MobileApp API data
 # ---------------------------------------------------------------------
 
-'''
-	IMPORTANT: EXECUTE . get-db-url.sh IN COMMAND LINE BEFORE RUNNING 
-	THIS PYTHON SCRIPT LOCALLY
-'''
-
 import os
 import psycopg2
 from reqlib import ReqLib
