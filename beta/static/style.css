@@ -133,8 +133,11 @@ html, body, header, #viewDiv {
 }
 
 .list-group-item {
-  word-break: break-all;
+  word-break: break-word;
   hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .timestamp {
