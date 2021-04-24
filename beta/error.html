@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>TigerTools Error Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='favicon.ico')}}"/>
+
+    <!-- Font awesome 5 (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css ">
+    <style>
+      .btn-primary {
+        background-color: #e17321;
+        border-color: #e17321;
+      }
+
+      .btn-primary:active, .btn-primary:focus, .btn-primary:hover {
+        background-color: #ca671c !important;
+        border-color: #ca671c !important;
+        color: white;
+      }
+
+      .btn-primary:active, .btn-primary:focus {
+        box-shadow: 0 0 0 0.2rem rgba(225, 115, 33, 0.5) !important;
+      }
+
+      .vertical-center {
+        min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+        min-height: 100vh; /* These two lines are counted as one :-)       */
+
+        display: flex;
+        align-items: center;
+      }
+      .display-4 {
+        margin-top: -100px;
+      }
+      .container-fluid {
+        color: white;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("static/error-bg.png");
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-position: center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: contain;
+      }
+    </style>
+  </head>
+
+  <header>
+    <div class="container-fluid d-flex justify-content-center vertical-center">
+      <div class="row d-flex justify-content-center text-center">
+        <div class="col-sm-12 my-auto">
+          <!-- Heading -->
+          <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Oops! An Error Occurred.</h2>
+          <hr>
+          <!-- Description -->
+          <a type="button" class="btn btn-primary" style="font-size: 18px;padding: 12px 20px;" id="loginbutton" href="map">Click Here to Login Again <i class="fas fa-angle-double-right"></i></a>
+	  <hr>
+	  <h5 class="font-italic">If the problem persists, please try again later.</h5>
+        </div>
+      </div>
+    </div>
+  </header>
+</html>
