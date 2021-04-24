@@ -17,8 +17,8 @@ import sys
 import os
 import csv
 from load_api_data import update, places_open
-# from sendgrid import SendGridAPIClient
-# from sendgrid.helpers.mail import Mail
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 app = Flask(__name__, template_folder='.')
 
@@ -250,10 +250,10 @@ def format_wkorder():
 	print(''.join(csv_string))
 	# email
 	# https://www.twilio.com/blog/how-to-send-emails-in-python-with-sendgrid
-	# message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='indup@princeton.edu',subject='Work order test',\
-	# 	html_content=('<p>%s</p>'%csv_string))
-	# sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-	# response = sg.send(message)
+	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='indup@princeton.edu',subject='Work order test',\
+	 	html_content=('<p>%s</p>'%csv_string))
+	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+	response = sg.send(message)
 	html = render_template('arcgis.html', netid=netid)
 	return make_response(html)
 
@@ -267,7 +267,6 @@ def store_comment():
 		dbcursor = dbconnection.cursor()
 		amenity_name = request.get_json().get('amenityName')
 		comment_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-		#comment_time = arrow.now().timestamp()
 		comment = request.get_json().get('textComment')
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, COMMENT text, TIME text);')
 		query = 'INSERT INTO comments (amenity_name, comment, time) VALUES (%s, %s, %s);'
