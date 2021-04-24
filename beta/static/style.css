@@ -71,6 +71,10 @@ html, body, header, #viewDiv {
   margin-left: 50px;
 }
 
+.loading-symbol {
+  display: none;
+}
+
 .btn-maroon {
   color: #800000;
   border-width: 1px;

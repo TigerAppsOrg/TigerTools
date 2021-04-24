@@ -237,8 +237,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     // Watch for location changes
     // https://www.w3schools.com/html/html5_geolocation.asp
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, handleLocationError);
-      // watchPosition doesn't work with location spoofing??
+      navigator.geolocation.watchPosition(showPosition, handleLocationError);
     }
     else {
       console.log("Geolocation is not supported by this browser.");
@@ -676,7 +675,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       if (printerClicks % 2 == 0) {
       printerLoading = true;
 
-      $("#printers-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#printers-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -700,7 +699,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#printers").switchClass("btn-outline-danger", "btn-danger");
-          $("#printers-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#printers-load").hide(); // Hide loading symbol on finish
           printerClicks++;
           printerLoading = false;
         }
@@ -719,7 +718,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
       if (clusterClicks % 2 == 0) {
       clusterLoading = true;
-      $("#clusters-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#clusters-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -743,7 +742,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#clusters").switchClass("btn-outline-warning", "btn-warning");
-          $("#clusters-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#clusters-load").hide(); // Hide loading symbol on finish
           clusterClicks++;
           clusterLoading = false;
         }
@@ -761,7 +760,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         return;
       if (scannerClicks % 2 == 0) {
       scannerLoading = true;
-      $("#scanners-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#scanners-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -785,7 +784,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#scanners").switchClass("btn-maroon", "btn-maroon-full");
-          $("#scanners-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#scanners-load").hide(); // Hide loading symbol on finish
           scannerClicks++;
           scannerLoading = false;
         }
@@ -805,7 +804,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       if (diningClicks % 2 == 0) {
       diningLoading = true;
 
-      $("#dhalls-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#dhalls-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -829,7 +828,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#dhalls").switchClass("btn-outline-primary", "btn-primary");
-          $("#dhalls-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#dhalls-load").hide(); // Hide loading symbol on finish
           diningClicks++;
           diningLoading = false;
         }
@@ -847,7 +846,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         return;
       if (cafeClicks % 2 == 0) {
       cafeLoading = true;
-      $("#cafes-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#cafes-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -871,7 +870,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#cafes").switchClass("btn-outline-success", "btn-success");
-          $("#cafes-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#cafes-load").hide(); // Hide loading symbol on finish
           cafeClicks++;
           cafeLoading = false;
         }
@@ -889,7 +888,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         return;
       if (vendingClicks % 2 == 0) {
       vendingLoading = true;
-      $("#vending-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#vending-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -913,7 +912,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#vending").switchClass("btn-orange", "btn-orange-full");
-          $("#vending-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#vending-load").hide(); // Hide loading symbol on finish
           vendingClicks++;
           vendingLoading = false;
         }
@@ -931,7 +930,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         return;
       if (athleticsClicks % 2 == 0) {
       athleticsLoading = true;
-      $("#athletics-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#athletics-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -955,7 +954,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
 
           $("#athletics").switchClass("btn-purple", "btn-purple-full");
-          $("#athletics-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#athletics-load").hide(); // Hide loading symbol on finish
           athleticsClicks++;
           athleticsLoading = false;
         }
@@ -973,7 +972,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         return;
       if (waterClicks % 2 == 0) {
       waterLoading = true;
-      $("#water-load").switchClass("d-none", "d-inline-flex"); // Show loading symbol on start
+      $("#water-load").show(); // Show loading symbol on start
       $.ajax({
         type: "POST",
         url: "/points",
@@ -997,7 +996,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           renderAll();
     
           $("#water").switchClass("btn-outline-info", "btn-info");
-          $("#water-load").switchClass("d-inline-flex", "d-none"); // Hide loading symbol on finish
+          $("#water-load").hide(); // Hide loading symbol on finish
           waterClicks++;
           waterLoading = false;
         }
