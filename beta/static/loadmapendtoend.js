@@ -179,6 +179,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   map.add(locLayer);
 
   // Pulsing location graphic
+  // Unused - animations are unstable on Firefox
   function pulse(){
 		var opacity = 1;
     locLayer.opacity = 1;
@@ -367,7 +368,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       console.log("Geolocation is not supported by this browser.");
     }
 
-    pulse();
+    // pulse();
 
     // Handle work order form submit
     // https://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
