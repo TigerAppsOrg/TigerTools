@@ -477,6 +477,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       });
     });
 
+    // display characters remaining in comment box
+		$("#message-text").on("change keyup paste", function() {
+			if(this.value.length > 500){
+        return false;
+    	}
+			if(this.value.length == 0){
+				$("#remainingC").html("");
+				return false;
+    	}
+    $("#remainingC").html("Remaining characters : " + (500 - this.value.length));
+	});
+    
     // Expand modal when opening work order tab
     $("#nav-workorder-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
@@ -542,6 +554,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           contentType: "application/json",
           success: function(comment){
             $("#message-text").val("");
+            $("#remainingC").html("");
             $("#comment-success-message").slideDown("slow").delay(4000).slideUp("slow");
             //$("#comment-success").slideDown("slow").delay(4000).slideUp("slow");
           }
