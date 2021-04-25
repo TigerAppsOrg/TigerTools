@@ -37,13 +37,13 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   });
 
   view.constraints = {
-    /*geometry: {       // Constrain map movement to PU area
+    geometry: {       // Constrain map movement to PU area
       type: "extent",
       xmin: -74.667,
       ymin:  40.336,
       xmax: -74.647,
       ymax:  40.356
-    },*/
+    },
     minZoom: 14 // Constrain zooming out
   };
 
