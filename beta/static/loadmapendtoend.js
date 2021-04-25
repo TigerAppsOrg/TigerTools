@@ -198,6 +198,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 	}
 
   var initPos = true;
+  var startedTrack = false;
 
   // Continually update user position
   function showPosition(position) {
@@ -228,6 +229,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     if (initPos) {
       initPos = false;
       view.center = [long, lat];
+    }
+    if (!startedTrack) {
+      startedTrack = true;
+      $("#trackUser").html("<i class='fas fa-map-marker-alt'></i> Update Location");
     }
   }
 
@@ -358,15 +363,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     var waterLoading = false;
     var athleticsLoading = false;
 
-    // Watch for location changes
-    // https://www.w3schools.com/html/html5_geolocation.asp
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition, handleLocationError);
-      // watchPosition doesn't work with location spoofing??
-    }
-    else {
-      console.log("Geolocation is not supported by this browser.");
-    }
+    $("#trackUser").on("click", function() {
+      // Get location of user
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, handleLocationError);
+        // watchPosition doesn't work with firefox location-spoofing addon
+      }
+      else {
+        console.log("Geolocation is not supported by this browser.");
+      }
+    });
 
     // pulse();
 

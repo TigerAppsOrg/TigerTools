@@ -25,6 +25,12 @@ html, body, header, #viewDiv {
   /*transform: translate(-50%, -50%);*/ /* this is for centering the button */
 }
 
+#trackUser {
+  position: fixed;
+  top: 15px;
+  right: 50px;
+}
+
 #logout {
   position: fixed;
   bottom: 15px;
