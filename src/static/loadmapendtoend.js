@@ -537,7 +537,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       form[0].reset();
       form.removeClass("was-validated");
 
-      // Manually reset hidden fields
+      // Manually reset all autofilled fields
+      $("#building").attr("value", "");
+      $("#room").attr("value", "");
+      $("#floor").attr("value", "");
       $("#locationcode").attr("value", "");
       $("#buildingcode").attr("value", "");
       $("#asset").attr("value", "");
