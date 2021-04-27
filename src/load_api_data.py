@@ -20,7 +20,7 @@ def dining_halls():
 	# make table
 	dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
-		payment VARCHAR(500), capacity VARCHAR(6), open VARCHAR(4), PRIMARY KEY(name, dbid));')
+		payment VARCHAR(500), capacity VARCHAR(6), PRIMARY KEY(name, dbid));')
 	dbcursor.execute('DELETE FROM dining;')
 	dbconnection.commit()
 
@@ -90,7 +90,7 @@ def cafes():
 	# make table
 	dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 		locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
-		payment VARCHAR(500), open VARCHAR(4), PRIMARY KEY(name, dbid));')
+		payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 	dbcursor.execute('DELETE FROM cafes;')
 	dbconnection.commit()
 	# , PRIMARY KEY (dbid)
@@ -345,8 +345,8 @@ def places_open():
 		dbconnection.commit()
 
 	# update status of dining and cafes
-	dbcursor.execute('UPDATE dining SET open=isitopen.open FROM isitopen WHERE dining.dbid=isitopen.dbid;')
-	dbcursor.execute('UPDATE cafes SET open=isitopen.open FROM isitopen WHERE cafes.dbid=isitopen.dbid;')
+	# dbcursor.execute('UPDATE dining SET open=isitopen.open FROM isitopen WHERE dining.dbid=isitopen.dbid;')
+	# dbcursor.execute('UPDATE cafes SET open=isitopen.open FROM isitopen WHERE cafes.dbid=isitopen.dbid;')
 
 	dbconnection.commit()
 	dbcursor.close()
