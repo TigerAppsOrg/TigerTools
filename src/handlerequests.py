@@ -241,31 +241,28 @@ def get_info():
 @app.route('/wkorder', methods=['POST'])
 def format_wkorder():
 	netid = CASClient().authenticate()
-	if (netid != 'rdondero') and (netid != 'whchang') and (netid != 'satadals') and (netid != 'pisong') and (netid != 'anatk'):
-		# https://levelup.gitconnected.com/building-csv-strings-in-python-32934aed5a9e
-		csvfile = CsvTextBuilder()
-		data = [[request.form.get('netid'),request.form.get('firstname'),request.form.get('lastname'),request.form.get('email'),request.form.get('phone'),
-			request.form.get('alt-netid'),request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
-			request.form.get('alt-phone'),request.form.get('contacted'), \
-			 request.form.get('campus'),request.form.get('charge-source'),request.form.get('building'),request.form.get('buildingcode'), \
-			 request.form.get('locationcode'),request.form.get('asset'), \
-			 request.form.get('description') + ' --- MORE LOCATION INFO: Floor: '+request.form.get('floor')+'; Room: '+ \
-			request.form.get('room')]]
-		writer = csv.writer(csvfile)
-		writer.writerows(data)
-		csv_string = csvfile.csv_string
-		# testing
-		print('Amenity','NetID','First Name','Last Name','E-mail','Phone','Alt NetID','Alt First Name','Alt Last Name','Alt Email','Alt Phone', \
-		'Contact for Scheduling','Charge Source','Campus','Building','Building Code','Location Code','Asset','Description (with more location info appended if given by user)')
-		print(''.join(csv_string))
-		# email
-		# https://www.twilio.com/blog/how-to-send-emails-in-python-with-sendgrid
-		message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='indup@princeton.edu',subject='Work order test',\
-		 	html_content=('<p>%s</p>'%csv_string))
-		sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-		response = sg.send(message)
-	else:
-		print('An instructor submitted a work order', file=sys.stderr)
+	# https://levelup.gitconnected.com/building-csv-strings-in-python-32934aed5a9e
+	csvfile = CsvTextBuilder()
+	data = [[request.form.get('netid'),request.form.get('firstname'),request.form.get('lastname'),request.form.get('email'),request.form.get('phone'),
+		request.form.get('alt-netid'),request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
+		request.form.get('alt-phone'),request.form.get('contacted'), \
+		 request.form.get('campus'),request.form.get('charge-source'),request.form.get('building'),request.form.get('buildingcode'), \
+		 request.form.get('locationcode'),request.form.get('asset'), \
+		 request.form.get('description') + ' --- MORE LOCATION INFO: Floor: '+request.form.get('floor')+'; Room: '+ \
+		request.form.get('room')]]
+	writer = csv.writer(csvfile)
+	writer.writerows(data)
+	csv_string = csvfile.csv_string
+	# testing
+	print('Amenity','NetID','First Name','Last Name','E-mail','Phone','Alt NetID','Alt First Name','Alt Last Name','Alt Email','Alt Phone', \
+	'Contact for Scheduling','Charge Source','Campus','Building','Building Code','Location Code','Asset','Description (with more location info appended if given by user)')
+	print(''.join(csv_string))
+	# email
+	# https://www.twilio.com/blog/how-to-send-emails-in-python-with-sendgrid
+	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,subject='Work order test',\
+	 	html_content=('<p>%s</p>'%csv_string))
+	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+	response = sg.send(message)
 	html = render_template('arcgis.html', netid=netid)
 	return make_response(html)
 
