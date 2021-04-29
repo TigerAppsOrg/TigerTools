@@ -56,7 +56,7 @@ def display_map():
 	netid = CASClient().authenticate()
 
 	# update database
-	#update()
+	update()
 
 	html = render_template('templates/arcgis.html',netid=netid)
 	return make_response(html)
