@@ -41,13 +41,13 @@ def landing():
 	if CASClient().redirectLanding() == 0:
 		return redirect(url_for('display_map'))
 	else:
-		html = render_template('index.html')
+		html = render_template('templates/index.html')
 		return make_response(html)
 
 # ---------------------------------------------------------------------
 @app.route('/error')
 def error_page():
-	html = render_template('error.html')
+	html = render_template('templates/error.html')
 	return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -56,9 +56,9 @@ def display_map():
 	netid = CASClient().authenticate()
 
 	# update database
-	update()
+	#update()
 
-	html = render_template('arcgis.html',netid=netid)
+	html = render_template('templates/arcgis.html',netid=netid)
 	return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -191,7 +191,7 @@ def get_info():
 		amenity_type = request.get_json().get('type')
 
 		if amenity_type == "Printer" or amenity_type == "Computer Cluster" or amenity_type == "Scanner":
-			html = render_template('info_templates/printers.html',
+			html = render_template('templates/info_templates/printers.html',
 				description=request.get_json().get("description"),
 				accessible=request.get_json().get("accessible"),
 				printers=request.get_json().get("printers"),
@@ -200,7 +200,7 @@ def get_info():
 			return make_response(html)
 
 		elif amenity_type == "Dining hall":
-			html = render_template('info_templates/dhalls.html',
+			html = render_template('templates/info_templates/dhalls.html',
 				who=request.get_json().get("who"),
 				payment=request.get_json().get("payment"),
 				open=request.get_json().get("open"),
@@ -209,7 +209,7 @@ def get_info():
 			return make_response(html)
 
 		elif amenity_type == "Café":
-			html = render_template('info_templates/cafes.html',
+			html = render_template('templates/info_templates/cafes.html',
 				description=request.get_json().get("description"),
 				who=request.get_json().get("who"),
 				payment=request.get_json().get("payment"),
@@ -217,19 +217,19 @@ def get_info():
 			return make_response(html)
 
 		elif amenity_type == "Vending Machine":
-			html = render_template('info_templates/vending.html',
+			html = render_template('templates/info_templates/vending.html',
 				directions=request.get_json().get("directions"),
 				what=request.get_json().get("what"),
 				payment=request.get_json().get("payment"))
 			return make_response(html)
 
 		elif amenity_type == "Athletic Facility":
-			html = render_template('info_templates/athletics.html',
+			html = render_template('templates/info_templates/athletics.html',
 				sports=request.get_json().get("sports"))
 			return make_response(html)
 
 		elif amenity_type == "Bottle-Filling Station":
-			html = render_template('info_templates/water.html',
+			html = render_template('templates/info_templates/water.html',
 				floor=request.get_json().get("floor"),directions=request.get_json().get("directions"))
 			return make_response(html)
 
@@ -263,7 +263,7 @@ def format_wkorder():
 	 	html_content=('<p>%s</p>'%csv_string))
 	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 	response = sg.send(message)
-	html = render_template('arcgis.html', netid=netid)
+	html = render_template('templates/arcgis.html', netid=netid)
 	return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -284,12 +284,12 @@ def store_comment():
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
-		html = render_template('arcgis.html')
+		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('arcgis.html')
+		html = render_template('templates/arcgis.html')
 		return make_response(html)
 	
 # ---------------------------------------------------------------------
@@ -316,12 +316,12 @@ def show_comments():
 				comments_modified.append([comment[0], comment[1], arrow.get(comment[2]).humanize()])
 		comments_modified.reverse()
 
-		html = render_template('displaycomments.html', data=comments_modified, wasSuccessful = True)
+		html = render_template('templates/displaycomments.html', data=comments_modified, wasSuccessful = True)
 		return make_response(html)
 	
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('displaycomments.html', data=[], wasSuccessful = False)
+		html = render_template('templates/displaycomments.html', data=[], wasSuccessful = False)
 		return make_response(html)
 	
 # ---------------------------------------------------------------------
@@ -346,12 +346,12 @@ def show_upvotes():
 			currentlyLiking = False
 		dbcursor.close()
 		dbconnection.close()
-		html = render_template('displayLikes.html', num_of_likes = upvotes, isLiking = currentlyLiking, wasSuccessful = True)
+		html = render_template('templates/displayLikes.html', num_of_likes = upvotes, isLiking = currentlyLiking, wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('displayLikes.html', num_of_likes = "Error", wasSuccessful = False, isLiking = False)
+		html = render_template('templates/displayLikes.html', num_of_likes = "Error", wasSuccessful = False, isLiking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -376,12 +376,12 @@ def show_downvotes():
 			currentlyDisliking = False
 		dbcursor.close()
 		dbconnection.close()
-		html = render_template('displayDislikes.html', num_of_dislikes = downvotes, isDisliking = currentlyDisliking ,wasSuccessful = True)
+		html = render_template('templates/displayDislikes.html', num_of_dislikes = downvotes, isDisliking = currentlyDisliking ,wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('displayDislikes.html', num_of_dislikes = "Error", wasSuccessful = False, isDisliking = False)
+		html = render_template('templates/displayDislikes.html', num_of_dislikes = "Error", wasSuccessful = False, isDisliking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -411,12 +411,12 @@ def place_upvote():
 		dbcursor.close()
 		dbconnection.close()
 
-		html = render_template('arcgis.html')
+		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('arcgis.html')
+		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
 #---------------------------------------------------------------------
@@ -447,12 +447,12 @@ def place_downvote():
 		dbcursor.close()
 		dbconnection.close()
 
-		html = render_template('arcgis.html')
+		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
 	except Exception as e:
 		print(str(e), file=sys.stderr)
-		html = render_template('arcgis.html')
+		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
 #-----------------------------------------------------------------------
@@ -461,3 +461,12 @@ def logout():
     casClient = CASClient()
     casClient.authenticate()
     casClient.logout()
+
+#-----------------------------------------------------------------------
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('templates/404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('templates/error.html'), 500
