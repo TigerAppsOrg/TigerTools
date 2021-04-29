@@ -37,7 +37,7 @@
       }
       .container-fluid {
         color: white;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("static/error-bg.png");
+        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("{{url_for('static', filename='error-bg.png')}}");
         background-repeat: no-repeat;
         background-attachment: scroll;
         background-position: center;
@@ -57,7 +57,7 @@
           <h2 class="display-4 font-weight-bold white-text pt-5 mb-2">Oops! An Error Occurred.</h2>
           <hr>
           <!-- Description -->
-          <a type="button" class="btn btn-primary" style="font-size: 18px;padding: 12px 20px;" id="loginbutton" href="map">Click Here to Login Again <i class="fas fa-angle-double-right"></i></a>
+          <a type="button" class="btn btn-primary" style="font-size: 18px;padding: 12px 20px;" id="loginbutton" href="map">Click Here to Try Again <i class="fas fa-angle-double-right"></i></a>
 	  <hr>
 	  <h5 class="font-italic">If the problem persists, please try again later.</h5>
         </div>

@@ -44,7 +44,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       xmax: -74.647,
       ymax:  40.356
     },*/
-    minZoom: 14 // Constrain zooming out
+    minZoom: 12 // Constrain zooming out
   };
 
   // Create a normal point
@@ -197,7 +197,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 		setTimeout(pulse, 2000); // repeat
 	}
 
-  var initPos = true;
+  // For changing "Show Location" to "Update Location"
   var startedTrack = false;
 
   // Continually update user position
@@ -216,7 +216,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       },
       symbol: {
         type: "simple-marker",
-        color: [102, 153, 255],
+        color: [0, 0, 0],
         outline: {
           color: [255,255,255],
           width: 0.7
@@ -226,10 +226,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     
     locLayer.graphics.push(locGraphic);
 
-    if (initPos) {
-      initPos = false;
-      view.center = [long, lat];
-    }
+    view.center = [long, lat];
+
     if (!startedTrack) {
       startedTrack = true;
       $("#trackUser").html("<i class='fas fa-map-marker-alt'></i> Update Location");
