@@ -216,7 +216,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       },
       symbol: {
         type: "simple-marker",
-        color: [0, 0, 0],
+        color: [255, 0, 255],
         outline: {
           color: [255,255,255],
           width: 0.7
