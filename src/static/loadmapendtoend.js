@@ -20,6 +20,19 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     }
   };
 
+  // Cluster opened symbol
+  const contractSymbol = {
+    type: "text",
+    color: "#8600e6",
+    text: "\ue63b",
+    xoffset: 0.5,
+    yoffset: -9.5,
+    font: {
+      size: 16,
+      family: "CalciteWebCoreIcons"
+    }
+  };
+
   // Set up map
   var map = new Map({
     // https://developers.arcgis.com/javascript/latest/api-reference/esri-Map.html
@@ -85,11 +98,30 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     return pointGraphic;
   }
 
+  // Create an open cluster point
+  function createOpenCluster(long, lat, attr) {
+    const point = { //Create a point
+      type: "point",
+      longitude: long,
+      latitude: lat
+    };
+    const pointGraphic = new Graphic({
+      geometry: point,
+      symbol: contractSymbol,
+      attributes: attr
+    });
+    return pointGraphic;
+  }
+
+
+  var radius = 0.00015; // Radius to search for nearby cluster
   // Create a new cluster point if the input point's long/lat doesn't match any cluster's long/lat
   function checkPointCluster(point) {
     let isCluster = false;
     for (let j = 0; j < clusters.length; j++) {
-      if (clusters[j].geometry.longitude == point.geometry.longitude && clusters[j].geometry.latitude == point.geometry.latitude) {
+      var longDist = clusters[j].geometry.longitude - point.geometry.longitude;
+      var latDist = clusters[j].geometry.latitude - point.geometry.latitude;
+      if (Math.abs(longDist) <= radius && Math.abs(latDist) <= radius) {
         isCluster = true;
         clusters[j].attributes.pts.push(point);
         break;
@@ -106,53 +138,74 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     view.graphics.removeAll();
 
     for (let i = 0; i < clusters.length; i++) {
-      let pts = clusters[i].attributes.pts;
+      let cluster = clusters[i];
+      let pts = cluster.attributes.pts;
       let numPts = pts.length;
 
       if (numPts > 1)
       {
-        view.graphics.add(clusters[i]); // Add cluster itself to map if it contains >1 point
-        if (clusters[i].attributes.isOpen) // If cluster was previously open, render its points
+        view.graphics.add(cluster); // Add cluster itself to map if it contains >1 point
+        if (cluster.attributes.isOpen) // If cluster was previously open, re-render its points
         {
-          clusters[i].attributes.temp = [];
+          cluster.attributes.temp = [];
           for (let j = 0; j < numPts; j++) {
             sinDist = clusterDist * Math.sin(2.0*Math.PI * j / numPts);
             cosDist = clusterDist * Math.cos(2.0*Math.PI * j / numPts);
-            point = createPoint(pts[j].geometry.longitude + sinDist*1.25, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
+            point = createPoint(cluster.geometry.longitude + sinDist*1.25, cluster.geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
             view.graphics.add(point);
-            clusters[i].attributes.temp.push(point);
+            cluster.attributes.temp.push(point);
           }
         }
       }
-      else if (numPts == 1) { // Cluster has only one point; render it
-        view.graphics.add(clusters[i].attributes.pts[0]);
-        clusters[i].attributes.isOpen = false;
+      else if (numPts == 1) { // Cluster has only one point; render it (and close the cluster if necessary)
+        view.graphics.add(pts[0]);
+        if (cluster.attributes.isOpen) {
+          cluster.attributes.isOpen = false;
+          var newCluster = createCluster(cluster.geometry.longitude, cluster.geometry.latitude, cluster.attributes);
+          clusters.splice(clusters.indexOf(cluster), 1, newCluster);
+        }
       }
-      else // Cluster is empty
-        clusters[i].attributes.isOpen = false;
+      else { // Cluster is empty; remove it
+        clusters.splice(clusters.indexOf(cluster), 1);
+        i--;
+      }
     }
   }
 
   // Toggle showing points contained in cluster
   function toggleCluster(cluster) {
-    let pts = cluster.attributes.pts;
-    let numPts = pts.length;
-
+    // Close the cluster
     if (cluster.attributes.isOpen == true) {
       cluster.attributes.isOpen = false;
       for (let j = 0; j < cluster.attributes.temp.length; j++) {
         view.graphics.remove(cluster.attributes.temp[j]);
       }
       cluster.attributes.temp = [];
+
+      // Replace the cluster symbol
+      var newCluster = createCluster(cluster.geometry.longitude, cluster.geometry.latitude, cluster.attributes);
+      clusters.splice(clusters.indexOf(cluster), 1, newCluster);
+      view.graphics.remove(cluster);
+      view.graphics.add(newCluster);
     }
+    // Open the cluster
     else {
-      cluster.attributes.isOpen = true;
+      // Replace the cluster symbol (must be done before rendering contained pins)
+      var newCluster = createOpenCluster(cluster.geometry.longitude, cluster.geometry.latitude, cluster.attributes);
+      clusters.splice(clusters.indexOf(cluster), 1, newCluster);
+      view.graphics.remove(cluster);
+      view.graphics.add(newCluster);
+
+      let pts = newCluster.attributes.pts;
+      let numPts = pts.length;
+
+      newCluster.attributes.isOpen = true;
       for (let j = 0; j < numPts; j++) {
         sinDist = clusterDist * Math.sin(2.0*Math.PI * j / numPts);
         cosDist = clusterDist * Math.cos(2.0*Math.PI * j / numPts);
-        point = createPoint(pts[j].geometry.longitude + sinDist*1.25, pts[j].geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
+        point = createPoint(newCluster.geometry.longitude + sinDist*1.25, newCluster.geometry.latitude + cosDist, pts[j].symbol.color, pts[j].attributes);
         view.graphics.add(point);
-        cluster.attributes.temp.push(point);
+        newCluster.attributes.temp.push(point);
       }
     }
   }
@@ -262,9 +315,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       const opts = { include: view.graphics }
       view.hitTest(event, opts).then(function(response) {
         // Check if a graphic is returned
-        const graphic = response.results[0].graphic;
-        if (response.results.length && !graphic.attributes.layerId) {
-
+        if (response.results.length && !response.results[0].graphic.attributes.layerId) {
+          const graphic = response.results[0].graphic;
           const attr = graphic.attributes;
 
           // Toggle showing cluster points if user clicked on cluster
@@ -686,15 +738,16 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       $("#athletics").switchClass("btn-purple-full", "btn-purple");
       $("#water").switchClass("btn-info", "btn-outline-info");
 
-      //view.graphics.removeAll();
-      removeGraphic("Printer");
+      view.graphics.removeAll();
+      clusters = [];
+      /*removeGraphic("Printer");
       removeGraphic("Computer Cluster");
       removeGraphic("Scanner");
       removeGraphic("Dining hall");
       removeGraphic("Café");
       removeGraphic("Vending Machine");
       removeGraphic("Athletic Facility");
-      removeGraphic("Bottle-Filling Station");
+      removeGraphic("Bottle-Filling Station");*/
     });
 
     // Printers
