@@ -315,12 +315,14 @@ def store_comment():
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
-		return
+		html = render_template('templates/arcgis.html')
+		return make_response(html)
 
 	except Exception as e:
 		print('Something went wrong with: storing a comment', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		return
+		html = render_template('templates/arcgis.html')
+		return make_response(html)
 
 # ---------------------------------------------------------------------
 @app.route('/displaycomments', methods=['POST'])
@@ -462,12 +464,14 @@ def place_upvote():
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
-		return
+		html = render_template('templates/arcgis.html')
+		return make_response(html)
 
 	except Exception as e:
 		print('Something went wrong with: updating number of upvotes', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		return
+		html = render_template('templates/arcgis.html')
+		return make_response(html)
 
 #---------------------------------------------------------------------
 @app.route('/placedownvote', methods=['POST'])
@@ -497,12 +501,14 @@ def place_downvote():
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
-		return
+		html = render_template('templates/arcgis.html')
+		return make_response(html)
 
 	except Exception as e:
 		print('Something went wrong with: updating number of downvotes', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		return
+		html = render_template('templates/arcgis.html')
+		return make_response(html)
 
 #-----------------------------------------------------------------------
 @app.route('/logout', methods=['GET'])
