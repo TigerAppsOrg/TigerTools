@@ -18,6 +18,7 @@ import os
 from load_api_data import update, places_open
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+import pytz
 
 app = Flask(__name__, template_folder='.')
 
@@ -302,12 +303,9 @@ def store_comment():
 		amenity_name = request.get_json().get('amenityName')
 		comment_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 		comment = request.get_json().get('textComment')
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, COMMENT text, TIME text);')
-		query = 'INSERT INTO comments (amenity_name, comment, time) VALUES (%s, %s, %s);'
-		data = (amenity_name, comment, comment_time)
-		#dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
-		#query = 'INSERT INTO comments (amenity_name, netid, comment, time) VALUES (%s, %s, %s, %s);'
-		#data = (amenity_name, netid, comment, comment_time)
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, amenity_name text, comment text, submit_time text);')
+		query = 'INSERT INTO comments (netid, amenity_name, comment, submit_time) VALUES (%s, %s, %s, %s);'
+		data = (netid, amenity_name, comment, comment_time)
 		dbcursor.execute(query, data)
 		dbconnection.commit()
 		dbcursor.close()
@@ -330,21 +328,21 @@ def show_comments():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		#dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
-		query = "SELECT * FROM comments WHERE AMENITY_NAME = %s;"
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, amenity_name text, comment text, submit_time text);')
+		query = "SELECT * FROM comments WHERE amenity_name = %s;"
 		dbcursor.execute(query, (amenityName,))
 		comments = dbcursor.fetchall()
-		#dbconnection.commit()
+		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
-		current_time = datetime.datetime.now()
+		current_time = datetime.datetime.utcnow()
 		delta = datetime.timedelta(days = 7)
 		a = current_time - delta
 		comments_modified = []
 		time_range = DateTimeRange(a, current_time)
 		for comment in comments:
-			if (comment[2] in time_range):
-				comments_modified.append([comment[0], comment[1], arrow.get(comment[2]).humanize()])
+			if (comment[3] in time_range):
+				comments_modified.append([comment[1], comment[2], arrow.get(comment[3]).humanize()])
 		comments_modified.reverse()
 
 		html = render_template('templates/displaycomments.html', data=comments_modified, wasSuccessful = True)
