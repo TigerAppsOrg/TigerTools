@@ -304,7 +304,7 @@ def store_comment():
 		comment = request.get_json().get('textComment')
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
 		query = 'INSERT INTO comments (amenity_name, netid, comment, time) VALUES (%s, %s, %s, %s);'
-		data = (amenity_name, comment, comment_time)
+		data = (amenity_name, netid, comment, comment_time)
 		dbcursor.execute(query, data)
 		dbconnection.commit()
 		dbcursor.close()
