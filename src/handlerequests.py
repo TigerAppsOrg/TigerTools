@@ -327,11 +327,11 @@ def show_comments():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
 		query = "SELECT * FROM comments WHERE AMENITY_NAME = %s;"
 		dbcursor.execute(query, (amenityName,))
 		comments = dbcursor.fetchall()
-		dbconnection.commit()
+		#dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
 		current_time = datetime.datetime.now()
