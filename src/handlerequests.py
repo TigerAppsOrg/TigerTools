@@ -296,22 +296,16 @@ def format_wkorder():
 def store_comment():
 	netid = CASClient().authenticate()
 	try:
-		# Connect to the database
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
-		# Insert user's comment, submission time accordingly into the database
 		amenity_name = request.get_json().get('amenityName')
 		comment_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 		comment = request.get_json().get('textComment')
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, netid text, COMMENT text, TIME text);')
-		dbconnection.commit()
-		query = 'INSERT INTO comments (amenity_name, netid, comment, time) VALUES (%s, %s, %s, %s);'
-		data = (amenity_name, netid, comment, comment_time)
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, COMMENT text, TIME text);')
+		query = 'INSERT INTO comments (amenity_name, comment, time) VALUES (%s, %s, %s);'
+		data = (amenity_name, comment, comment_time)
 		dbcursor.execute(query, data)
-
-		# Commit changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
@@ -323,28 +317,21 @@ def store_comment():
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
-
+	
 # ---------------------------------------------------------------------
 @app.route('/displaycomments', methods=['POST'])
 def show_comments():
 	netid = CASClient().authenticate()
 	try:
-		# Connect to the database
+		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
-		# Query the database for comments under the same amenity name
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, netid text, COMMENT text, TIME text);')
-		dbconnection.commit()
 		query = "SELECT * FROM comments WHERE AMENITY_NAME = %s;"
-		amenityName = request.get_json().get('amenityName')
 		dbcursor.execute(query, (amenityName,))
 		comments = dbcursor.fetchall()
 		dbcursor.close()
 		dbconnection.close()
-
-		# Humanize comment times and check if comment timestamp is within past 7 days
 		current_time = datetime.datetime.now()
 		delta = datetime.timedelta(days = 7)
 		a = current_time - delta
@@ -357,47 +344,42 @@ def show_comments():
 
 		html = render_template('templates/displaycomments.html', data=comments_modified, wasSuccessful = True)
 		return make_response(html)
-
+	
 	except Exception as e:
 		print('Something went wrong with: loading comments from the database to display', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/displaycomments.html', data=[], wasSuccessful = False)
 		return make_response(html)
-
+	
 # ---------------------------------------------------------------------
 @app.route('/displayupvotes', methods=['POST'])
 def show_upvotes():
 	netid = CASClient().authenticate()
 	try:
-		# Connect to the database
+		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
-		# Query the database for upvotes under the same amenity name
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
 		dbconnection.commit()
 		query = "SELECT SUM(upvotes) FROM votes WHERE AMENITY_NAME = %s;"
-		amenityName = request.get_json().get('amenityName')
 		dbcursor.execute(query, (amenityName,))
 		upvotes = dbcursor.fetchall()[0][0]
 		if (upvotes == None): upvotes = 0
-
-		# Check if the current user has already liked this amenity in the past
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND upvotes = 1 AND downvotes = 0', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		currentlyLiking = True
-		if (result == None): currentlyLiking = False
+		if (result == None):
+			currentlyLiking = False
 		dbcursor.close()
 		dbconnection.close()
-
 		html = render_template('templates/displayLikes.html', num_of_likes = upvotes, isLiking = currentlyLiking, wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
 		print('Something went wrong with: displaying upvotes', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		html = render_template('templates/displayLikes.html', num_of_likes = "0", wasSuccessful = False, isLiking = False)
+		html = render_template('templates/displayLikes.html', num_of_likes = "Error", wasSuccessful = False, isLiking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -405,35 +387,30 @@ def show_upvotes():
 def show_downvotes():
 	netid = CASClient().authenticate()
 	try:
-		# Connect to the database
+		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
-		# Query the database for downvotes under the same amenity name
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
-		dbconnection.commit()
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		#dbconnection.commit()
 		query = "SELECT SUM(downvotes) FROM votes WHERE AMENITY_NAME = %s;"
-		amenityName = request.get_json().get('amenityName')
 		dbcursor.execute(query, (amenityName,))
 		downvotes = dbcursor.fetchall()[0][0]
 		if (downvotes == None): downvotes = 0
-
-		# Check if the current user has already disliked this amenity in the past
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND downvotes = 1 AND upvotes = 0', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		currentlyDisliking = True
-		if (result == None): currentlyDisliking = False
+		if (result == None):
+			currentlyDisliking = False
 		dbcursor.close()
 		dbconnection.close()
-
 		html = render_template('templates/displayDislikes.html', num_of_dislikes = downvotes, isDisliking = currentlyDisliking ,wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
 		print('Something went wrong with: displaying downvotes', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		html = render_template('templates/displayDislikes.html', num_of_dislikes = "0", wasSuccessful = False, isDisliking = False)
+		html = render_template('templates/displayDislikes.html', num_of_dislikes = "Error", wasSuccessful = False, isDisliking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -441,29 +418,28 @@ def show_downvotes():
 def place_upvote():
 	netid = CASClient().authenticate()
 	try:
-		# Connect to the database
+		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
-		# Modify the database for upvotes & downvotes under the same amenity name and current user's netid
-		amenityName = request.get_json().get('amenityName')
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
 			query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
 			data = (amenityName, netid, 1, 0)
 			dbcursor.execute(query, data)
+
 		else:
 			if (result[0] == 1):
 				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
 			else:
 				dbcursor.execute('UPDATE votes set upvotes = 1, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
 
-		# Commit changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
+
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
@@ -477,30 +453,30 @@ def place_upvote():
 @app.route('/placedownvote', methods=['POST'])
 def place_downvote():
 	netid = CASClient().authenticate()
+
 	try:
-		# Connect to the database
+		amenityName = request.get_json().get('amenityName')
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
-		# Modify the database for upvotes & downvotes under the same amenity name and current user's netid
-		amenityName = request.get_json().get('amenityName')
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
 			query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
 			data = (amenityName, netid, 0, 1)
 			dbcursor.execute(query, data)
+
 		else:
 			if (result[1] == 1):
 				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
 			else:
 				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 1 where amenity_name = %s AND netid=%s', (amenityName, netid,))
 
-		# Commit changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
+
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
 
