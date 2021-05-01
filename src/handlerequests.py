@@ -302,9 +302,12 @@ def store_comment():
 		amenity_name = request.get_json().get('amenityName')
 		comment_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 		comment = request.get_json().get('textComment')
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
-		query = 'INSERT INTO comments (amenity_name, netid, comment, time) VALUES (%s, %s, %s, %s);'
-		data = (amenity_name, netid, comment, comment_time)
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, COMMENT text, TIME text);')
+		query = 'INSERT INTO comments (amenity_name, comment, time) VALUES (%s, %s, %s);'
+		data = (amenity_name, comment, comment_time)
+		#dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (AMENITY_NAME text, NETID text, COMMENT text, TIME text);')
+		#query = 'INSERT INTO comments (amenity_name, netid, comment, time) VALUES (%s, %s, %s, %s);'
+		#data = (amenity_name, netid, comment, comment_time)
 		dbcursor.execute(query, data)
 		dbconnection.commit()
 		dbcursor.close()
