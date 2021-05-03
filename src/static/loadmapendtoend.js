@@ -562,7 +562,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     	}
 			if(this.value.length == 0){
 				$("#remainingC").html("");
-				return false;
+				return true;
     	}
     $("#remainingC").html("Remaining characters : " + (500 - this.value.length));
 	});
