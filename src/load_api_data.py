@@ -1,14 +1,12 @@
 # ---------------------------------------------------------------------
 # load_api_data.py
-# Updates Heroku database with MobileApp API data
+# Updates Heroku database with OIT's MobileApp API data
 # ---------------------------------------------------------------------
 
 import os
 import psycopg2
 from reqlib import ReqLib
 import json
-# import psutil
-# import subprocess
 
 # ---------------------------------------------------------------------
 def dining_halls():
