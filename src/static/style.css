@@ -143,6 +143,7 @@ html, body, header, #viewDiv {
 }
 
 .list-group-item {
+  white-space: pre-line;
   word-break: break-word;
   hyphens: auto;
   -ms-hyphens: auto;
