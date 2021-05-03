@@ -16,7 +16,6 @@ def dining_halls():
 		dbcursor = dbconnection.cursor()
 
 		categoryID = 2
-		# make table
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 			locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
 			payment VARCHAR(500), capacity VARCHAR(6), PRIMARY KEY(name, dbid));')
@@ -35,17 +34,14 @@ def dining_halls():
 			payment = 'None'
 			capacity = 'None'
 			row = data_dict[i]
-			# print("name is", row.get('name'))
 			amenities_list = row.get('amenities').get('amenity')
 			if(amenities_list is None):
 				amenities_list = []
 			if isinstance(amenities_list,dict):
 				temp = amenities_list
 				amenities_list = [temp]
-			# print("amenities are", amenities_list)
 			for j in range(len(amenities_list)):
 				a = amenities_list[j].get('name')
-				# a = "Printers: 1: Scanners: 2: Macs: 3"
 				a = a.split(': ')
 				if a.count('College') != 0:
 					rescollege = a[1]
@@ -62,19 +58,7 @@ def dining_halls():
 					row.get('geoloc').get('lat'),row.get('geoloc').get('long'),rescollege,who,payment,capacity)
 			dbcursor.execute(stmt, info)
 			dbconnection.commit()
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM id6;')
-		# row = dbcursor.fetchone()
-		# while row is not None:
-		# 	print(row)
-		# 	row = dbcursor.fetchone()
 		dbconnection.commit()
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM dininghalls;')
-		# row = dbcursor.fetchone()
-		# for i in range(5):
-		# 	print(row, "\n")
-		# 	row = dbcursor.fetchone()
 
 		dbcursor.close()
 		dbconnection.close()
@@ -90,13 +74,11 @@ def cafes():
 		dbcursor = dbconnection.cursor()
 
 		categoryID = 3
-		# make table
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 			locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
 			payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 		dbcursor.execute('DELETE FROM cafes;')
 		dbconnection.commit()
-		# , PRIMARY KEY (dbid)
 
 		req_lib = ReqLib()
 		data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
@@ -109,21 +91,17 @@ def cafes():
 			payment = 'None'
 			descrip = 'None'
 			row = data_dict[i]
-			# print("name is", row.get('name'))
 			descrip = row.get('description')
 			if(row.get('description') is None):
 				descrip = 'None'
-			# amenities_list = row.get('amenities').get('amenity')
 			amenities_list = row.get('amenities').get('amenity')
 			if(amenities_list is None):
 				amenities_list = []
 			if isinstance(amenities_list,dict):
 				temp = amenities_list
 				amenities_list = [temp]
-			# print("amenities are", amenities_list)
 			for j in range(len(amenities_list)):
 				a = amenities_list[j].get('name')
-				# a = "Printers: 1: Scanners: 2: Macs: 3"
 				a = a.split(': ')
 				if a.count('Open to') != 0:
 					who += a[1]
@@ -140,19 +118,6 @@ def cafes():
 			dbconnection.commit()
 		dbconnection.commit()
 
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM id6;')
-		# row = dbcursor.fetchone()
-		# while row is not None:
-		# 	print(row)
-		# 	row = dbcursor.fetchone()
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM cafes;')
-		# row = dbcursor.fetchone()
-		# for i in range(5):
-		# 	print(row, "\n")
-		# 	row = dbcursor.fetchone()
-
 		dbcursor.close()
 		dbconnection.close()
 	except Exception as e:
@@ -167,7 +132,6 @@ def vending_machines():
 		dbcursor = dbconnection.cursor()
 
 		categoryID = 4
-		# make table
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
 			locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), what VARCHAR(500), \
 			payment VARCHAR(500), PRIMARY KEY(name, dbid));')
@@ -185,7 +149,6 @@ def vending_machines():
 			payment = 'None'
 			descrip = 'None'
 			row = data_dict[i]
-			# print("name is", row.get('name'))
 			descrip = row.get('description')
 			if(descrip is None):
 				descrip = 'None'
@@ -198,17 +161,14 @@ def vending_machines():
 					descrip = directions
 				else:
 					descrip += ', ' + directions
-			# amenities_list = row.get('amenities').get('amenity')
 			amenities_list = row.get('amenities').get('amenity')
 			if(amenities_list is None):
 				amenities_list = []
 			if isinstance(amenities_list,dict):
 				temp = amenities_list
 				amenities_list = [temp]
-			# print("amenities are", amenities_list)
 			for j in range(len(amenities_list)):
 				a = amenities_list[j].get('name')
-				# a = "Printers: 1: Scanners: 2: Macs: 3"
 				a = a.split(': ')
 				if a.count('Type') != 0:
 					what = a[1]
@@ -222,19 +182,6 @@ def vending_machines():
 			dbcursor.execute(stmt, info)
 			dbconnection.commit()
 		dbconnection.commit()
-
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM id6;')
-		# row = dbcursor.fetchone()
-		# while row is not None:
-		# 	print(row)
-		# 	row = dbcursor.fetchone()
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM cafes;')
-		# row = dbcursor.fetchone()
-		# for i in range(5):
-		# 	print(row, "\n")
-		# 	row = dbcursor.fetchone()
 
 		dbcursor.close()
 		dbconnection.close()
@@ -318,18 +265,6 @@ def categoryid6():
 			dbcursor.execute(stmt, info)
 			dbconnection.commit()
 		dbconnection.commit()
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM id6;')
-		# row = dbcursor.fetchone()
-		# while row is not None:
-		# 	print(row)
-		# 	row = dbcursor.fetchone()
-		# checking if it worked
-		# dbcursor.execute('SELECT * FROM id6;')
-		# row = dbcursor.fetchone()
-		# for i in range(5):
-		# 	print(row, "\n")
-		# 	row = dbcursor.fetchone()
 
 		dbcursor.close()
 		dbconnection.close()
@@ -359,10 +294,6 @@ def places_open():
 			dbcursor.execute(stmt, info)
 			dbconnection.commit()
 
-		# update status of dining and cafes
-		# dbcursor.execute('UPDATE dining SET open=isitopen.open FROM isitopen WHERE dining.dbid=isitopen.dbid;')
-		# dbcursor.execute('UPDATE cafes SET open=isitopen.open FROM isitopen WHERE cafes.dbid=isitopen.dbid;')
-
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
@@ -378,13 +309,3 @@ def update():
 	vending_machines()
 	places_open()
 
-# def main():
-	# DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test) psutil.Process.name()
-	# https://www.kite.com/python/answers/how-to-execute-a-bash-script-in-python
-	# https://stackoverflow.com/questions/16618071/can-i-export-a-variable-to-the-environment-from-a-bash-script-without-sourcing-i for .
-	# return_code = subprocess.call(['sh', './get-db-url.sh'])
-	# os.system("export DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test)")
-# 	places_open()
-
-# if __name__ == '__main__':
-# 	main()
