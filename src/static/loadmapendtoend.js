@@ -622,6 +622,18 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       $("#confirm-close").click();
     });
 
+    // Prevent user from entering only whitespace on the comment or work order description
+    // html pattern doesn't work with <textarea> only with <input>, which is why this is necessary
+    $("#message-text").on('input', function() {
+      if ($.trim($("#message-text").val()) == "")
+        $("#message-text").val("");
+    });
+    $("#description").on('input', function() {
+      if ($.trim($("#description").val()) == "")
+        $("#description").val("");
+    });
+
+
     // Submit comment
     $("#submitcomment").click(function(){
       var comment = $.trim($("#message-text").val());
