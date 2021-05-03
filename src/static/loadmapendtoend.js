@@ -605,6 +605,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       var form = $("#submit-form");
       form[0].reset();
       form.removeClass("was-validated");
+      $("#remainingC").text("");
+      $("#numoflikes").text("...");
+      $("#numofdislikes").text("...");
+
     });
 
     // Validate required fields in work order form when user clicks submit
