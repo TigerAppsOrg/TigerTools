@@ -129,41 +129,39 @@
     <button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal" style="display: none;"></button>
 
 
-    
-
-
-    <!-- Main modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <!-- Comment confirmation alert -->
-    <div class="alert alert-success text-center my-alerts" role="alert" id="comment-success">
+    <!-- Comment confirmation alert -->
+    <span class="alert alert-success text-center my-alerts" role="alert" id="comment-success">
       <strong>Comment successfully submitted!</strong>
-    </div>
+    </span>
     <!-- Work order confirmation alert -->
-    <div class="alert alert-success text-center my-alerts" role="alert" id="workorder-success">
+    <span class="alert alert-success text-center my-alerts" role="alert" id="workorder-success">
       <strong>Work order successfully submitted!</strong>
-    </div>
+    </span>
     <!-- Ajax error alert -->
-    <div class="alert alert-danger text-center my-alerts" role="alert" id="ajax-error">
+    <span class="alert alert-danger text-center my-alerts" role="alert" id="ajax-error">
       <strong>Something went wrong! Please try again later.</strong>
-    </div>
+    </span>
     <!-- Location error (permission denied) alert -->
-    <div class="alert alert-danger text-center my-alerts" role="alert" id="location-error">
+    <span class="alert alert-danger text-center my-alerts" role="alert" id="location-error">
       <strong>We couldn't access your location!<br>
         If you're not using HTTPS, please go to <a href="https://tigertools.herokuapp.com">https://tigertools.herokuapp.com</a>.<br>
         If you clicked Block, please refresh the page, try again, and click Allow.</strong>
-    </div>
+    </span>
     <!-- Location error (position unavailable) alert -->
-    <div class="alert alert-danger text-center my-alerts" role="alert" id="position-error">
+    <span class="alert alert-danger text-center my-alerts" role="alert" id="position-error">
       <strong>Your location couldn't be found! Please try again later.</strong>
-    </div>
+    </span>
     <!-- Location error (timeout) alert -->
-    <div class="alert alert-danger text-center my-alerts" role="alert" id="timeout-error">
+    <span class="alert alert-danger text-center my-alerts" role="alert" id="timeout-error">
       <strong>It took too long to get your location! Please try again later.</strong>
-    </div>
+    </span>
     <!-- Location error (unknown error) alert -->
-    <div class="alert alert-danger text-center my-alerts" role="alert" id="unknown-error">
+    <span class="alert alert-danger text-center my-alerts" role="alert" id="unknown-error">
       <strong>An unknown error occurred while getting your location! Please try again later.</strong>
-    </div>
+    </span>
+
+    <!-- Main modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
       
       <div class="modal-dialog modal-lg mb-5" id="myModalDialog">
         <div class="modal-content">
