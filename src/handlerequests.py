@@ -397,8 +397,7 @@ def show_downvotes():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
-		#dbconnection.commit()
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
 		query = "SELECT SUM(downvotes) FROM votes WHERE AMENITY_NAME = %s;"
 		dbcursor.execute(query, (amenityName,))
 		downvotes = dbcursor.fetchall()[0][0]
@@ -428,7 +427,7 @@ def place_upvote():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
@@ -465,7 +464,7 @@ def place_downvote():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		#dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
