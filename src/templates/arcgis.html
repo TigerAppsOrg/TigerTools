@@ -129,20 +129,41 @@
     <button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal" style="display: none;"></button>
 
 
+    <!-- Comment confirmation alert -->
+    <div class="alert alert-success text-center my-alerts" role="alert" id="comment-success">
+      <strong>Comment successfully submitted!</strong>
+    </div>
+    <!-- Work order confirmation alert -->
+    <div class="alert alert-success text-center my-alerts" role="alert" id="workorder-success">
+      <strong>Work order successfully submitted!</strong>
+    </div>
+    <!-- Ajax error alert -->
+    <div class="alert alert-danger text-center my-alerts" role="alert" id="ajax-error">
+      <strong>Something went wrong! Please try again later.</strong>
+    </div>
+    <!-- Location error (permission denied) alert -->
+    <div class="alert alert-danger text-center my-alerts" role="alert" id="location-error">
+      <strong>We couldn't access your location!<br>
+        If you're not using HTTPS, please go to <a href="https://tigertools.herokuapp.com">https://tigertools.herokuapp.com</a>.<br>
+        If you clicked Block, please refresh the page, try again, and click Allow.</strong>
+    </div>
+    <!-- Location error (position unavailable) alert -->
+    <div class="alert alert-danger text-center my-alerts" role="alert" id="position-error">
+      <strong>Your location couldn't be found! Please try again later.</strong>
+    </div>
+    <!-- Location error (timeout) alert -->
+    <div class="alert alert-danger text-center my-alerts" role="alert" id="timeout-error">
+      <strong>It took too long to get your location! Please try again later.</strong>
+    </div>
+    <!-- Location error (unknown error) alert -->
+    <div class="alert alert-danger text-center my-alerts" role="alert" id="unknown-error">
+      <strong>An unknown error occurred while getting your location! Please try again later.</strong>
+    </div>
+
+
     <!-- Main modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-      <!-- Comment confirmation alert -->
-      <div class="alert alert-success text-center" role="alert" id="comment-success">
-        <strong>Comment successfully submitted!</strong>
-      </div>
-      <!-- Work order confirmation alert -->
-      <div class="alert alert-success text-center" role="alert" id="workorder-success">
-        <strong>Work order successfully submitted!</strong>
-      </div>
-      <!-- Ajax error alert -->
-      <div class="alert alert-danger text-center" role="alert" id="ajax-error">
-        <strong>Something went wrong! Please try again later.</strong>
-      </div>
+      
       
       <div class="modal-dialog modal-lg mb-5" id="myModalDialog">
         <div class="modal-content">

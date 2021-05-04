@@ -37,7 +37,7 @@ html, body, header, #viewDiv {
   right: 15px;
 }
 
-#comment-success, #workorder-success, #ajax-error {
+.my-alerts {
   position: fixed;
   top: 40px;
   left: 50%;
