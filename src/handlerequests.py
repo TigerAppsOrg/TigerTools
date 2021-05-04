@@ -343,6 +343,9 @@ def show_comments():
 		for comment in comments:
 			if (comment[3] in time_range):
 				comments_modified.append([comment[1], comment[2], arrow.get(comment[3]).humanize()])
+			else:
+				query = "DELETE FROM comments WHERE netid = %s AND amenity_name = %s AND comment = %s AND submit_time = %s;"
+				dbcursor.execute(query, (comment[0], comment[1], comment[2], comment[3],))
 		comments_modified.reverse()
 
 		html = render_template('templates/displaycomments.html', data=comments_modified, wasSuccessful = True)
