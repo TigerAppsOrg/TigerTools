@@ -81,6 +81,19 @@ html, body, header, #viewDiv {
   display: none;
 }
 
+.morecontent span {
+	display: none;
+}
+
+.comment {
+	white-space: pre-line;
+  word-break: break-word;
+  hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
 .btn-maroon {
   color: #800000;
   border-width: 1px;
