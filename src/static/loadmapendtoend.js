@@ -1,4 +1,4 @@
-require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/widgets/Track", "esri/core/watchUtils", "esri/layers/GraphicsLayer"], function (esriConfig, Map, MapView, Graphic, Track, watchUtils, GraphicsLayer) {
+require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/core/watchUtils", "esri/layers/GraphicsLayer"], function (esriConfig, Map, MapView, Graphic, watchUtils, GraphicsLayer) {
   esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
 
   var currentAmenityName = "";
@@ -238,7 +238,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
     // Handle point/cluster clicks
     view.on("click", function(event) {
-      const opts = { include: view.graphics }
+      const opts = { include: view.graphics };
       view.hitTest(event, opts).then(function(response) {
         // Check if a graphic is returned
         if (response.results.length && !response.results[0].graphic.attributes.layerId) {
