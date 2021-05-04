@@ -224,11 +224,55 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
     renderAll();
   }
 
+
+	// Handle show more/show less text
+	// adapted from https://www.viralpatel.net/dynamically-shortened-text-show-more-link-jquery/
+	function showMoreLess() {
+		var showChar = 175;
+		var numOfLines = 3;
+		var ellipsestext = "...";
+		var moretext = "Read more";
+		var lesstext = "Show less";
+		$('.more').each(function() {
+			var content = $(this).html();
+
+			if(content.length > showChar) {
+				var c = content.substr(0, showChar);
+				var h = content.substr(showChar, content.length - showChar);
+				var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink"> <br>' + moretext + '</a></span>';
+				$(this).html(html);
+			}
+			else {
+			if(content.split(/\r\n|\r|\n/).length > numOfLines) {
+				var token = content.split('\n').slice(0, numOfLines);
+				var c = token.join('\n')
+				var token2 = content.split('\n').slice(numOfLines);
+				var h = '\n' + token2.join('\n')
+				var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink"> <br>' + moretext + '</a></span>';
+				$(this).html(html);
+			}
+		}
+		});
+
+		$(".morelink").click(function(){
+			if($(this).hasClass("less")) {
+				$(this).removeClass("less");
+				$(this).html('<br>' + moretext);
+			} else {
+				$(this).addClass("less");
+				$(this).html('<br>' + lesstext);
+			}
+			$(this).parent().prev().toggle();
+			$(this).prev().toggle();
+			return false;
+		});
+	}
+
   // GraphicsLayer for holding user location
   var locLayer = new GraphicsLayer({
     graphics: []
   });
-  
+
   map.add(locLayer);
 
   // Things to do once the view is ready
@@ -281,6 +325,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
               contentType: "application/json",
               success: function(response){
                 $("#comment-div").html(response);
+								showMoreLess()
               }
             });
 
@@ -294,7 +339,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
               $("#room").attr("value", room);
             if (floor != "None" && floor != "N/A")
               $("#floor").attr("value", floor);
-              
+
             // Autofill hidden fields: locationcode, buildingcode, asset, locationmore
             if ("locationcode" in attr)
               $("#locationcode").attr("value", attr.locationcode);
@@ -343,7 +388,10 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
     var vendingLoading = false;
     var waterLoading = false;
     var athleticsLoading = false;
-    
+
+
+
+
     // Attempt to get location on click
     $("#trackUser").on("click", function() {
       // Get location of user
@@ -382,7 +430,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
           }
         }
       });
-      
+
       locLayer.graphics.push(locGraphic);
 
       view.center = [long, lat];
@@ -526,7 +574,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
         searchmessage.innerText = ""
       }
     });
-    
+
     // display likes/dislikes for amenity when comments tab is clicked
     $("#nav-comment-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
@@ -549,7 +597,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
         }
       });
     });
-    
+
     // display comments if home tab is clicked
     $("#nav-home-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
@@ -560,6 +608,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
         contentType: "application/json",
         success: function(response){
           $("#comment-div").html(response);
+					showMoreLess()
         }
       });
     });
@@ -575,7 +624,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
     	}
     $("#remainingC").html("Remaining characters : " + (500 - this.value.length));
 	});
-    
+
     // Expand modal when opening work order tab
     $("#nav-workorder-tab").on('click', function(){
       $("#myModalDialog").switchClass("modal-lg", "modal-xl", 300, "easeInOutQuad");
@@ -732,7 +781,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
         }
       });
     });
-    
+
     // Reset/remove all graphics
     $("#reset").click(function(){
       cafeClicks=0;
@@ -743,7 +792,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
       vendingClicks=0;
       waterClicks=0;
       athleticsClicks=0;
-      
+
       $("#buttonsearch").val("")
       $("#printers").show();
       $("#clusters").show();
@@ -753,7 +802,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
       $("#vending").show();
       $("#athletics").show();
       $("#water").show();
-      
+
       $("#printers").switchClass("btn-danger", "btn-outline-danger");
       $("#clusters").switchClass("btn-warning", "btn-outline-warning");
       $("#scanners").switchClass("btn-maroon-full", "btn-maroon");
@@ -1087,21 +1136,21 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
             point = createPoint(water_station.long, water_station.lat, [23, 162, 184],
               {name: water_station.buildingname + ", Floor " + water_station.floor, directions: water_station.directions, type:"Bottle-Filling Station",
               building: water_station.buildingname, room: water_station.room, floor: water_station.floor, buildingcode: water_station.buildingcode, asset: water_station.asset});
-    
+
             // Create new cluster if doesnt exist already
             checkPointCluster(point);
           }
-    
+
           // Re-render points and clusters
           renderAll();
-    
+
           $("#water").switchClass("btn-outline-info", "btn-info");
           $("#water-load").hide(); // Hide loading symbol on finish
           waterClicks++;
           waterLoading = false;
         }
       });
-      
+
     } else {
       removeGraphic("Bottle-Filling Station");
       $("#water").switchClass("btn-info", "btn-outline-info");
