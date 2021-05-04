@@ -142,12 +142,16 @@ html, body, header, #viewDiv {
 }
 
 .modal-dialog {
-    margin-top: 3vh;
+  margin-top: 3vh;
 }
 
 #info-box {
   background-color: #f7fbff;
   border-color: #b3d6ff
+}
+
+#comment-group {
+  max-height: 50vh !important;
 }
 
 .list-group {
