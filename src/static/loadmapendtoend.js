@@ -325,7 +325,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
               contentType: "application/json",
               success: function(response){
                 $("#comment-div").html(response);
-								showMoreLess()
+								showMoreLess();
               }
             });
 
@@ -388,9 +388,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
     var vendingLoading = false;
     var waterLoading = false;
     var athleticsLoading = false;
-
-
-
 
     // Attempt to get location on click
     $("#trackUser").on("click", function() {
@@ -608,7 +605,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/c
         contentType: "application/json",
         success: function(response){
           $("#comment-div").html(response);
-					showMoreLess()
+					showMoreLess();
         }
       });
     });
