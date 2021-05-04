@@ -792,7 +792,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var printer = data_array[i];
             point = createPoint(printer.long, printer.lat, [220, 53, 69],
@@ -835,7 +834,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var cluster = data_array[i];
             point = createPoint(cluster.long, cluster.lat, [255, 193, 7],
@@ -877,7 +875,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var scanner = data_array[i];
             point = createPoint(scanner.long, scanner.lat, [128, 0, 0],
@@ -921,7 +918,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var dhall = data_array[i];
             point = createPoint(dhall.long, dhall.lat, [0, 123, 255],
@@ -963,7 +959,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var cafe = data_array[i];
             point = createPoint(cafe.long, cafe.lat, [40, 167, 69],
@@ -1005,7 +1000,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var vending_machine = data_array[i];
             point = createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0],
@@ -1047,7 +1041,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var athletic_facility = data_array[i];
             point = createPoint(athletic_facility.long * (-1), athletic_facility.lat, [136, 77, 255],
@@ -1089,7 +1082,6 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         contentType: "application/json",
         success: function(json_data){
           data_array = JSON.parse(json_data)
-          console.log(data_array);
           for (var i = 0; i < data_array.length; i++) {
             var water_station = data_array[i];
             point = createPoint(water_station.long, water_station.lat, [23, 162, 184],
