@@ -231,81 +231,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
   
   map.add(locLayer);
 
-  // Pulsing location graphic
-  // Unused - animations are unstable on Firefox
-  function pulse(){
-		var opacity = 1;
-    locLayer.opacity = 1;
-    var sign = -1;
-		function reduceOpacity(){
-      opacity += sign * 0.012;
-      locLayer.opacity = opacity;
-
-			if (opacity <= 0.4 || opacity >= 1) {
-        sign *= -1;
-        return;
-      }
-		}
-		setInterval(reduceOpacity, 20);
-		setTimeout(pulse, 2000); // repeat
-	}
-
-  // For changing "Show Location" to "Update Location"
-  var startedTrack = false;
-
-  // Continually update user position
-  function showPosition(position) {
-    locLayer.removeAll();
-
-    var lat = position.coords.latitude;
-    var long = position.coords.longitude;
-
-    // Create new location graphic
-    var locGraphic = new Graphic({
-      geometry: {
-        type: "point",
-        longitude: long,
-        latitude: lat
-      },
-      symbol: {
-        type: "simple-marker",
-        color: [255, 0, 255],
-        outline: {
-          color: [255,255,255],
-          width: 0.7
-        }
-      }
-    });
-    
-    locLayer.graphics.push(locGraphic);
-
-    view.center = [long, lat];
-
-    if (!startedTrack) {
-      startedTrack = true;
-      $("#trackUser").html("<i class='fas fa-map-marker-alt'></i> Update Location");
-    }
-  }
-
-  // Handle location error
-  function handleLocationError(error) {
-    switch(error.code) {
-      case error.PERMISSION_DENIED:
-        console.log("User denied the request for Geolocation.");
-        break;
-      case error.POSITION_UNAVAILABLE:
-        console.log("Location information is unavailable.");
-        break;
-      case error.TIMEOUT:
-        console.log("The request to get user location timed out.");
-        break;
-      case error.UNKNOWN_ERROR:
-        console.log("An unknown error occurred.");
-        break;
-    }
-  }
-
-  // Start tracking once view becomes ready
+  // Things to do once the view is ready
   view.when(function() {
     // Move arcgis zoom buttons to top right
     view.ui.move([ "zoom" ], "top-right");
@@ -325,6 +251,11 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           }
 
           else {
+            // Don't open modal if users click before map fully loads
+            if (!("type" in attr)) {
+              return;
+            }
+
             // Set title
             let titleString = attr["type"] + " - " + attr["name"];
             $(".modal-title").text(titleString);
@@ -391,7 +322,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
 
   // Alert users of AJAX error
   $(document).ajaxError(function (event, jqXHR, settings, thrownError) {
-    $("#ajax-error").slideDown("slow").delay(4000).slideUp("slow");
+    $("#ajax-error").slideDown("slow").delay(5000).slideUp("slow");
   });
 
   $(document).ready(function(){
@@ -412,7 +343,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
     var vendingLoading = false;
     var waterLoading = false;
     var athleticsLoading = false;
-
+    
+    // Attempt to get location on click
     $("#trackUser").on("click", function() {
       // Get location of user
       if (navigator.geolocation) {
@@ -424,6 +356,83 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
       }
     });
 
+    // For changing "Show Location" to "Update Location"
+    var startedTrack = false;
+
+    // Continually update user position
+    function showPosition(position) {
+      locLayer.removeAll();
+
+      var lat = position.coords.latitude;
+      var long = position.coords.longitude;
+
+      // Create new location graphic
+      var locGraphic = new Graphic({
+        geometry: {
+          type: "point",
+          longitude: long,
+          latitude: lat
+        },
+        symbol: {
+          type: "simple-marker",
+          color: [255, 0, 255],
+          outline: {
+            color: [255,255,255],
+            width: 0.7
+          }
+        }
+      });
+      
+      locLayer.graphics.push(locGraphic);
+
+      view.center = [long, lat];
+
+      if (!startedTrack) {
+        startedTrack = true;
+        $("#trackUser").html("<i class='fas fa-map-marker-alt'></i> Update Location");
+      }
+    }
+
+    // Handle location error
+    function handleLocationError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          $("#location-error").slideDown("slow").delay(15000).slideUp("slow");
+          console.log("User denied the request for Geolocation, or HTTPS is not used.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          $("#position-error").slideDown("slow").delay(10000).slideUp("slow");
+          console.log("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          $("#timeout-error").slideDown("slow").delay(10000).slideUp("slow");
+          console.log("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          $("#unknown-error").slideDown("slow").delay(10000).slideUp("slow");
+          console.log("An unknown error occurred.");
+          break;
+      }
+    }
+
+    // Location pin pulsing
+    // Unused - animations are unstable on Firefox
+    /*function pulse(){
+      var opacity = 1;
+      locLayer.opacity = 1;
+      var sign = -1;
+      function reduceOpacity(){
+        opacity += sign * 0.012;
+        locLayer.opacity = opacity;
+
+        if (opacity <= 0.4 || opacity >= 1) {
+          sign *= -1;
+          return;
+        }
+      }
+      setInterval(reduceOpacity, 20);
+      setTimeout(pulse, 2000); // repeat
+    }*/
     // pulse();
 
     // Handle work order form submit
@@ -436,7 +445,7 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
         data: dataString,
         success: function () {
           // Show confirmation message
-          $("#workorder-success").slideDown("slow").delay(4000).slideUp("slow");
+          $("#workorder-success").slideDown("slow").delay(5000).slideUp("slow");
 
           // Reset work order form
           var form = $("#workorder-form");
@@ -652,8 +661,8 @@ require(["esri/config","esri/Map", "esri/views/MapView", "esri/Graphic", "esri/w
           success: function(comment){
             $("#message-text").val("");
             $("#remainingC").html("");
-            $("#comment-success-message").slideDown("slow").delay(4000).slideUp("slow");
-            //$("#comment-success").slideDown("slow").delay(4000).slideUp("slow");
+            $("#comment-success-message").slideDown("slow").delay(5000).slideUp("slow");
+            //$("#comment-success").slideDown("slow").delay(5000).slideUp("slow");
           }
         });
       // If value is blank, alert user to enter something
