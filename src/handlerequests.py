@@ -177,7 +177,7 @@ def get_data():
 		dbcursor.close()
 		dbconnection.close()
 		if data_json == '':
-			raise Exception('No data available for this amenity:', amenity_type)
+			print('No data available for this amenity:', amenity_type)
 		return data_json
 	except Exception as e:
 		print('Something went wrong with: loading information from the database for the pins', file=sys.stderr)
