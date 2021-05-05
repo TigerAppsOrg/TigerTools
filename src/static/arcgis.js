@@ -322,7 +322,7 @@ export class ArcGIS {
   // Remove all points of a certain type
   removeGraphic(amenityType) {
     for (let j = 0; j < this.clusters.length; j++) {
-      pts = this.clusters[j].attributes.pts;
+      var pts = this.clusters[j].attributes.pts;
       for (let k = 0; k < pts.length; k++) {
         if (pts[k].attributes.type == amenityType) {
           pts.splice(k, 1);
