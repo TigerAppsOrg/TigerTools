@@ -332,9 +332,6 @@ def show_comments():
 		query = "SELECT * FROM comments WHERE amenity_name = %s;"
 		dbcursor.execute(query, (amenityName,))
 		comments = dbcursor.fetchall()
-		dbconnection.commit()
-		dbcursor.close()
-		dbconnection.close()
 		current_time = datetime.datetime.utcnow()
 		delta = datetime.timedelta(days = 7)
 		a = current_time - delta
@@ -348,6 +345,10 @@ def show_comments():
 				dbcursor.execute(query, (comment[0], comment[1], comment[2], comment[3],))
 		comments_modified.reverse()
 
+		dbconnection.commit()
+		dbcursor.close()
+		dbconnection.close()
+		
 		html = render_template('templates/displaycomments.html', data=comments_modified, wasSuccessful = True)
 		return make_response(html)
 	
@@ -385,7 +386,7 @@ def show_upvotes():
 	except Exception as e:
 		print('Something went wrong with: show_upvotes()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		html = render_template('templates/displayLikes.html', num_of_likes = "Error", wasSuccessful = False, isLiking = False)
+		html = render_template('templates/displayLikes.html', num_of_likes = "...", wasSuccessful = False, isLiking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -415,7 +416,7 @@ def show_downvotes():
 	except Exception as e:
 		print('Something went wrong with: show_downvotes()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		html = render_template('templates/displayDislikes.html', num_of_dislikes = "Error", wasSuccessful = False, isDisliking = False)
+		html = render_template('templates/displayDislikes.html', num_of_dislikes = "...", wasSuccessful = False, isDisliking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
