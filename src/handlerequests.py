@@ -180,9 +180,9 @@ def get_data():
 			print('No data available for this amenity:', amenity_type)
 		return data_json
 	except Exception as e:
-		print('Something went wrong with: loading information from the database for the pins', file=sys.stderr)
+		print('Something went wrong with: get_data()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		return redirect(url_for('error_page'))
+		return redirect(url_for('error_page')), 500
 
 # ---------------------------------------------------------------------
 @app.route('/info', methods=['POST'])
@@ -235,7 +235,7 @@ def get_info():
 			return make_response(html)
 
 	except Exception as e:
-		print('Something went wrong with: formatting the information box', file=sys.stderr)
+		print('Something went wrong with: get_info()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		return '<h6> Unable to display amenity information. Please try again later. </h6>'
 
@@ -287,7 +287,7 @@ def format_wkorder():
 		html = render_template('templates/arcgis.html', netid=netid)
 		return make_response(html)
 	except Exception as e:
-		print('Something went wrong with: submitting a work order for %s'%netid, file=sys.stderr)
+		print('Something went wrong with: format_wkorder() %s'%netid, file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
@@ -314,7 +314,7 @@ def store_comment():
 		return make_response(html)
 
 	except Exception as e:
-		print('Something went wrong with: storing a comment', file=sys.stderr)
+		print('Something went wrong with: store_comment()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
@@ -352,7 +352,7 @@ def show_comments():
 		return make_response(html)
 	
 	except Exception as e:
-		print('Something went wrong with: loading comments from the database to display', file=sys.stderr)
+		print('Something went wrong with: show_comments()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/displaycomments.html', data=[], wasSuccessful = False)
 		return make_response(html)
@@ -383,7 +383,7 @@ def show_upvotes():
 		return make_response(html)
 
 	except Exception as e:
-		print('Something went wrong with: displaying upvotes', file=sys.stderr)
+		print('Something went wrong with: show_upvotes()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/displayLikes.html', num_of_likes = "Error", wasSuccessful = False, isLiking = False)
 		return make_response(html)
@@ -413,7 +413,7 @@ def show_downvotes():
 		return make_response(html)
 
 	except Exception as e:
-		print('Something went wrong with: displaying downvotes', file=sys.stderr)
+		print('Something went wrong with: show_downvotes()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/displayDislikes.html', num_of_dislikes = "Error", wasSuccessful = False, isDisliking = False)
 		return make_response(html)
@@ -449,7 +449,7 @@ def place_upvote():
 		return make_response(html)
 
 	except Exception as e:
-		print('Something went wrong with: updating number of upvotes', file=sys.stderr)
+		print('Something went wrong with: place_upvote()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
@@ -486,7 +486,7 @@ def place_downvote():
 		return make_response(html)
 
 	except Exception as e:
-		print('Something went wrong with: updating number of downvotes', file=sys.stderr)
+		print('Something went wrong with: place_downvote()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
