@@ -14,7 +14,6 @@ def load_athletics(dbcursor):
 	dbcursor.execute('DROP TABLE IF EXISTS athletics')
 	dbcursor.execute('CREATE TABLE athletics (buildingname VARCHAR(80), sports VARCHAR(60), lat VARCHAR(15), long VARCHAR(15), PRIMARY KEY (buildingname))')
 	# read csv into athletics table
-	# dbcursor.execute("copy athletics(facility, sports, lat, long) FROM '/Users/indup/Documents/TigerTools-test/alpha/athletic_data.csv' DELIMITER ',' CSV HEADER;")
 	# https://stackoverflow.com/questions/30050097/copy-data-from-csv-to-postgresql-using-python
 	csv_file_name = '/Users/indup/Documents/TigerTools/src/update_db/athletic_data.csv'
 	sql = "COPY athletics FROM STDIN DELIMITER ',' CSV HEADER"
@@ -59,8 +58,6 @@ def load_buildings(dbcursor):
 
 # ----------------------------------------------------------
 def main():
-	# DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-test) psutil.Process.name()
-	# https://www.kite.com/python/answers/how-to-execute-a-bash-script-in-python
 	# https://stackoverflow.com/questions/16618071/can-i-export-a-variable-to-the-environment-from-a-bash-script-without-sourcing-i for .
 	DATABASE_URL = os.environ.get('DATABASE_URL', None)
 
