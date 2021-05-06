@@ -161,8 +161,6 @@ export class ArcGIS {
     return pointGraphic;
   }
 
-  
-
   // Create a new cluster point if the input point's long/lat doesn't match any cluster's long/lat
   checkPointCluster(point) {
     let isCluster = false;

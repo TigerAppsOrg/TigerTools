@@ -1,5 +1,8 @@
+
 import {ArcGIS} from "/static/arcgis.js";
-window.map = new ArcGIS();
+
+// Initialize ArcGIS map
+var map = new ArcGIS();
 map.initialize();
 
 $(document).ready(function(){
