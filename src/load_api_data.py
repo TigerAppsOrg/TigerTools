@@ -133,7 +133,7 @@ def vending_machines():
 
 		categoryID = 4
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
-			locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), what VARCHAR(500), \
+			locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), directions VARCHAR(1000), what VARCHAR(500), \
 			payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 		dbcursor.execute('DELETE FROM vendingmachines;')
 		dbconnection.commit()
@@ -175,7 +175,7 @@ def vending_machines():
 				if a.count('Payment') != 0:
 					payment = a[1]
 			stmt = 'INSERT INTO \
-				vendingmachines (name, dbid, buildingname, locationcode, lat, long, description, what, payment) \
+				vendingmachines (name, dbid, buildingname, locationcode, lat, long, directions, what, payment) \
 				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);'
 			info = (row.get('name'),row.get('dbid'),row.get('building').get('name'),row.get('building').get('location_id'), \
 					row.get('geoloc').get('lat'),row.get('geoloc').get('long'),descrip,what,payment)

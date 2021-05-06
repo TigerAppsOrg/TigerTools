@@ -88,6 +88,10 @@ def get_data():
 		# printers
 		if amenity_type == "printers" or amenity_type == "scanners" or amenity_type == "macs":
 			# get column names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), accessible VARCHAR(30), description VARCHAR(80), \
+				printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), \
+				locationmore VARCHAR(30), PRIMARY KEY(name, dbid));')
 			# https://stackoverflow.com/questions/10252247/how-do-i-get-a-list-of-column-names-from-a-psycopg2-cursor
 			stmt = 'SELECT * FROM id6 LIMIT 0;'
 			dbcursor.execute(stmt)
@@ -114,6 +118,9 @@ def get_data():
 
 		elif amenity_type == "dining":
 			# get columns names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
+				payment VARCHAR(500), capacity VARCHAR(6), PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM dining LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -127,6 +134,9 @@ def get_data():
 
 		elif amenity_type == "cafes":
 			# get columns names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
+				payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM cafes LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -140,6 +150,9 @@ def get_data():
 
 		elif amenity_type == "vendingmachines":
 			# get column names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
+				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), directions VARCHAR(1000), what VARCHAR(500), \
+				payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM vendingmachines LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -151,6 +164,8 @@ def get_data():
 
 		elif amenity_type == "athletics":
 			# get column names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS athletics (buildingname VARCHAR(80), sports VARCHAR(60), \
+				at VARCHAR(15), long VARCHAR(15), PRIMARY KEY (buildingname))')
 			stmt = 'SELECT * FROM athletics LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -162,6 +177,10 @@ def get_data():
 
 		elif amenity_type == "water":
 			# get column names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS water (asset VARCHAR(6), description VARCHAR(110), \
+				buildingcode VARCHAR(20), buildingname VARCHAR(80), floor VARCHAR(80), directions VARCHAR(80),PRIMARY KEY (asset))')
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS buildings (locationcode VARCHAR(6), buildingname VARCHAR(110),\
+			 	lat VARCHAR(20), long VARCHAR(20), PRIMARY KEY (locationcode))')
 			stmt = 'SELECT * FROM water LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -367,9 +386,9 @@ def show_upvotes():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
 		dbconnection.commit()
-		query = "SELECT SUM(upvotes) FROM votes WHERE AMENITY_NAME = %s;"
+		query = "SELECT SUM(upvotes) FROM votes WHERE amenity_name = %s;"
 		dbcursor.execute(query, (amenityName,))
 		upvotes = dbcursor.fetchall()[0][0]
 		if (upvotes == None): upvotes = 0
@@ -398,7 +417,7 @@ def show_downvotes():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
 		query = "SELECT SUM(downvotes) FROM votes WHERE AMENITY_NAME = %s;"
 		dbcursor.execute(query, (amenityName,))
 		downvotes = dbcursor.fetchall()[0][0]
@@ -428,12 +447,12 @@ def place_upvote():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
-			query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
-			data = (amenityName, netid, 1, 0)
+			query = 'INSERT INTO votes (netid, amenity_name, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
+			data = (netid, amenityName, 1, 0)
 			dbcursor.execute(query, data)
 
 		else:
@@ -465,12 +484,12 @@ def place_downvote():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (amenity_name text, netid text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
 		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
-			query = 'INSERT INTO votes (amenity_name, netid, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
-			data = (amenityName, netid, 0, 1)
+			query = 'INSERT INTO votes (netid, amenity_name, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
+			data = (netid, amenityName, 0, 1)
 			dbcursor.execute(query, data)
 
 		else:
