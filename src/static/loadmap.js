@@ -575,7 +575,7 @@ $(document).ready(function(){
         for (var i = 0; i < data_array.length; i++) {
           var vending_machine = data_array[i];
           var point = map.createPoint(vending_machine.long, vending_machine.lat, [255, 128, 0],
-            {name: vending_machine.name, type:"Vending Machine", directions: vending_machine.description, what: vending_machine.what, payment: vending_machine.payment,
+            {name: vending_machine.name, type:"Vending Machine", directions: vending_machine.directions, what: vending_machine.what, payment: vending_machine.payment,
             building: vending_machine.buildingname, room: vending_machine.room, floor: vending_machine.floor, locationcode: vending_machine.locationcode});
 
           // Create new cluster if doesnt exist already
