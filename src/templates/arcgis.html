@@ -53,10 +53,7 @@
         </button>
       </div>
       <hr>
-      <!-- Search bar (CURRENTLY DEFUNCT) -->
-      <!--<input class="form-control mr-sm-2" type="text" placeholder="Search" id="buttonsearch">
-      <h6 id="searchmessage"></h6>
-      <p></p>-->
+
       <!-- Filtering options -->
       <button type="button" class="btn btn-outline-danger btn-lg sideButton" id="printers">Printers</button>
       <button type="button" class="btn btn-outline-primary btn-lg sideButton" id="dhalls">Dining Halls</button>
@@ -124,8 +121,8 @@
       </div>
     </div>
 
-    <!-- Invisible button for triggering the main modal -->
-    <button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal" style="display: none;"></button>
+    <!-- Invisible button for triggering the main modal (no longer needed) -->
+    <!--<button id="modalTrigger" type="button" data-toggle="modal" data-target="#myModal" style="display: none;"></button>-->
 
 
     <!-- Comment confirmation alert -->
@@ -215,9 +212,9 @@
                       Please enter a comment.
                     </div>
                   </div>
-		<div>
-			<span id='remainingC'></span>
-		</div>
+                  <div>
+                    <span id='remainingC'></span>
+                  </div>
                   <div id="comment-success-message" class="text-center" style="display:none;">
                     <h5 class="text-success">Comment successfully submitted!</h5>
                   </div>
@@ -235,7 +232,6 @@
                 <p class="text-danger" id="required-text"> * = Required</p>
 
                 <!-- INPUT FORM -->
-                <!-- CONSIDER AUTOFILLING NAME AND EMAIL POSSIBLY PHONE -->
                 <form action="wkorder" method="post" id="workorder-form" novalidate>
                 <div class="form-group row required">
 
@@ -351,10 +347,6 @@
                   <!-- COULD ALSO DO SEARCH SUGGESTIONS AS USER TYPES BUILDING NAME -->
                   <!-- POSSIBLY PUT NOTE FOR USER THAT EITHER FILL ALL THREE FIELDS OR ONLY FILL BUILDING -->
 
-                  <!--<label for="building">Building</label>
-                  <select class="form-control mb-2" name="building" id="building" required>
-                     <option>Some Building</option>
-                  </select>-->
                   <div class="form-row mb-2">
                     <div class="col-sm-12">
                       <label for="building">Building</label>
@@ -382,19 +374,6 @@
                   <input class="form-control d-none" type="text" name="asset" id="asset" value="">
                   <input class="form-control d-none" type="text" name="locationmore" id="locationmore" value="">
 
-                  <!--
-                  <select class="form-control mb-2 d-none" name="buildingcode" id="buildingcode">
-                     <option></option>
-                  </select>
-
-                  <select class="form-control mb-2 d-none" name="locationcode" id="locationcode">
-                     <option></option>
-                  </select>
-
-                  <select class="form-control mb-2 d-none" name="asset" id="asset">
-                     <option></option>
-                  </select>
-                -->
                 </div>
 
                 </div>
@@ -403,13 +382,6 @@
                 <button type="button" class="btn btn-secondary" id="reset-workorder">Reset</button>
                 </form>
 
-                <!-- Work order button (FOR OPENING DEFUNCT WORK ORDER MODAL) -->
-                <!--
-                <button type="button" data-toggle="modal" href="#myModal2" class="btn btn-danger btn-lg btn-block">
-                  <i class="fas fa-exclamation-triangle fa-lg" style="color:yellow;"></i>
-                  &nbsp;Submit a work order...
-                </button>
-              -->
               </div>
             </div>
 
@@ -425,7 +397,7 @@
       </div>
     </div>
 
-    <!-- Confirmation modal -->
+    <!-- Work order confirmation modal -->
     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
