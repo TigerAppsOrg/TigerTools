@@ -188,7 +188,8 @@ def get_data():
 			cols.append('long')
 			# get records
 			stmt = 'SELECT water.*, buildings.lat, buildings.long \
-				FROM water INNER JOIN buildings ON water.buildingcode LIKE buildings.locationcode;'
+				FROM water INNER JOIN buildings ON water.buildingcode \
+				LIKE CONCAT(buildings.locationcode,CAST(\'%\' AS VARCHAR(1)));'
 			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
