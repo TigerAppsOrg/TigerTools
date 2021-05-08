@@ -1,4 +1,4 @@
-
+// Import ArcGIS class functions
 import {ArcGIS} from "/static/arcgis.js";
 
 // Initialize ArcGIS map
@@ -92,8 +92,7 @@ $(document).ready(function(){
     form.removeClass("was-validated");
   });
 
-  // Handle work order form submit
-  // https://code.tutsplus.com/tutorials/submit-a-form-without-page-refresh-using-jquery--net-59
+  // Handle work order form submission
   $("form").on("submit", function(e) {
     var dataString = $(this).serialize();
     $.ajax({
@@ -134,7 +133,7 @@ $(document).ready(function(){
   });
 
   // Prevent user from entering only whitespace on the comment or work order description
-  // html pattern doesn't work with <textarea> only with <input>, which is why this is necessary
+  // html pattern doesn't work with <textarea>, only with <input>, which is why this is necessary
   $("#message-text").on('input', function() {
     if ($.trim($("#message-text").val()) == "")
       $("#message-text").val("");
@@ -144,7 +143,7 @@ $(document).ready(function(){
       $("#description").val("");
   });
 
-  // display comments if home tab is clicked
+  // Display comments when home tab is clicked
   $("#nav-home-tab").on('click', function(){
     $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
     $.ajax({
@@ -159,7 +158,7 @@ $(document).ready(function(){
     });
   });
 
-  // display likes/dislikes for amenity when comments tab is clicked
+  // Display likes/dislikes for amenity when comments tab is clicked
   $("#nav-comment-tab").on('click', function(){
     $("#myModalDialog").switchClass("modal-xl", "modal-lg", 300, "easeInOutQuad");
     $.ajax({
@@ -182,7 +181,7 @@ $(document).ready(function(){
     });
   });
 
-  // display characters remaining in comment box
+  // Display characters remaining in comment box
 	$("#message-text").on("change keyup paste", function() {
 		if(this.value.length > 500){
       return false;
@@ -194,7 +193,7 @@ $(document).ready(function(){
     $("#remainingC").html("Remaining characters : " + (500 - this.value.length));
   });
 
-  // Submit comment
+  // Submit a valid comment
   $("#submitcomment").click(function(){
     var comment = $.trim($("#message-text").val());
     // If value is not blank, submit comment and reset form
@@ -218,7 +217,7 @@ $(document).ready(function(){
     }
   });
 
-  // place upvote
+  // Place upvote (click on upvote button)
   $("#likebutton").click(function(){
     //currentVoteType = "like"
     $.ajax({
@@ -249,7 +248,7 @@ $(document).ready(function(){
     });
   });
 
-  // place downvote
+  // Place downvote (click on downvote button)
   $("#dislikebutton").click(function(){
     //currentVoteType = "dislike"
     $.ajax({
@@ -280,7 +279,7 @@ $(document).ready(function(){
     });
   });
 
-  // Handle show more/show less text
+  // Handle show more/show less text for comments
   // adapted from https://www.viralpatel.net/dynamically-shortened-text-show-more-link-jquery/
   function showMoreLess() {
     var showChar = 175;

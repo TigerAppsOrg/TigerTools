@@ -20,7 +20,7 @@
     <script src="{{url_for('static', filename='loadmap.js')}}" type="module"></script>
     <script src="{{url_for('static', filename='arcgis.js')}}" type="module"></script>
 
-    <!-- Favicon -->
+    <!-- Favicon (Princeton shield) -->
     <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='favicon.ico')}}"/>
 
     <!-- Font awesome 5 (for icons) -->
@@ -33,11 +33,10 @@
     <!-- Div on which the map is displayed -->
     <div id="viewDiv"></div>
 
-    <!-- Button for opening the menu
-      https://getbootstrap.com/docs/4.0/components/buttons/ -->
+    <!-- Button for opening the menu -->
     <button id="openNav" type="button" class="btn btn-dark btn-lg" data-toggle="collapse" data-target="#mySidenav" aria-expanded="false">Select Tools &#9776;</button>
 
-    <!-- Start tracking, or update user location-->
+    <!-- Button to update user location on the map -->
     <button id="trackUser" type="button" class="btn btn-success btn-sm"><i class="fas fa-map-marker-alt"></i> Show Location</button>
     
     <!-- Logout button -->
@@ -64,6 +63,7 @@
       <button type="button" class="btn btn-outline-info btn-lg sideButton" id="water">Water Filling</button>
       <button type="button" class="btn btn-purple btn-lg sideButton" id="athletics">Athletics</button>
 
+      <!-- Loading symbols to show when loading amenity pins -->
       <div class="p-1 loading-symbol" id="printers-load">
         Loading printers...&nbsp;&nbsp;
         <div class="spinner-border text-danger" style="width: 25px; height: 25px;" role="status">
