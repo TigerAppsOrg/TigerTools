@@ -15,7 +15,7 @@ categoryid number. Returns a Python dictionary.
 '''
 def _consume_mobileapp(categoryid):
 	req_lib = ReqLib()
-	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryID,)
+	data = req_lib.getJSONfromXML(req_lib.configs.DINING_LOCATIONS, categoryID=categoryid,)
 	data_dict = json.loads(data)
 	return data_dict.get('locations').get('location')
 
