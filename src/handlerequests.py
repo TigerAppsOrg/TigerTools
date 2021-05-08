@@ -54,12 +54,10 @@ def display_map():
 
 # ---------------------------------------------------------------------
 '''
-This function converts a list of tuples and corresponding keys into a 
+Converts a list of tuples and corresponding keys into a 
 JSON string and returns that JSON string.
 '''
 def _tuples_to_json(keys, tuples_lists):
-	# https://anthonydebarros.com/2020/09/06/generate-json-from-sql-using-python/
-	# https://stackoverflow.com/questions/14831830/convert-a-list-of-tuples-to-a-list-of-lists
 	lists = [list(t) for t in tuples_lists]
 	record_dict = []
 	if lists is not None:
@@ -70,8 +68,8 @@ def _tuples_to_json(keys, tuples_lists):
 
 # ---------------------------------------------------------------------
 '''
-This function returns all the information for the amenity selected by
-the user in the form of a JSON string.
+Returns all the information stored in the table for the amenity 
+selected by the user in the form of a JSON string.
 '''
 @app.route('/points', methods=['POST'])
 def get_data():
@@ -79,26 +77,26 @@ def get_data():
 	# update open/closed status of venues
 	places_open()
 	try:
-		# get info
+		# which amenity
 		amenity_type = request.get_json().get('amenity_type')
-		# connect to database
+
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		# printers
+		
 		if amenity_type == "printers" or amenity_type == "scanners" or amenity_type == "macs":
 			# get column names
-			dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
-				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), accessible VARCHAR(30), description VARCHAR(80), \
-				printers VARCHAR(4), macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), \
-				locationmore VARCHAR(30), PRIMARY KEY(name, dbid));')
-			# https://stackoverflow.com/questions/10252247/how-do-i-get-a-list-of-column-names-from-a-psycopg2-cursor
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), \
+				buildingname VARCHAR(100),locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), \
+				accessible VARCHAR(30), description VARCHAR(80), printers VARCHAR(4), macs VARCHAR(4), \
+				scanners VARCHAR(4), room VARCHAR(10), floor VARCHAR(10), locationmore VARCHAR(30), \
+				PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM id6 LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
 
+		# get records
 		if amenity_type == "printers":
-			# get records
 			stmt = 'SELECT * FROM id6 WHERE printers<>%s;'
 			dbcursor.execute(stmt,('None',))
 			data = dbcursor.fetchall()
@@ -117,10 +115,11 @@ def get_data():
 			data_json = _tuples_to_json(cols, data)
 
 		elif amenity_type == "dining":
-			# get columns names
-			dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
-				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), \
-				payment VARCHAR(500), capacity VARCHAR(6), PRIMARY KEY(name, dbid));')
+			# get column names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), dbid VARCHAR(4), \
+				buildingname VARCHAR(100),locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), \
+				rescollege VARCHAR(30), who VARCHAR(120), payment VARCHAR(500), capacity VARCHAR(6), \
+				PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM dining LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -133,10 +132,10 @@ def get_data():
 			data_json = _tuples_to_json(cols, data)
 
 		elif amenity_type == "cafes":
-			# get columns names
-			dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
-				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), description VARCHAR(1000), who VARCHAR(120), \
-				payment VARCHAR(500), PRIMARY KEY(name, dbid));')
+			# get column names
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), \
+				buildingname VARCHAR(100), locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), \
+				description VARCHAR(1000), who VARCHAR(120), payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM cafes LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -150,9 +149,9 @@ def get_data():
 
 		elif amenity_type == "vendingmachines":
 			# get column names
-			dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), buildingname VARCHAR(100),\
-				locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), directions VARCHAR(1000), what VARCHAR(500), \
-				payment VARCHAR(500), PRIMARY KEY(name, dbid));')
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), \
+				buildingname VARCHAR(100), locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), \
+				directions VARCHAR(1000), what VARCHAR(500), payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 			stmt = 'SELECT * FROM vendingmachines LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -178,9 +177,10 @@ def get_data():
 		elif amenity_type == "water":
 			# get column names
 			dbcursor.execute('CREATE TABLE IF NOT EXISTS water (asset VARCHAR(6), description VARCHAR(110), \
-				buildingcode VARCHAR(20), buildingname VARCHAR(80), floor VARCHAR(80), directions VARCHAR(80),PRIMARY KEY (asset))')
-			dbcursor.execute('CREATE TABLE IF NOT EXISTS buildings (locationcode VARCHAR(6), buildingname VARCHAR(110),\
-			 	lat VARCHAR(20), long VARCHAR(20), PRIMARY KEY (locationcode))')
+				buildingcode VARCHAR(20), buildingname VARCHAR(80), floor VARCHAR(80), directions VARCHAR(80),\
+				PRIMARY KEY (asset))')
+			dbcursor.execute('CREATE TABLE IF NOT EXISTS buildings (locationcode VARCHAR(6), \
+				buildingname VARCHAR(110), lat VARCHAR(20), long VARCHAR(20), PRIMARY KEY (locationcode))')
 			stmt = 'SELECT * FROM water LIMIT 0;'
 			dbcursor.execute(stmt)
 			cols = [desc[0] for desc in dbcursor.description]
@@ -195,6 +195,7 @@ def get_data():
 
 		dbcursor.close()
 		dbconnection.close()
+		
 		if data_json == '':
 			print('No data available for this amenity:', amenity_type)
 		return data_json
@@ -208,8 +209,10 @@ def get_data():
 def get_info():
 	netid = CASClient().authenticate()
 	try:
+		# which amenity
 		amenity_type = request.get_json().get('type')
 
+		# render the corresponding information template
 		if amenity_type == "Printer" or amenity_type == "Computer Cluster" or amenity_type == "Scanner":
 			html = render_template('templates/info_templates/printers.html',
 				description=request.get_json().get("description"),
@@ -259,48 +262,63 @@ def get_info():
 		return '<h6> Unable to display amenity information. Please try again later. </h6>'
 
 # ---------------------------------------------------------------------
+'''
+Formats submitted work order information into an email and sends email
+from tigertoolsprinceton@gmail.com to service@princeton.edu if normal user.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/wkorder', methods=['POST'])
 def format_wkorder():
 	netid = CASClient().authenticate()
 	try:
+		# get location information
 		loc_code = ''
 		if request.form.get('locationcode') is not None and request.form.get('locationcode') != '':
 			loc_code = request.form.get('locationcode')
 		if request.form.get('buildingcode') is not None and request.form.get('buildingcode') != '':
 			code_comp = request.form.get('buildingcode').split('_')
 			loc_code = code_comp[0]
+		
 		# email
-		# https://www.twilio.com/blog/how-to-send-emails-in-python-with-sendgrid
-		email_body = '''<u><strong>Personal Information:</strong></u><br><strong>NetID:</strong> %s<br><strong>First Name:</strong> %s<br>
-		<strong>Last Name:</strong> %s<br><strong>Email:</strong> %s<br><strong>Phone:</strong> %s<br><strong>Contact regarding scheduling?:</strong> %s<br><br>
+		email_body = '''<u><strong>Personal Information:</strong></u><br><strong>NetID:</strong> %s<br>
+		<strong>First Name:</strong> %s<br> <strong>Last Name:</strong> %s<br><strong>Email:</strong> %s<br>
+		<strong>Phone:</strong> %s<br><strong>Contact regarding scheduling?:</strong> %s<br><br>
 		<u><strong>Alternate Information:</strong></u><strong><br>Alternate NetID:</strong> %s<br>
-		<strong>Alternate First Name:</strong> %s<br><strong>Alternate Last Name:</strong> %s<br><strong>Alternate Email:</strong> %s<br>
-		<strong>Alternate Phone:</strong> %s<br><br>
+		<strong>Alternate First Name:</strong> %s<br><strong>Alternate Last Name:</strong> %s<br>
+		<strong>Alternate Email:</strong> %s<br><strong>Alternate Phone:</strong> %s<br><br>
 		<u><strong>Request Information:</strong></u><br><strong>Campus:</strong> %s<br>
-		<strong>Charge Source:</strong> Operating<br><strong>Location Code:</strong> %s<br><strong>Building:</strong> %s<br><strong>Floor:</strong> %s<br>
-		<strong>Room:</strong> %s<br><strong>Detailed request:</strong> %s<br>''' % (request.form.get('netid'),request.form.get('firstname'), \
-			request.form.get('lastname'),request.form.get('email'),request.form.get('phone'),request.form.get('contacted'),
-			request.form.get('alt-netid'),request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
-			request.form.get('alt-phone'),request.form.get('campus'),loc_code,request.form.get('building'),	\
+		<strong>Charge Source:</strong> Operating<br><strong>Location Code:</strong> %s<br>
+		<strong>Building:</strong> %s<br><strong>Floor:</strong> %s<br>
+		<strong>Room:</strong> %s<br><strong>Detailed request:</strong> %s<br>''' % (request.form.get('netid'),\
+			request.form.get('firstname'), request.form.get('lastname'),request.form.get('email'),\
+			request.form.get('phone'),request.form.get('contacted'), request.form.get('alt-netid'),\
+			request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
+			request.form.get('alt-phone'),request.form.get('campus'),loc_code,request.form.get('building'),\
 			request.form.get('floor'),request.form.get('room'),request.form.get('description'))
 		# course staff
 		if netid in ['rdondero\n','whchang\n','satadals\n','pisong\n','anatk\n']:
-			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,subject='Work order from instructor (TigerTools)',\
-			 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted by a COS 333 instructor; no work order has been submitted to Facilities</h3></center><p><br>\
+			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
+				subject='Work order from instructor (TigerTools)',\
+			 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted \
+			 		by a COS 333 instructor; no work order has been submitted to Facilities</h3></center><p><br>\
 			 		%s</p>'%email_body))
 			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 			response = sg.send(message)
 		# TigerTools team
 		if netid in ['indup\n','rl27\n','arebei\n','tigertools\n']:
-			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,subject='Work order from team (TigerTools)',\
-			 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted by a COS 333 TigerTools team member; no work order has been submitted to Facilities</h3></center><p><br>\
+			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
+				subject='Work order from team (TigerTools)',\
+			 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted \
+			 		by a COS 333 TigerTools team member; no work order has been submitted to Facilities</h3></center><p><br>\
 			 		%s</p>'%email_body))
 			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 			response = sg.send(message)
 		# normal user
 		else:
-			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='service@princeton.edu',subject='Work Order Request (TigerTools)',\
-		 	html_content=('<center><h3 style="background-color:Orange;">A work order has been submitted through the TigerTools application</h3></center><p>%s</p>'%email_body))
+			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='service@princeton.edu',\
+				subject='Work Order Request (TigerTools)',\
+				html_content=('<center><h3 style="background-color:Orange;">A work order has been \
+					submitted through the TigerTools application</h3></center><p>%s</p>'%email_body))
 			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 			response = sg.send(message)
 		html = render_template('templates/arcgis.html', netid=netid)
@@ -322,7 +340,8 @@ def store_comment():
 		amenity_name = request.get_json().get('amenityName')
 		comment_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 		comment = request.get_json().get('textComment')
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, amenity_name text, comment text, submit_time text);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, \
+			amenity_name text, comment text, submit_time text);')
 		query = 'INSERT INTO comments (netid, amenity_name, comment, submit_time) VALUES (%s, %s, %s, %s);'
 		data = (netid, amenity_name, comment, comment_time)
 		dbcursor.execute(query, data)
@@ -347,7 +366,8 @@ def show_comments():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, amenity_name text, comment text, submit_time text);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, \
+			amenity_name text, comment text, submit_time text);')
 		query = "SELECT * FROM comments WHERE amenity_name = %s;"
 		dbcursor.execute(query, (amenityName,))
 		comments = dbcursor.fetchall()
@@ -386,20 +406,23 @@ def show_upvotes():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, \
+			amenity_name text, upvotes INTEGER, downvotes INTEGER);')
 		dbconnection.commit()
 		query = "SELECT SUM(upvotes) FROM votes WHERE amenity_name = %s;"
 		dbcursor.execute(query, (amenityName,))
 		upvotes = dbcursor.fetchall()[0][0]
 		if (upvotes == None): upvotes = 0
-		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND upvotes = 1 AND downvotes = 0', (amenityName, netid,))
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes \
+			where amenity_name = %s AND netid=%s AND upvotes = 1 AND downvotes = 0', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		currentlyLiking = True
 		if (result == None):
 			currentlyLiking = False
 		dbcursor.close()
 		dbconnection.close()
-		html = render_template('templates/displayLikes.html', num_of_likes = upvotes, isLiking = currentlyLiking, wasSuccessful = True)
+		html = render_template('templates/displayLikes.html', num_of_likes = upvotes, \
+			isLiking = currentlyLiking, wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
@@ -417,25 +440,29 @@ def show_downvotes():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, \
+			amenity_name text, upvotes INTEGER, downvotes INTEGER);')
 		query = "SELECT SUM(downvotes) FROM votes WHERE AMENITY_NAME = %s;"
 		dbcursor.execute(query, (amenityName,))
 		downvotes = dbcursor.fetchall()[0][0]
 		if (downvotes == None): downvotes = 0
-		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s AND downvotes = 1 AND upvotes = 0', (amenityName, netid,))
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where \
+			amenity_name = %s AND netid=%s AND downvotes = 1 AND upvotes = 0', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		currentlyDisliking = True
 		if (result == None):
 			currentlyDisliking = False
 		dbcursor.close()
 		dbconnection.close()
-		html = render_template('templates/displayDislikes.html', num_of_dislikes = downvotes, isDisliking = currentlyDisliking ,wasSuccessful = True)
+		html = render_template('templates/displayDislikes.html', num_of_dislikes = downvotes,\
+		 isDisliking = currentlyDisliking ,wasSuccessful = True)
 		return make_response(html)
 
 	except Exception as e:
 		print('Something went wrong with: show_downvotes()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
-		html = render_template('templates/displayDislikes.html', num_of_dislikes = "...", wasSuccessful = False, isDisliking = False)
+		html = render_template('templates/displayDislikes.html', num_of_dislikes = "...", \
+			wasSuccessful = False, isDisliking = False)
 		return make_response(html)
 
 # ---------------------------------------------------------------------
@@ -447,8 +474,10 @@ def place_upvote():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
-		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, \
+			amenity_name text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes \
+			where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
 			query = 'INSERT INTO votes (netid, amenity_name, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
@@ -457,9 +486,11 @@ def place_upvote():
 
 		else:
 			if (result[0] == 1):
-				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 \
+					where amenity_name = %s AND netid=%s', (amenityName, netid,))
 			else:
-				dbcursor.execute('UPDATE votes set upvotes = 1, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+				dbcursor.execute('UPDATE votes set upvotes = 1, downvotes = 0 \
+					where amenity_name = %s AND netid=%s', (amenityName, netid,))
 
 		dbconnection.commit()
 		dbcursor.close()
@@ -484,8 +515,10 @@ def place_downvote():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, amenity_name text, upvotes INTEGER, downvotes INTEGER);')
-		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes where amenity_name = %s AND netid=%s', (amenityName, netid,))
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS votes (netid text, \
+			amenity_name text, upvotes INTEGER, downvotes INTEGER);')
+		dbcursor.execute('SELECT votes.upvotes, votes.downvotes from votes \
+			where amenity_name = %s AND netid=%s', (amenityName, netid,))
 		result = dbcursor.fetchone()
 		if (result == None):
 			query = 'INSERT INTO votes (netid, amenity_name, upvotes, downvotes) VALUES (%s, %s, %s, %s);'
@@ -494,9 +527,11 @@ def place_downvote():
 
 		else:
 			if (result[1] == 1):
-				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 0 \
+					where amenity_name = %s AND netid=%s', (amenityName, netid,))
 			else:
-				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 1 where amenity_name = %s AND netid=%s', (amenityName, netid,))
+				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 1 \
+					where amenity_name = %s AND netid=%s', (amenityName, netid,))
 
 		dbconnection.commit()
 		dbcursor.close()
