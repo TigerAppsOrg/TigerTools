@@ -54,7 +54,7 @@ def display_map():
 
 # ---------------------------------------------------------------------
 '''
-Converts a list of tuples and corresponding keys into a 
+Converts a list of tuples and corresponding keys into a
 JSON string and returns that JSON string.
 '''
 def _tuples_to_json(keys, tuples_lists):
@@ -68,7 +68,7 @@ def _tuples_to_json(keys, tuples_lists):
 
 # ---------------------------------------------------------------------
 '''
-Returns all the information stored in the table for the amenity 
+Returns all the information stored in the table for the amenity
 selected by the user in the form of a JSON string.
 '''
 @app.route('/points', methods=['POST'])
@@ -83,7 +83,7 @@ def get_data():
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-		
+
 		if amenity_type == "printers" or amenity_type == "scanners" or amenity_type == "macs":
 			# get column names
 			dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), \
@@ -196,7 +196,7 @@ def get_data():
 
 		dbcursor.close()
 		dbconnection.close()
-		
+
 		if data_json == '':
 			print('No data available for this amenity:', amenity_type)
 		return data_json
@@ -206,6 +206,10 @@ def get_data():
 		return redirect(url_for('error_page')), 500
 
 # ---------------------------------------------------------------------
+'''
+Returns all the information stored in the table for the amenity
+selected by the user in the form of a JSON string.
+'''
 @app.route('/info', methods=['POST'])
 def get_info():
 	netid = CASClient().authenticate()
@@ -279,7 +283,7 @@ def format_wkorder():
 		if request.form.get('buildingcode') is not None and request.form.get('buildingcode') != '':
 			code_comp = request.form.get('buildingcode').split('_')
 			loc_code = code_comp[0]
-		
+
 		# email
 		email_body = '''<u><strong>Personal Information:</strong></u><br><strong>NetID:</strong> %s<br>
 		<strong>First Name:</strong> %s<br> <strong>Last Name:</strong> %s<br><strong>Email:</strong> %s<br>
@@ -331,6 +335,12 @@ def format_wkorder():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Stores a user submitted comment, its submission time, name of the amenity
+the comment was written for, as well as the netid of the Princeton user who
+submitted the comment to the database.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/comment', methods=['POST'])
 def store_comment():
 	netid = CASClient().authenticate()
@@ -357,16 +367,26 @@ def store_comment():
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/arcgis.html')
 		return make_response(html)
-	
+
 # ---------------------------------------------------------------------
+'''
+Queries the database for all comments and their timestamps under the
+user-selected amenity. Comments found to be 7+ days old are deleted
+from the database. Renders and returns a make_response of the html template
+displaycomments.html using query results.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/displaycomments', methods=['POST'])
 def show_comments():
 	netid = CASClient().authenticate()
 	try:
+		# which amenity
 		amenityName = request.get_json().get('amenityName')
+
 		DATABASE_URL = os.environ['DATABASE_URL']
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
+
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS comments (netid text, \
 			amenity_name text, comment text, submit_time text);')
 		query = "SELECT * FROM comments WHERE amenity_name = %s;"
@@ -388,17 +408,23 @@ def show_comments():
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
-		
+
 		html = render_template('templates/displaycomments.html', data=comments_modified, wasSuccessful = True)
 		return make_response(html)
-	
+
 	except Exception as e:
 		print('Something went wrong with: show_comments()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 		html = render_template('templates/displaycomments.html', data=[], wasSuccessful = False)
 		return make_response(html)
-	
+
 # ---------------------------------------------------------------------
+'''
+Queries the database for all upvotes under the user-selected amenity, and checks
+if the user has already "liked" the amenity. Renders and returns a make_response
+of the html template displayLikes.html using query results.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/displayupvotes', methods=['POST'])
 def show_upvotes():
 	netid = CASClient().authenticate()
@@ -433,6 +459,12 @@ def show_upvotes():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Queries the database for all downvotes under the user-selected amenity, and checks
+if the user has already "disliked" the amenity. Renders and returns a make_response
+of the html template displayDislikes.html using query results.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/displaydownvotes', methods=['POST'])
 def show_downvotes():
 	netid = CASClient().authenticate()
@@ -467,6 +499,11 @@ def show_downvotes():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Inserts/updates in the database the upvote cast by a user under the currently
+selected amenity.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/placeupvote', methods=['POST'])
 def place_upvote():
 	netid = CASClient().authenticate()
@@ -507,6 +544,11 @@ def place_upvote():
 		return make_response(html)
 
 #---------------------------------------------------------------------
+'''
+Inserts/updates in the database the downvote cast by a user under the currently
+selected amenity.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/placedownvote', methods=['POST'])
 def place_downvote():
 	netid = CASClient().authenticate()
