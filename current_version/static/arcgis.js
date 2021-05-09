@@ -1,4 +1,7 @@
+/* Class that contains and maintains an ArcGIS map state. */
 export class ArcGIS {
+
+  // Initialize class variables
   constructor() {
     this.map = null;
     this.locLayer = null;
@@ -8,12 +11,13 @@ export class ArcGIS {
     this.currentAmenityName = "";
   }
 
-  // Initialize the map
+  // Initialize the ArcGIS map
   initialize() {
     require(["esri/config","esri/Map", "esri/views/MapView", "esri/core/watchUtils", "esri/layers/GraphicsLayer"],
       (esriConfig, Map, MapView, watchUtils, GraphicsLayer) => {
 
-      esriConfig.apiKey = "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
+      esriConfig.apiKey = 
+      "AAPKa10cbf4f4ee84d8a81f04d2002446fd8Y_3foKUUP7kErbyIPzQ_yAgYfKJhlcjIrHc-ig9_ZkQC1IaANThkbpGKv4PJlCW9";
 
       // Set up map
       var map = new Map({
@@ -129,13 +133,15 @@ export class ArcGIS {
         });
       });
 
+      // Set class variables
       this.view = view;
       this.map = map;
       this.locLayer = locLayer;
     });
   }
   
-  // Create a normal point
+  /* Takes in a longitude, latitude, RGB color array, and attributes dictionary.
+   * Returns an ArcGIS Graphic in the form of a simple point. */
   createPoint(long, lat, col, attr) {
     var pointGraphic;
     require(["esri/Graphic"], (Graphic) => {
@@ -161,7 +167,9 @@ export class ArcGIS {
     return pointGraphic;
   }
 
-  // Create a new cluster point if the input point's long/lat doesn't match any cluster's long/lat
+  /* Takes in an ArcGIS Graphic (a point).
+   * If the input point's long/lat doesn't match any cluster's long/lat, create a new cluster.
+   * Assign the input point to the matching cluster. */
   checkPointCluster(point) {
     let isCluster = false;
     var radius = 0.00015; // Radius to search for nearby cluster
@@ -180,7 +188,8 @@ export class ArcGIS {
     }
   }
 
-  // Re-render all clusters/points
+  /* Re-render all cluster points and regular points on the map.
+   * Preserve the open/closed state of each cluster, unless it contains 1 or 0 regular points. */
   renderAll() {
     this.view.graphics.removeAll();
 
@@ -219,7 +228,8 @@ export class ArcGIS {
     }
   }
 
-  // Create a cluster point
+  /* Takes in a longitude, latitude, and attributes dictionary.
+   * Returns an ArcGIS Graphic in the form of a closed cluster point. */
   createCluster(long, lat, attr) {
     var pointGraphic;
     require(["esri/Graphic"], (Graphic) => {
@@ -249,7 +259,9 @@ export class ArcGIS {
     return pointGraphic;
   }
 
-  // Create an open cluster point
+  /* Takes in a longitude, latitude, and attributes dictionary.
+   * Returns an ArcGIS Graphic in the form of an open cluster point. 
+   * Differs from createCluster in that the point's symbol is different. */
   createOpenCluster(long, lat, attr) {
     var pointGraphic;
     require(["esri/Graphic"], (Graphic) => {
@@ -279,7 +291,8 @@ export class ArcGIS {
     return pointGraphic;
   }
 
-  // Toggle showing points contained in cluster
+  /* Takes in a cluster.
+   * Toggles between showing and hiding the points contained in the cluster. */
   toggleCluster(cluster) {
     // Close the cluster
     if (cluster.attributes.isOpen == true) {
@@ -317,7 +330,8 @@ export class ArcGIS {
     }
   }
 
-  // Remove all points of a certain type
+  /* Takes in an amenity type (string). 
+   * Removes all amenity points of that type from the map. */
   removeGraphic(amenityType) {
     for (let j = 0; j < this.clusters.length; j++) {
       var pts = this.clusters[j].attributes.pts;
@@ -331,7 +345,15 @@ export class ArcGIS {
     this.renderAll();
   }
 
-  // Attempt to get location of user and show position on map
+  /* Clear all amenity graphics from the map. Also clears all clusters. 
+   * Does not remove user's location pin. */
+  clearAll() {
+    this.view.graphics.removeAll();
+    this.clusters = [];
+  }
+
+  /* Attempt to get location of user.
+   * Called when user clicks on Location button. */
   handlePosition() {
     // Get location of user
     if (navigator.geolocation) {
@@ -343,7 +365,8 @@ export class ArcGIS {
     }
   }
 
-  // Update user position
+  /* User location successfully found.
+   * Update the user's location pin on the map, and center the map on their location. */
   showPosition(position) {
     require(["esri/Graphic"], (Graphic) => {
       this.locLayer.removeAll();
@@ -376,7 +399,7 @@ export class ArcGIS {
     });
   }
 
-  // Handle location error
+  /* Inform user of an error in getting their location. */
   handleLocationError(error) {
     switch(error.code) {
       case error.PERMISSION_DENIED:
@@ -396,11 +419,5 @@ export class ArcGIS {
         console.log("An unknown error occurred.");
         break;
     }
-  }
-
-  // Clear everything from map
-  clearAll() {
-    this.view.graphics.removeAll();
-    this.clusters = [];
   }
 }
