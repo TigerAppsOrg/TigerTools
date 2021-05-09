@@ -5,19 +5,7 @@ html, body, header, #viewDiv {
   width: 100%;
 }
 
-#landing {
-    height: 100%;
-}
-
-#landing {
-    background-color: #ffa500;
-    /*background: url("https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg")no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;*/
-}
-
+/* Select Tools button */
 #openNav {
   position: fixed;
   top: 10px;
@@ -25,18 +13,21 @@ html, body, header, #viewDiv {
   /*transform: translate(-50%, -50%);*/ /* this is for centering the button */
 }
 
+/* Show Location / Update Location button */
 #trackUser {
   position: fixed;
   top: 15px;
   right: 50px;
 }
 
+/* Logout button */
 #logout {
   position: fixed;
   bottom: 15px;
   right: 15px;
 }
 
+/* Confirmation/error dropdown alerts */
 .my-alerts {
   position: fixed;
   top: 40px;
@@ -47,6 +38,7 @@ html, body, header, #viewDiv {
   z-index: 1060;
 }
 
+/* Filtering menu */
 #mySidenav {
   /*height: 100%;*/
   width: 360px;
@@ -94,6 +86,7 @@ html, body, header, #viewDiv {
   -webkit-hyphens: auto;
 }
 
+/* Custom filtering button classes (different colors) */
 .btn-maroon {
   color: #800000;
   border-width: 1px;
@@ -137,6 +130,7 @@ html, body, header, #viewDiv {
   margin: 5px 3px 5px 3px;
 }
 
+/* Modal content */
 .modal {
   overflow-y: scroll;
 }
