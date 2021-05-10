@@ -78,7 +78,7 @@ html, body, header, #viewDiv {
 }
 
 .comment {
-	white-space: pre-line;
+	white-space: pre-wrap;
   word-break: break-word;
   hyphens: auto;
   -ms-hyphens: auto;
