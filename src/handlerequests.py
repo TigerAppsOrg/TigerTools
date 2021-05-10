@@ -293,7 +293,7 @@ def format_wkorder():
 			code_comp = request.form.get('buildingcode').split('_')
 			loc_code = code_comp[0]
 
-		# email
+		# email formatting
 		email_body = '''<u><strong>Personal Information:</strong></u><br><strong>NetID:</strong> %s<br>
 		<strong>First Name:</strong> %s<br> <strong>Last Name:</strong> %s<br><strong>Email:</strong> %s<br>
 		<strong>Phone:</strong> %s<br><strong>Contact regarding scheduling?:</strong> %s<br><br>
@@ -309,7 +309,9 @@ def format_wkorder():
 			request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
 			request.form.get('alt-phone'),request.form.get('campus'),loc_code,request.form.get('building'),\
 			request.form.get('floor'),request.form.get('room'),request.form.get('description'))
-		# course staff
+		
+		# sending the email
+		# for course staff
 		if netid in ['rdondero\n','whchang\n','satadals\n','pisong\n','anatk\n']:
 			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
 				subject='Work order from instructor (TigerTools)',\
@@ -318,7 +320,7 @@ def format_wkorder():
 			 		%s</p>'%email_body))
 			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 			response = sg.send(message)
-		# TigerTools team
+		# for TigerTools team members
 		if netid in ['indup\n','rl27\n','arebei\n','tigertools\n']:
 			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
 				subject='Work order from team (TigerTools)',\
@@ -327,7 +329,7 @@ def format_wkorder():
 			 		%s</p>'%email_body))
 			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 			response = sg.send(message)
-		# normal user
+		# for normal user
 		else:
 			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='service@princeton.edu',\
 				subject='Work Order Request (TigerTools)',\
@@ -335,6 +337,7 @@ def format_wkorder():
 					submitted through the TigerTools application</h3></center><p>%s</p>'%email_body))
 			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
 			response = sg.send(message)
+		
 		html = render_template('templates/arcgis.html', netid=netid)
 		return make_response(html)
 	except Exception as e:
@@ -371,7 +374,6 @@ def store_comment():
 		data = (netid, amenity_name, comment, comment_time)
 		dbcursor.execute(query, data)
 
-		# Commit changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
@@ -427,7 +429,6 @@ def show_comments():
 				dbcursor.execute(query, (comment[0], comment[1], comment[2], comment[3],))
 		comments_modified.reverse()
 
-		# Commit any changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
@@ -477,7 +478,6 @@ def show_upvotes():
 		if (result == None):
 			currentlyLiking = False
 
-		# Close database connection
 		dbcursor.close()
 		dbconnection.close()
 
@@ -526,7 +526,6 @@ def show_downvotes():
 		if (result == None):
 			currentlyDisliking = False
 
-		# Close database connection
 		dbcursor.close()
 		dbconnection.close()
 
@@ -586,7 +585,6 @@ def place_upvote():
 				dbcursor.execute('UPDATE votes set upvotes = 1, downvotes = 0 \
 					where amenity_name = %s AND netid=%s', (amenityName, netid,))
 
-		# Commit changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
@@ -646,7 +644,6 @@ def place_downvote():
 				dbcursor.execute('UPDATE votes set upvotes = 0, downvotes = 1 \
 					where amenity_name = %s AND netid=%s', (amenityName, netid,))
 
-		# Commit changes and close database connection
 		dbconnection.commit()
 		dbcursor.close()
 		dbconnection.close()
@@ -671,6 +668,9 @@ def logout():
     casClient.logout()
 
 #-----------------------------------------------------------------------
+'''
+Error handlers.
+'''
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('templates/404.html'), 404
