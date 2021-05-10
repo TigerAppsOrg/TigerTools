@@ -4,7 +4,6 @@
 # ----------------------------------------------------------
 
 '''
-Please note the CSV files have been removed from src.
 IMPORTANT: EXECUTE . get-db-url.sh IN COMMAND LINE AND CHANGE 
 FILE PATHWAYS IF NEEDED BEFORE RUNNING THIS PYTHON SCRIPT
 '''
