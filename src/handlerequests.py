@@ -26,6 +26,9 @@ app = Flask(__name__, template_folder='.')
 app.secret_key = b'c\xb4@S1g\x1d\x90C\xfc\xb7Y\xc5I\xf5\x16'
 
 # ---------------------------------------------------------------------
+'''
+Authenticates user via CAS. Redirects to ArcGIS map if successful.
+'''
 @app.route('/')
 @app.route('/index')
 def landing():
@@ -36,12 +39,18 @@ def landing():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Renders custom error page.
+'''
 @app.route('/error')
 def error_page():
 	html = render_template('templates/error.html')
 	return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Updates database and renders map.
+'''
 @app.route('/map', methods=['GET'])
 def display_map():
 	netid = CASClient().authenticate()
@@ -652,6 +661,9 @@ def place_downvote():
 		return make_response(html)
 
 #-----------------------------------------------------------------------
+'''
+Logs the user out of CAS.
+'''
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
