@@ -272,56 +272,68 @@ Prints log message to stderr if an error occurs.
 def format_wkorder():
 	netid = CASClient().authenticate()
 	try:
-		# get location information
-		loc_code = ''
-		if request.form.get('locationcode') is not None and request.form.get('locationcode') != '':
-			loc_code = request.form.get('locationcode')
-		if request.form.get('buildingcode') is not None and request.form.get('buildingcode') != '':
-			code_comp = request.form.get('buildingcode').split('_')
-			loc_code = code_comp[0]
-		
-		# email
-		email_body = '''<u><strong>Personal Information:</strong></u><br><strong>NetID:</strong> %s<br>
-		<strong>First Name:</strong> %s<br> <strong>Last Name:</strong> %s<br><strong>Email:</strong> %s<br>
-		<strong>Phone:</strong> %s<br><strong>Contact regarding scheduling?:</strong> %s<br><br>
-		<u><strong>Alternate Information:</strong></u><strong><br>Alternate NetID:</strong> %s<br>
-		<strong>Alternate First Name:</strong> %s<br><strong>Alternate Last Name:</strong> %s<br>
-		<strong>Alternate Email:</strong> %s<br><strong>Alternate Phone:</strong> %s<br><br>
-		<u><strong>Request Information:</strong></u><br><strong>Campus:</strong> %s<br>
-		<strong>Charge Source:</strong> Operating<br><strong>Location Code:</strong> %s<br>
-		<strong>Building:</strong> %s<br><strong>Floor:</strong> %s<br>
-		<strong>Room:</strong> %s<br><strong>Detailed request:</strong> %s<br>''' % (request.form.get('netid'),\
-			request.form.get('firstname'), request.form.get('lastname'),request.form.get('email'),\
-			request.form.get('phone'),request.form.get('contacted'), request.form.get('alt-netid'),\
-			request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
-			request.form.get('alt-phone'),request.form.get('campus'),loc_code,request.form.get('building'),\
-			request.form.get('floor'),request.form.get('room'),request.form.get('description'))
-		# course staff
-		if netid in ['rdondero\n','whchang\n','satadals\n','pisong\n','anatk\n']:
-			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
-				subject='Work order from instructor (TigerTools)',\
-			 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted \
-			 		by a COS 333 instructor; no work order has been submitted to Facilities</h3></center><p><br>\
-			 		%s</p>'%email_body))
-			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-			response = sg.send(message)
-		# TigerTools team
-		if netid in ['indup\n','rl27\n','arebei\n','tigertools\n']:
-			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
-				subject='Work order from team (TigerTools)',\
-			 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted \
-			 		by a COS 333 TigerTools team member; no work order has been submitted to Facilities</h3></center><p><br>\
-			 		%s</p>'%email_body))
-			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-			response = sg.send(message)
-		# normal user
-		else:
-			message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='service@princeton.edu',\
+		message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
 				subject='Work Order Request (TigerTools)',\
-				html_content=('<center><h3 style="background-color:Orange;">A work order has been \
-					submitted through the TigerTools application</h3></center><p>%s</p>'%email_body))
-			sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
-			response = sg.send(message)
+				html_content=('<center><h3 style="background-color:Orange;">Work Orders submitted through \
+					TigerTools have been temporarily disabled.</h3></center><p>Thank you for using TigerTools.\
+					 We have temporarily disabled the submission of work orders through TigerTools. \
+					 Please submit your work order directly through the \
+					 <a href="https://facilities.princeton.edu/help">Facilities work order form</a>. \
+					 We apologize for any inconvenience.</p>'))
+		sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+		response = sg.send(message)
+		##### COMMENTED OUT CODE #####
+		# # get location information
+		# loc_code = ''
+		# if request.form.get('locationcode') is not None and request.form.get('locationcode') != '':
+		# 	loc_code = request.form.get('locationcode')
+		# if request.form.get('buildingcode') is not None and request.form.get('buildingcode') != '':
+		# 	code_comp = request.form.get('buildingcode').split('_')
+		# 	loc_code = code_comp[0]
+		# # email
+		# email_body = '''<u><strong>Personal Information:</strong></u><br><strong>NetID:</strong> %s<br>
+		# <strong>First Name:</strong> %s<br> <strong>Last Name:</strong> %s<br><strong>Email:</strong> %s<br>
+		# <strong>Phone:</strong> %s<br><strong>Contact regarding scheduling?:</strong> %s<br><br>
+		# <u><strong>Alternate Information:</strong></u><strong><br>Alternate NetID:</strong> %s<br>
+		# <strong>Alternate First Name:</strong> %s<br><strong>Alternate Last Name:</strong> %s<br>
+		# <strong>Alternate Email:</strong> %s<br><strong>Alternate Phone:</strong> %s<br><br>
+		# <u><strong>Request Information:</strong></u><br><strong>Campus:</strong> %s<br>
+		# <strong>Charge Source:</strong> Operating<br><strong>Location Code:</strong> %s<br>
+		# <strong>Building:</strong> %s<br><strong>Floor:</strong> %s<br>
+		# <strong>Room:</strong> %s<br><strong>Detailed request:</strong> %s<br>''' % (request.form.get('netid'),\
+		# 	request.form.get('firstname'), request.form.get('lastname'),request.form.get('email'),\
+		# 	request.form.get('phone'),request.form.get('contacted'), request.form.get('alt-netid'),\
+		# 	request.form.get('alt-firstname'),request.form.get('alt-lastname'),request.form.get('alt-email'), \
+		# 	request.form.get('alt-phone'),request.form.get('campus'),loc_code,request.form.get('building'),\
+		# 	request.form.get('floor'),request.form.get('room'),request.form.get('description'))
+		# # course staff
+		# if netid in ['rdondero\n','whchang\n','satadals\n','pisong\n','anatk\n']:
+		# 	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
+		# 		subject='Work order from instructor (TigerTools)',\
+		# 	 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted \
+		# 	 		by a COS 333 instructor; no work order has been submitted to Facilities</h3></center><p><br>\
+		# 	 		%s</p>'%email_body))
+		# 	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+		# 	response = sg.send(message)
+		# # TigerTools team
+		# if netid in ['indup\n','rl27\n','arebei\n','tigertools\n']:
+		# 	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='%s@princeton.edu'%netid,\
+		# 		subject='Work order from team (TigerTools)',\
+		# 	 	html_content=('<center><h3 style="background-color:Orange;">This work order has been submitted \
+		# 	 		by a COS 333 TigerTools team member; no work order has been submitted to Facilities</h3></center><p><br>\
+		# 	 		%s</p>'%email_body))
+		# 	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+		# 	response = sg.send(message)
+		# # normal user
+		# else:
+		# 	message = Mail(from_email='tigertoolsprinceton@gmail.com',to_emails='service@princeton.edu',\
+		# 		subject='Work Order Request (TigerTools)',\
+		# 		html_content=('<center><h3 style="background-color:Orange;">A work order has been \
+		# 			submitted through the TigerTools application</h3></center><p>%s</p>'%email_body))
+		# 	sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+		# 	response = sg.send(message)
+		##### END COMMENTED OUT CODE #####
+
 		html = render_template('templates/arcgis.html', netid=netid)
 		return make_response(html)
 	except Exception as e:

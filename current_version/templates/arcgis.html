@@ -130,8 +130,12 @@
       <strong>Comment successfully submitted!</strong>
     </span>
     <!-- Work order confirmation alert -->
-    <span class="alert alert-success text-center my-alerts" role="alert" id="workorder-success">
+    <!-- <span class="alert alert-success text-center my-alerts" role="alert" id="workorder-success">
       <strong>Work order successfully submitted!</strong>
+    </span> -->
+     <!-- Work order disabled alert -->
+    <span class="alert alert-danger text-center my-alerts" role="alert" id="workorder-success">
+      <strong>Work orders have been temporarily disabled.<br>We apologize for any inconvenience.</strong>
     </span>
     <!-- Ajax error alert -->
     <span class="alert alert-danger text-center my-alerts" role="alert" id="ajax-error">
@@ -226,8 +230,9 @@
               <!-- WORK ORDER TAB -->
               <div class="tab-pane fade" id="nav-work" role="tabpanel" aria-labelledby="nav-workorder-tab">
                 <h4 class="text-center">Submit a work order</h4>
-                <div class="text-center"><small>Is this pin identical to another one? That's okay, you can submit using either pin as long as the pre-filled location information is correct.<br>
-                  Make sure to include as much additional location information that isn't already pre-filled as possible!</small></div>
+                <!-- <div class="text-center"><small>Is this pin identical to another one? That's okay, you can submit using either pin as long as the pre-filled location information is correct.<br>
+                  Make sure to include as much additional location information that isn't already pre-filled as possible!</small></div> -->
+                  <div class="text-center"><small>WORK ORDERS HAVE BEEN TEMPORARILY DISABLED. We apologize for any inconvenience.</small></div>
                 <hr>
                 <p class="text-danger" id="required-text"> * = Required</p>
 
