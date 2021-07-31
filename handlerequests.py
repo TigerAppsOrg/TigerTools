@@ -26,6 +26,9 @@ app = Flask(__name__, template_folder='.')
 app.secret_key = b'c\xb4@S1g\x1d\x90C\xfc\xb7Y\xc5I\xf5\x16'
 
 # ---------------------------------------------------------------------
+'''
+Authenticates user via CAS. Redirects to ArcGIS map if successful.
+'''
 @app.route('/')
 @app.route('/index')
 def landing():
@@ -36,18 +39,25 @@ def landing():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Renders custom error page.
+'''
 @app.route('/error')
 def error_page():
 	html = render_template('templates/error.html')
 	return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Updates database and renders map.
+'''
 @app.route('/map', methods=['GET'])
 def display_map():
 	netid = CASClient().authenticate()
 
+	### TEMPORARY FIX UNTIL CAN GET DATA BACK ###
 	# update all MobileApp API data in database
-	update()
+	# update()
 
 	html = render_template('templates/arcgis.html',netid=netid)
 	return make_response(html)
@@ -74,8 +84,9 @@ selected by the user in the form of a JSON string.
 @app.route('/points', methods=['POST'])
 def get_data():
 	netid = CASClient().authenticate()
+	### TEMPORARY FIX UNTIL CAN GET DATA BACK ###
 	# update open/closed status of venues
-	places_open()
+	# places_open()
 	try:
 		# which amenity
 		amenity_type = request.get_json().get('amenity_type')
@@ -84,6 +95,7 @@ def get_data():
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
 		
+		data_json = ''
 		if amenity_type == "printers" or amenity_type == "scanners" or amenity_type == "macs":
 			# get column names
 			dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), \
@@ -199,6 +211,7 @@ def get_data():
 		
 		if data_json == '':
 			print('No data available for this amenity:', amenity_type)
+			return data_json
 		return data_json
 	except Exception as e:
 		print('Something went wrong with: get_data()', file=sys.stderr)
@@ -206,6 +219,10 @@ def get_data():
 		return redirect(url_for('error_page')), 500
 
 # ---------------------------------------------------------------------
+'''
+Returns all the information stored in the table for the amenity
+selected by the user in the form of a JSON string.
+'''
 @app.route('/info', methods=['POST'])
 def get_info():
 	netid = CASClient().authenticate()
@@ -343,6 +360,12 @@ def format_wkorder():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Stores a user submitted comment, its submission time, name of the amenity
+the comment was written for, as well as the netid of the Princeton user who
+submitted the comment to the database.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/comment', methods=['POST'])
 def store_comment():
 	netid = CASClient().authenticate()
@@ -371,6 +394,13 @@ def store_comment():
 		return make_response(html)
 	
 # ---------------------------------------------------------------------
+'''
+Queries the database for all comments and their timestamps under the
+user-selected amenity. Comments found to be 7+ days old are deleted
+from the database. Renders and returns a make_response of the html template
+displaycomments.html using query results.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/displaycomments', methods=['POST'])
 def show_comments():
 	netid = CASClient().authenticate()
@@ -411,6 +441,12 @@ def show_comments():
 		return make_response(html)
 	
 # ---------------------------------------------------------------------
+'''
+Queries the database for all upvotes under the user-selected amenity, and checks
+if the user has already "liked" the amenity. Renders and returns a make_response
+of the html template displayLikes.html using query results.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/displayupvotes', methods=['POST'])
 def show_upvotes():
 	netid = CASClient().authenticate()
@@ -445,6 +481,12 @@ def show_upvotes():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Queries the database for all downvotes under the user-selected amenity, and checks
+if the user has already "disliked" the amenity. Renders and returns a make_response
+of the html template displayDislikes.html using query results.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/displaydownvotes', methods=['POST'])
 def show_downvotes():
 	netid = CASClient().authenticate()
@@ -479,6 +521,11 @@ def show_downvotes():
 		return make_response(html)
 
 # ---------------------------------------------------------------------
+'''
+Inserts/updates in the database the upvote cast by a user under the currently
+selected amenity.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/placeupvote', methods=['POST'])
 def place_upvote():
 	netid = CASClient().authenticate()
@@ -519,6 +566,11 @@ def place_upvote():
 		return make_response(html)
 
 #---------------------------------------------------------------------
+'''
+Updates/inserts in the database the downvote cast by a user under the currently
+selected amenity.
+Prints log message to stderr if an error occurs.
+'''
 @app.route('/placedownvote', methods=['POST'])
 def place_downvote():
 	netid = CASClient().authenticate()
@@ -560,6 +612,9 @@ def place_downvote():
 		return make_response(html)
 
 #-----------------------------------------------------------------------
+'''
+Logs the user out of CAS.
+'''
 @app.route('/logout', methods=['GET'])
 def logout():
     casClient = CASClient()
@@ -567,6 +622,9 @@ def logout():
     casClient.logout()
 
 #-----------------------------------------------------------------------
+'''
+Error handlers.
+'''
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('templates/404.html'), 404

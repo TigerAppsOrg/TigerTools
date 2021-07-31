@@ -7,6 +7,7 @@ import os
 import psycopg2
 from reqlib import ReqLib
 import json
+import sys
 
 # ---------------------------------------------------------------------
 '''
@@ -30,18 +31,20 @@ def dining_halls():
 		categoryID = 2
 		DATABASE_URL = os.environ['DATABASE_URL']
 
+		# retrieve data from OIT
+		data_dict = _consume_mobileapp(categoryID)
+		if data_dict is None:
+			raise Exception("No data retrieved")
+
+		# clear entries in database table
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS dining (name VARCHAR(100), \
 			dbid VARCHAR(4), buildingname VARCHAR(100), locationcode VARCHAR(4), lat VARCHAR(10), \
 			long VARCHAR(10), rescollege VARCHAR(30), who VARCHAR(120), payment VARCHAR(500), \
 			capacity VARCHAR(6), PRIMARY KEY(name, dbid));')
 		dbcursor.execute('DELETE FROM dining;')
 		dbconnection.commit()
-
-		# retrieve data from OIT
-		data_dict = _consume_mobileapp(categoryID)
 
 		# extract data from dictionaries
 		for i in range(len(data_dict)):
@@ -82,7 +85,7 @@ def dining_halls():
 		dbcursor.close()
 		dbconnection.close()
 	except Exception as e:
-		print('Database error: something went wrong with dining()', file=sys.stderr)
+		print('Database error: something went wrong with dining_halls()', file=sys.stderr)
 		print(str(e), file=sys.stderr)
 
 # ---------------------------------------------------------------------
@@ -96,6 +99,10 @@ def cafes():
 		categoryID = 3
 		DATABASE_URL = os.environ['DATABASE_URL']
 
+		# retrieve data from OIT
+		data_dict = _consume_mobileapp(categoryID)
+
+		# clear entries in database table
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS cafes (name VARCHAR(100), dbid VARCHAR(4), \
@@ -103,9 +110,6 @@ def cafes():
 			description VARCHAR(1000), who VARCHAR(120), payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 		dbcursor.execute('DELETE FROM cafes;')
 		dbconnection.commit()
-
-		# retrieve data from OIT
-		data_dict = _consume_mobileapp(categoryID)
 
 		# extract data from dictionaries
 		for i in range(len(data_dict)):
@@ -160,17 +164,18 @@ def vending_machines():
 	try:
 		categoryID = 4
 		DATABASE_URL = os.environ['DATABASE_URL']
+
+		# retrieve data from OIT
+		data_dict = _consume_mobileapp(categoryID)
+
+		# clear entries in database table
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS vendingmachines (name VARCHAR(100), dbid VARCHAR(4), \
 			buildingname VARCHAR(100), locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), \
 			directions VARCHAR(1000), what VARCHAR(500), payment VARCHAR(500), PRIMARY KEY(name, dbid));')
 		dbcursor.execute('DELETE FROM vendingmachines;')
 		dbconnection.commit()
-
-		# retrieve data from OIT
-		data_dict = _consume_mobileapp(categoryID)
 
 		# extract data from dictionaries
 		for i in range(len(data_dict)):
@@ -231,9 +236,15 @@ def categoryid6():
 	try:
 		categoryID = 6
 		DATABASE_URL = os.environ['DATABASE_URL']
+		
+		# retrieve data from OIT
+		data_dict = _consume_mobileapp(categoryID)
+		if data_dict is None:
+			raise Exception("No data retrieved")
+
+		# clear entries in database table
 		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 		dbcursor = dbconnection.cursor()
-
 		dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (name VARCHAR(100), dbid VARCHAR(4), \
 			buildingname VARCHAR(100),locationcode VARCHAR(4), lat VARCHAR(10), long VARCHAR(10), \
 			accessible VARCHAR(30), description VARCHAR(80), printers VARCHAR(4), macs VARCHAR(4), \
@@ -241,9 +252,6 @@ def categoryid6():
 			PRIMARY KEY(name, dbid));')
 		dbcursor.execute('DELETE FROM id6;')
 		dbconnection.commit()
-
-		# retrieve data from OIT
-		data_dict = _consume_mobileapp(categoryID)
 
 		# extract data from dictionaries
 		for i in range(len(data_dict)):
@@ -316,17 +324,18 @@ Prints log message to stderr if an error occurs.
 def places_open():
 	try:
 		DATABASE_URL = os.environ['DATABASE_URL']
-		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
-		dbcursor = dbconnection.cursor()
-
-		dbcursor.execute('CREATE TABLE IF NOT EXISTS isitopen (name VARCHAR (100), \
-			dbid VARCHAR(4), open VARCHAR(4), PRIMARY KEY(name, dbid));')
-		dbcursor.execute('DELETE FROM isitopen;')
-		dbconnection.commit()
 
 		# retrieve data from /places/open/
 		req_lib = ReqLib()
 		data = req_lib.getJSON(req_lib.configs.PLACES_OPEN,)
+
+		# clear entries in database table
+		dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
+		dbcursor = dbconnection.cursor()
+		dbcursor.execute('CREATE TABLE IF NOT EXISTS isitopen (name VARCHAR (100), \
+			dbid VARCHAR(4), open VARCHAR(4), PRIMARY KEY(name, dbid));')
+		dbcursor.execute('DELETE FROM isitopen;')
+		dbconnection.commit()
 
 		# insert records into "isitopen"
 		for i in range(len(data)):
@@ -346,8 +355,8 @@ def places_open():
 # ---------------------------------------------------------------------
 def update():
 	categoryid6()
-	dining_halls()
-	cafes()
-	vending_machines()
-	places_open()
+	# dining_halls()
+	# cafes()
+	# vending_machines()
+	# places_open()
 
