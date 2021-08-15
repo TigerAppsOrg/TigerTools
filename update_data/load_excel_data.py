@@ -55,7 +55,7 @@ def main():
 	dbconnection = psycopg2.connect(DATABASE_URL, sslmode='require')
 	dbcursor = dbconnection.cursor()
 	dbcursor.execute('CREATE TABLE IF NOT EXISTS id6 (locationcode VARCHAR(6), buildingname VARCHAR(200), \
-		lat VARCHAR(30), long VARCHAR(30), accessible VARCHAR(30), description VARCHAR(80), printers VARCHAR(4),\
+		lat VARCHAR(30), long VARCHAR(30), accessible VARCHAR(30), description VARCHAR(200), printers VARCHAR(4),\
 		macs VARCHAR(4), scanners VARCHAR(4), room VARCHAR(100), floor VARCHAR(100));')
 	dbconnection.commit()
 	load_tech(dbcursor)
