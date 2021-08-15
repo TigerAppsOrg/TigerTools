@@ -365,8 +365,8 @@ $(document).ready(function(){
         for (var i = 0; i < data_array.length; i++) {
           var printer = data_array[i];
           var point = map.createPoint(printer.long, printer.lat, [220, 53, 69],
-            {name: printer.name, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.macs, scanners: printer.scanners,
-            building: printer.buildingname, room: printer.room, floor: printer.floor, locationcode: printer.locationcode, locationmore: printer.locationmore});
+            {name: printer.buildingname, type:"Printer", description: printer.description, accessible: printer.accessible, printers: printer.printers, computers: printer.macs, scanners: printer.scanners,
+            building: printer.buildingname, room: printer.room, floor: printer.floor, locationcode: printer.locationcode});
 
           // Create new cluster if doesnt exist already
           map.checkPointCluster(point);
@@ -408,8 +408,8 @@ $(document).ready(function(){
         for (var i = 0; i < data_array.length; i++) {
           var cluster = data_array[i];
           var point = map.createPoint(cluster.long, cluster.lat, [255, 193, 7],
-            {name: cluster.name, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.macs, scanners: cluster.scanners,
-            building: cluster.buildingname, room: cluster.room, floor: cluster.floor, locationcode: cluster.locationcode, locationmore: cluster.locationmore});
+            {name: cluster.buildingname, type:"Computer Cluster", description: cluster.description, accessible: cluster.accessible, printers: cluster.printers, computers: cluster.macs, scanners: cluster.scanners,
+            building: cluster.buildingname, room: cluster.room, floor: cluster.floor, locationcode: cluster.locationcode});
 
           // Create new cluster if doesnt exist already
           map.checkPointCluster(point);
@@ -449,8 +449,8 @@ $(document).ready(function(){
         for (var i = 0; i < data_array.length; i++) {
           var scanner = data_array[i];
           var point = map.createPoint(scanner.long, scanner.lat, [128, 0, 0],
-            {name: scanner.name, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.macs, scanners: scanner.scanners,
-            building: scanner.buildingname, room: scanner.room, floor: scanner.floor, locationcode: scanner.locationcode, locationmore: scanner.locationmore});
+            {name: scanner.buildingname, type:"Scanner", description: scanner.description, accessible: scanner.accessible, printers: scanner.printers, computers: scanner.macs, scanners: scanner.scanners,
+            building: scanner.buildingname, room: scanner.room, floor: scanner.floor, locationcode: scanner.locationcode});
 
           // Create new cluster if doesnt exist already
           map.checkPointCluster(point);
