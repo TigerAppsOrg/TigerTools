@@ -237,7 +237,9 @@ def get_info():
 				accessible=request.get_json().get("accessible"),
 				printers=request.get_json().get("printers"),
 				scanners=request.get_json().get("scanners"),
-				computers=request.get_json().get("computers"))
+				computers=request.get_json().get("computers"),
+				room=request.get_json().get("room"),
+				floor=request.get_json().get("floor"))
 			return make_response(html)
 
 		elif amenity_type == "Dining hall":
