@@ -137,8 +137,8 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			cols.append('open')
 			# get records
-			stmt = 'SELECT dining.*,isitopen.open FROM dining \
-				INNER JOIN isitopen ON dining.dbid=isitopen.dbid;'
+			# stmt = 'SELECT dining.*,isitopen.open FROM dining \
+			# 	INNER JOIN isitopen ON dining.dbid=isitopen.dbid;'
 			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
@@ -153,8 +153,8 @@ def get_data():
 			cols = [desc[0] for desc in dbcursor.description]
 			cols.append('open')
 			# get records
-			stmt = 'SELECT cafes.*,isitopen.open FROM cafes \
-				INNER JOIN isitopen ON cafes.dbid=isitopen.dbid;'
+			# stmt = 'SELECT cafes.*,isitopen.open FROM cafes \
+			# 	INNER JOIN isitopen ON cafes.dbid=isitopen.dbid;'
 			dbcursor.execute(stmt)
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
