@@ -3,4 +3,4 @@
 
 # heroku config:get DATABASE_URL -a tigertools
 
-export DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools)
+export DATABASE_URL=$(heroku config:get DATABASE_URL -a tigertools-prod)
