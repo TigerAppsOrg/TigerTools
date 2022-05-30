@@ -113,6 +113,7 @@ def get_data():
 			dbcursor.execute(stmt,('0',))
 			data = dbcursor.fetchall()
 			data_json = _tuples_to_json(cols, data)
+			print(data_json)
 
 		elif amenity_type == "scanners":
 			stmt = 'SELECT * FROM id6 WHERE scanners<>%s;'
@@ -422,9 +423,9 @@ def show_comments():
 		for comment in comments:
 			if (comment[3] in time_range):
 				comments_modified.append([comment[1], comment[2], arrow.get(comment[3]).humanize()])
-			else:
-				query = "DELETE FROM comments WHERE netid = %s AND amenity_name = %s AND comment = %s AND submit_time = %s;"
-				dbcursor.execute(query, (comment[0], comment[1], comment[2], comment[3],))
+			# else:
+			# 	query = "DELETE FROM comments WHERE netid = %s AND amenity_name = %s AND comment = %s AND submit_time = %s;"
+			# 	dbcursor.execute(query, (comment[0], comment[1], comment[2], comment[3],))
 		comments_modified.reverse()
 
 		dbconnection.commit()
