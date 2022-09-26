@@ -24,7 +24,7 @@ def load_athletics(dbcursor):
 		dbcursor.execute('CREATE TABLE athletics (buildingname VARCHAR(80), \
 			sports VARCHAR(60), lat VARCHAR(15), long VARCHAR(15), PRIMARY KEY (buildingname))')
 		# load csv into athletics table
-		csv_file_name = '/Users/indup/Documents/TigerTools/current_version/update_csv/athletic_data.csv'
+		csv_file_name = '/pathway to/TigerTools/update_data/athletic_data.csv'
 		sql = "COPY athletics FROM STDIN DELIMITER ',' CSV HEADER"
 		dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 	except Exception as e:
@@ -44,7 +44,7 @@ def load_water(dbcursor):
 			buildingcode VARCHAR(20), buildingname VARCHAR(80), floor VARCHAR(80), \
 			directions VARCHAR(80),PRIMARY KEY (asset))')
 		# load csv
-		csv_file_name = '/Users/indup/Documents/TigerTools/current_version/update_csv/water_data.csv'
+		csv_file_name = '/pathway to/TigerTools/update_data/water_data.csv'
 		sql = "COPY water FROM STDIN CSV HEADER"
 		dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 	except Exception as e:
@@ -64,7 +64,7 @@ def load_buildings(dbcursor):
 			buildingname VARCHAR(110), lat VARCHAR(20), long VARCHAR(20), \
 			PRIMARY KEY (locationcode))')
 		# load csv
-		csv_file_name = '/Users/indup/Documents/TigerTools/current_version/update_csv/buildings.csv'
+		csv_file_name = '/pathway to/TigerTools/update_data/buildings.csv'
 		sql = "COPY buildings FROM STDIN CSV HEADER"
 		dbcursor.copy_expert(sql, open(csv_file_name, "r"))
 	except Exception as e:

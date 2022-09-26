@@ -21,7 +21,7 @@ Prints log message to stderr if error occurs.
 def load_tech(dbcursor):
 	try:
 		# load csv into athletics table
-		workbook = pd.read_excel('/Users/indup/Documents/TigerTools/current_version/update_csv/TigerTools_DataCollection.xlsx', sheet_name="Amenities")
+		workbook = pd.read_excel('/pathway to/TigerTools/update_data/TigerTools_DataCollection.xlsx', sheet_name="Amenities")
 		workbook['locationcode'] = workbook['locationcode'].astype(str)
 		workbook['locationcode'] = workbook['locationcode'].apply(lambda x: x.zfill(4))
 		workbook['lat'] = workbook['lat'].astype(str)
