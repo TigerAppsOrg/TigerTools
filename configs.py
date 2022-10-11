@@ -8,12 +8,13 @@
 import requests
 import json
 import base64
+import os
 
 class Configs:
 	def __init__(self):
-		self.CONSUMER_KEY = "I2_wnTy6MhO5O7yXyW3TeentlGka"
-		self.CONSUMER_SECRET = "FJA27aTR4c7thfkFsegm01PyBJEa"
-		self.BASE_URL="https://api.princeton.edu:443/mobile-app/1.0.0"
+		self.CONSUMER_KEY = os.environ["CONSUMER_KEY"]
+		self.CONSUMER_SECRET = os.environ["CONSUMER_SECRET"]
+		self.BASE_URL="https://api.princeton.edu:443/student-app/1.0.1"
 		self.COURSE_COURSES="/courses/courses"
 		self.COURSE_TERMS="/courses/terms"
 		self.DINING_LOCATIONS="/dining/locations"
